@@ -5,7 +5,7 @@
 	Filename	: 	drv_mem.c
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -38,7 +38,7 @@ BYTE Previous_Write_Addr;  /* it holds the Address of last Record  Written into 
 /*********************************************************************************
 File name 			:drv_mem.c
 Function Name		:BOOL Erase_Serial_EEProm_Block(UINT16 uiBlockNo)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -148,7 +148,7 @@ BOOL Erase_Serial_EEProm_Block(UINT16 uiBlockNo)
 /*********************************************************************************
 File name 			:drv_mem.c
 Function Name		:BOOL Write_Event_on_Serial_EEProm(UINT16 uiRecordNo, event_record_t *Event_Info)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -223,7 +223,7 @@ BOOL Write_Event_on_Serial_EEProm(UINT16 uiRecordNo, event_record_t *Event_Info)
 /*********************************************************************************
 File name 			:drv_mem.c
 Function Name		:BOOL Read_Event_from_Serial_EEProm(UINT16 uiRecordNo, event_record_t *Event_Info)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -322,7 +322,7 @@ BOOL Read_Event_from_Serial_EEProm(UINT16 uiRecordNo, event_record_t *Event_Info
 /*********************************************************************************
 File name 			:drv_mem.c
 Function Name		:BOOL Is_Serial_EEPROM_Write_Complete(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description

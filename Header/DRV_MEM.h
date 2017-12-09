@@ -5,7 +5,7 @@
 	Filename	: 	drv_mem.h
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:

@@ -5,7 +5,7 @@
 	Filename	: 	eeprom.c
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -33,7 +33,7 @@ eeprom_sch_info_t EEPROM_Sch_Info;				/* Structure holds eeprom scheduler inform
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:void Initialise_EEPROM_State(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -90,7 +90,7 @@ void Initialise_EEPROM_State(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:void Start_EEPROM_Sch(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -114,7 +114,7 @@ void Start_EEPROM_Sch(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:void Update_EEPROM_State(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -212,7 +212,7 @@ void Update_EEPROM_State(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:void Decrement_EEPROM_msTmr(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -239,7 +239,7 @@ void Decrement_EEPROM_msTmr(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:void Save_Event_Register_on_EEPROM(BYTE uchCPU, event_register_t *Event_Reg)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -298,7 +298,7 @@ void Save_Event_Register_on_EEPROM(BYTE uchCPU, event_register_t *Event_Reg)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:BOOL Is_CPU1_EEPROM_Record_Valid(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -320,7 +320,7 @@ BOOL Is_CPU1_EEPROM_Record_Valid(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:BOOL Is_CPU2_EEPROM_Record_Valid(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -342,7 +342,7 @@ BOOL Is_CPU2_EEPROM_Record_Valid(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:BYTE *Get_CPU1_EEPROM_Record(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -364,7 +364,7 @@ BYTE *Get_CPU1_EEPROM_Record(void)
 /*********************************************************************************
 File name 			:eeprom.c
 Function Name		:BYTE *Get_CPU2_EEPROM_Record(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description

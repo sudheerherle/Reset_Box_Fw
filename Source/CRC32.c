@@ -5,7 +5,7 @@
 	Filename	: 	crc32.c
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -95,7 +95,7 @@ const UINT32 ulCRC32Table[256] = {
 /*********************************************************************************
 File name 			:crc32.c
 Function Name		:UINT32 Crc32(const BYTE *puchAddress, INT32 lLength)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description

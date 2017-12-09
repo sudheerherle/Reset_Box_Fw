@@ -5,7 +5,7 @@
 	Filename	: 	comm_dac.c
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -70,7 +70,7 @@ void Build_Reply_To_Send_event_Command(void);
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Process_Host_Command(host_recv_msg_info_t *Received_data,BYTE Selected_Port)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -205,7 +205,7 @@ void Process_Host_Command(host_recv_msg_info_t *Received_data,BYTE Selected_Port
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Setup_Get_Logged_Events_Params(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -271,7 +271,7 @@ void Setup_Get_Logged_Events_Params(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Next_Logged_Event_Reply(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -349,7 +349,7 @@ void Build_Next_Logged_Event_Reply(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Time_Record_Message(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -394,7 +394,7 @@ void Build_Time_Record_Message(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Event_Record_Message(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -457,7 +457,7 @@ void Build_Event_Record_Message(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Notify_End_of_Events_Reply(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -506,7 +506,7 @@ void Notify_End_of_Events_Reply(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Process_Set_Date_And_Time_Command(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -548,7 +548,7 @@ void Process_Set_Date_And_Time_Command(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Reply_To_Erase_Command(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -588,7 +588,7 @@ void Build_Reply_To_Erase_Command(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:Build_End_EEPROM_Erase_Reply_Command(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -628,7 +628,7 @@ void Build_End_EEPROM_Erase_Reply_Command(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Reply_To_Status_Command(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -684,7 +684,7 @@ void Build_Reply_To_Status_Command(void)
 /*********************************************************************************
 File name 			:comm_dac.c
 Function Name		:void Build_Reply_To_Status_Command(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description

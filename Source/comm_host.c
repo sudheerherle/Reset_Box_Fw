@@ -5,7 +5,7 @@
 	Filename	: 	comm_host.c
 	Target MCU	: 	PIC24FJ256GB210   
 //    Compiler	: 	XC16 Compiler V1.21
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -51,7 +51,7 @@ void Clear_COM2_Receive_Buffer(void);
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Initialise_Host_CommSch(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -79,7 +79,7 @@ void Initialise_Host_CommSch(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void SetupCOM2BaudRate(BYTE uchBaudRate)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -181,7 +181,7 @@ void SetupCOM2BaudRate(BYTE uchBaudRate)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Start_Host_Communication(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -205,7 +205,7 @@ void Start_Host_Communication(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Update_Host_Sch_State(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -401,7 +401,7 @@ void Update_Host_Sch_State(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Decrement_Host_Sch_msTmr(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -435,7 +435,7 @@ void Decrement_Host_Sch_msTmr(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Receive_COM2_Message(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -556,7 +556,7 @@ void Receive_COM2_Message(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Clear_COM2_Receive_Buffer(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -583,7 +583,7 @@ void Clear_COM2_Receive_Buffer(void)
 /*********************************************************************************
 File name 			:comm_host.c
 Function Name		:void Clear_Com2_Error(void)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description

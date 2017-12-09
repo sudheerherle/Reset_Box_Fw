@@ -5,7 +5,7 @@
 	Filename	: 	drv_lcd.c
 	Target MCU	: 	PIC24FJ256GB210
     Compiler	: 	XC16 Compiler V1.21
-	Author		:	EM003 
+	Author		:	Sudheer Herle 
 	Date		:
 	Company Name: 	Insys Digital Systems.
 	Modification History:
@@ -45,7 +45,7 @@ BOOL Compare_Data_Sent_prev(void);
 /*********************************************************************************
 File name 			:drv_lcd.c
 Function Name		:void Initialise_LCD_Driver(void)
-Created By			:EM003 
+Created By			:Sudheer Herle 
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -113,7 +113,7 @@ void Initialise_GLCD_Driver(void)
 /*********************************************************************************
 File name 			:drv_lcd.c
 Function Name		:void Update_LCD_State(void)
-Created By			:EM003 
+Created By			:Sudheer Herle 
 Date Created		:
 Modification History:
 					Rev No			Date		Description
@@ -272,7 +272,7 @@ if(inspect_event_done == 0)
 /*********************************************************************************
 File name 			:drv_lcd.c
 Function Name		:void Decrement_LCD_msTmr(void)
-Created By			:EM003 
+Created By			:Sudheer Herle 
 Date Created		:
 Modification History:
 					Rev No			Date		Description

@@ -5,7 +5,7 @@
 	Filename	: 	crc16.c
 	Target MCU	: 	PIC24FJ256GB210   
     Compiler	: 	XC16 Compiler V1.21  
-	Author		:	EM003
+	Author		:	Sudheer Herle
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -63,7 +63,7 @@ const unsigned char uchCRC16TableLo[256] = {
 /*********************************************************************************
 File name 			:crc16.c
 Function Name		:UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)
-Created By			:EM003
+Created By			:Sudheer Herle
 Date Created		:
 Modification History:
 					Rev No			Date		Description
