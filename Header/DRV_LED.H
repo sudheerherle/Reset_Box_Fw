@@ -12,8 +12,8 @@ typedef enum {
 
 #define PR_LED_PORT	LATBbits.LATB15
 #define GS_LED_PORT LATFbits.LATF4
-#define BI_COLOR_RED_LED_PORT PORTEbits.RE9
-#define BI_COLOR_GREEN_LED_PORT PORTEbits.RE8
+#define BI_COLOR_RED_LED_PORT LATEbits.LATE9
+#define BI_COLOR_GREEN_LED_PORT LATEbits.LATE8
 
 /* Timeouts in multiples of 10-ms */
 #define LED_FLASHING_ON_TIMEOUT			(50)

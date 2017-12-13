@@ -40,6 +40,8 @@
 
 #define SMC_COMM_SCHEDULER_SCAN_RATE	(875)
 #define SMC_XMIT_MESSAGE_LENGTH			(80)
+#define CRC16_LENGTH                            (2)
+#define QUERY_SIZE                      (5)
 #define SM_COMM_LINK_FAILURE_TIMEOUT		(6000)	/* 6 Seconds */
 #define CD_LINK_FAILURE_TIMEOUT     		(500)	/* 0.5 Seconds */
 #define AUTO_RESET_WAIT_TIMEOUT     		(1000)	/* 0.5 Seconds */
@@ -47,25 +49,54 @@
 
 /* Smc Scheduler -States */
 typedef enum {
-                        SMC_SCHEDULER_NOT_STARTED = 0,		/* Default State */
+            
+            SMC_SCHEDULER_NOT_STARTED = 0,		/* Default State */
 			SMC_NO_DATA_RECEIVED,			/* when there is no commands to service scheduler will be in this State */
 			SMC_DATA_RECEPTION_STARTED,
 			SMC_DATA_RECEPTION_COMPLETE,
 			SMC_CLEAR_FRAME_ERROR,
-			SMC_CLEAR_OVERRUN_ERROR
+			SMC_CLEAR_OVERRUN_ERROR,
+            SMCPU_DEAD,
+            CHECK_FOR_CD_WAIT,
+            CHECK_FOR_CD_STATUS,
+            WAIT_TO_SEND_NEXT_QUERY,
+            EXPECT_RESPONSE_FROM_SMPU,
+            SEND_QUERY,
+            WAIT_FOR_TX_MODE,
+            SET_MODEM_RX,
+            SET_MODEM_TX,
+            SMC_SCHEDULE_DECIDE,
+                    SMC_LISTEN_SCHEDULER,
+                    SMC_LISTEN_DATA,
+                    SM_LISTEN_DATA_RECEPTION_COMPLETE,
+                    
+                    
+                    
+                    
 } smc_sch_state_t;
 
-
+ typedef union {
+                struct{
+                        BYTE	Header_byte;						
+                        BYTE	Network_Address;	
+                        BYTE    CPU_Index;
+                        BYTE	CRC[CRC16_LENGTH];
+                };
+                BYTE Query_buffer[5];
+            } query_t;
 /* Smc Scheduler */
 typedef struct {	
 			smc_sch_state_t	State;			/* Smc scheduler present state */	
 			smc_sch_state_t	Next_State;		/* Smc scheduler Next state */
 			UINT16			Timeout_ms;		/* One milliSecond Variable for Smc scheduler*/
-                        UINT16                  CD_timeout_ms;
+            UINT16          CD_timeout_ms;
 			UINT16			ScanPeriod;	
 			UINT16			ElapsedTime;
 			BYTE			BytePeriod;		/* Transmission Time of One Byte deponds on Baud Rate */
 			UINT16          Setup_Timeout_ms;
+            BYTE            CPU_Counts;
+            query_t         Query;           
+
 } smc_sch_info_t;
 
 typedef struct {
@@ -74,15 +105,28 @@ typedef struct {
 			BYTE	Msg_Buffer[SMC_XMIT_MESSAGE_LENGTH];
 } smc_info_t;
 
+typedef struct {
+			BYTE	Msg_Length;						
+			BYTE	Index;			
+			BYTE	query_buf[QUERY_SIZE];//Msg_Buffer[SMC_XMIT_MESSAGE_LENGTH];
+} query_info_t;
+
+typedef struct {
+			BOOL 	redundant_available;						
+			BYTE	CPU_Addrs;			
+			BYTE	Index;
+}system_t;
+            
 typedef enum {
 			SM_SCHEDULER_NOT_STARTED = 0,		/* Default State */
 			SM_NO_DATA_RECEIVED,			/* when there is no commands to service scheduler will be in this State */
 			SM_DATA_RECEPTION_STARTED,
 			SM_DATA_RECEPTION_COMPLETE,
-                        SM_TRANSMIT_SMC_DATA,
-                        HOLD_SMC_MODEM_RS_LOW,
+            SM_TRANSMIT_SMC_DATA,
+            HOLD_SMC_MODEM_RS_LOW,
 			SM_CLEAR_FRAME_ERROR,
-			SM_CLEAR_OVERRUN_ERROR
+			SM_CLEAR_OVERRUN_ERROR,
+            
 } sm_sch_state_t;
 
 

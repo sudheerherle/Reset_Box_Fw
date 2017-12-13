@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../Source/USB_STACK/usb_descriptors.c ../Source/USB_STACK/usb_device.c ../Source/USB_STACK/USB_DRV.c ../Source/USB_STACK/usb_function_cdc.c ../Source/USB_STACK/usb_hal_pic24.c ../Source/COMM_SMC.c ../Source/CPU_SM_MAIN.c ../Source/CRC16.c ../Source/CRC32.c ../Source/DRV_A2D.c ../Source/DRV_I2C.c ../Source/DRV_MEM.c ../Source/DRV_RTC.c ../Source/EEPROM.c ../Source/EVENTS.c ../Source/comm_host.c ../Source/command_proc.c ../Source/DRV_CNT.c ../Source/DRV_DI.c ../Source/DRV_LED.c ../Source/PRINT.c ../Source/TRAINMON.c ../Source/DRV_GLCD_SPI.c ../Source/AUTO_DRV_CNT.c
+SOURCEFILES_QUOTED_IF_SPACED=../Source/USB_STACK/usb_descriptors.c ../Source/USB_STACK/usb_device.c ../Source/USB_STACK/USB_DRV.c ../Source/USB_STACK/usb_function_cdc.c ../Source/USB_STACK/usb_hal_pic24.c ../Source/COMM_SMC.c ../Source/CPU_SM_MAIN.c ../Source/CRC16.c ../Source/CRC32.c ../Source/DRV_A2D.c ../Source/DRV_I2C.c ../Source/DRV_MEM.c ../Source/DRV_RTC.c ../Source/EEPROM.c ../Source/EVENTS.c ../Source/comm_host.c ../Source/command_proc.c ../Source/DRV_CNT.c ../Source/DRV_DI.c ../Source/DRV_LED.c ../Source/PRINT.c ../Source/DRV_GLCD_SPI.c ../Source/AUTO_DRV_CNT.c ../Source/TRAINMON.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o ${OBJECTDIR}/_ext/1669077864/usb_device.o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o ${OBJECTDIR}/_ext/1728301206/CRC16.o ${OBJECTDIR}/_ext/1728301206/CRC32.o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o ${OBJECTDIR}/_ext/1728301206/EEPROM.o ${OBJECTDIR}/_ext/1728301206/EVENTS.o ${OBJECTDIR}/_ext/1728301206/comm_host.o ${OBJECTDIR}/_ext/1728301206/command_proc.o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o ${OBJECTDIR}/_ext/1728301206/PRINT.o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d ${OBJECTDIR}/_ext/1669077864/usb_device.o.d ${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d ${OBJECTDIR}/_ext/1728301206/CRC16.o.d ${OBJECTDIR}/_ext/1728301206/CRC32.o.d ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d ${OBJECTDIR}/_ext/1728301206/EEPROM.o.d ${OBJECTDIR}/_ext/1728301206/EVENTS.o.d ${OBJECTDIR}/_ext/1728301206/comm_host.o.d ${OBJECTDIR}/_ext/1728301206/command_proc.o.d ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d ${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d ${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d ${OBJECTDIR}/_ext/1728301206/PRINT.o.d ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o ${OBJECTDIR}/_ext/1669077864/usb_device.o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o ${OBJECTDIR}/_ext/1728301206/CRC16.o ${OBJECTDIR}/_ext/1728301206/CRC32.o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o ${OBJECTDIR}/_ext/1728301206/EEPROM.o ${OBJECTDIR}/_ext/1728301206/EVENTS.o ${OBJECTDIR}/_ext/1728301206/comm_host.o ${OBJECTDIR}/_ext/1728301206/command_proc.o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o ${OBJECTDIR}/_ext/1728301206/PRINT.o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d ${OBJECTDIR}/_ext/1669077864/usb_device.o.d ${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d ${OBJECTDIR}/_ext/1728301206/CRC16.o.d ${OBJECTDIR}/_ext/1728301206/CRC32.o.d ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d ${OBJECTDIR}/_ext/1728301206/EEPROM.o.d ${OBJECTDIR}/_ext/1728301206/EVENTS.o.d ${OBJECTDIR}/_ext/1728301206/comm_host.o.d ${OBJECTDIR}/_ext/1728301206/command_proc.o.d ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d ${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d ${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d ${OBJECTDIR}/_ext/1728301206/PRINT.o.d ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o ${OBJECTDIR}/_ext/1669077864/usb_device.o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o ${OBJECTDIR}/_ext/1728301206/CRC16.o ${OBJECTDIR}/_ext/1728301206/CRC32.o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o ${OBJECTDIR}/_ext/1728301206/EEPROM.o ${OBJECTDIR}/_ext/1728301206/EVENTS.o ${OBJECTDIR}/_ext/1728301206/comm_host.o ${OBJECTDIR}/_ext/1728301206/command_proc.o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o ${OBJECTDIR}/_ext/1728301206/PRINT.o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o
+OBJECTFILES=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o ${OBJECTDIR}/_ext/1669077864/usb_device.o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o ${OBJECTDIR}/_ext/1728301206/CRC16.o ${OBJECTDIR}/_ext/1728301206/CRC32.o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o ${OBJECTDIR}/_ext/1728301206/EEPROM.o ${OBJECTDIR}/_ext/1728301206/EVENTS.o ${OBJECTDIR}/_ext/1728301206/comm_host.o ${OBJECTDIR}/_ext/1728301206/command_proc.o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o ${OBJECTDIR}/_ext/1728301206/PRINT.o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o
 
 # Source Files
-SOURCEFILES=../Source/USB_STACK/usb_descriptors.c ../Source/USB_STACK/usb_device.c ../Source/USB_STACK/USB_DRV.c ../Source/USB_STACK/usb_function_cdc.c ../Source/USB_STACK/usb_hal_pic24.c ../Source/COMM_SMC.c ../Source/CPU_SM_MAIN.c ../Source/CRC16.c ../Source/CRC32.c ../Source/DRV_A2D.c ../Source/DRV_I2C.c ../Source/DRV_MEM.c ../Source/DRV_RTC.c ../Source/EEPROM.c ../Source/EVENTS.c ../Source/comm_host.c ../Source/command_proc.c ../Source/DRV_CNT.c ../Source/DRV_DI.c ../Source/DRV_LED.c ../Source/PRINT.c ../Source/TRAINMON.c ../Source/DRV_GLCD_SPI.c ../Source/AUTO_DRV_CNT.c
+SOURCEFILES=../Source/USB_STACK/usb_descriptors.c ../Source/USB_STACK/usb_device.c ../Source/USB_STACK/USB_DRV.c ../Source/USB_STACK/usb_function_cdc.c ../Source/USB_STACK/usb_hal_pic24.c ../Source/COMM_SMC.c ../Source/CPU_SM_MAIN.c ../Source/CRC16.c ../Source/CRC32.c ../Source/DRV_A2D.c ../Source/DRV_I2C.c ../Source/DRV_MEM.c ../Source/DRV_RTC.c ../Source/EEPROM.c ../Source/EVENTS.c ../Source/comm_host.c ../Source/command_proc.c ../Source/DRV_CNT.c ../Source/DRV_DI.c ../Source/DRV_LED.c ../Source/PRINT.c ../Source/DRV_GLCD_SPI.c ../Source/AUTO_DRV_CNT.c ../Source/TRAINMON.c
 
 
 CFLAGS=
@@ -241,13 +241,6 @@ ${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  nbproject/Makefile-${CN
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/PRINT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1728301206/TRAINMON.o: ../Source/TRAINMON.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
-	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/TRAINMON.c  -o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d 
@@ -261,6 +254,13 @@ ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  nbproject
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1728301206/TRAINMON.o: ../Source/TRAINMON.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
+	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/TRAINMON.c  -o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o: ../Source/USB_STACK/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
@@ -410,13 +410,6 @@ ${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  nbproject/Makefile-${CN
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/PRINT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1728301206/TRAINMON.o: ../Source/TRAINMON.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
-	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/TRAINMON.c  -o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d 
@@ -430,6 +423,13 @@ ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  nbproject
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1728301206/TRAINMON.o: ../Source/TRAINMON.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
+	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1728301206/TRAINMON.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/TRAINMON.c  -o ${OBJECTDIR}/_ext/1728301206/TRAINMON.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1728301206/TRAINMON.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

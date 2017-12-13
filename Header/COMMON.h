@@ -56,6 +56,9 @@
 #define SET_LOW						(0)
 #define TIMEOUT_EVENT				(0)
 #define DELAY_250MS					(250)
+#define DELAY_100MS					(100)
+#define DELAY_1_SEC                 (1000)
+#define DELAY_20MS					(20)
 #define DELAY_5MS					(5)
 #define DELAY_2MS					(2)
 #define MAXIMUM_NO_OF_CPU			(2)
@@ -177,7 +180,7 @@ typedef enum
 #define DS_REV_COUNT_OFFSET			(14)		/* Index to access DS REV Count in Cpu1/Cpu2 Data Buffer */
 #define VALIDATED_CHECKSUM_OFFSET	(8)
 #define LOCAL_CHECKSUM_OFFSET		(14)
-
+#define QUERY_HEADER                (60)    
 #define MODE_OFFSET					(26)
 #define DS_ERR_CODE_OFFSET			(27)
 #define US_ERR_CODE_OFFSET			(28)

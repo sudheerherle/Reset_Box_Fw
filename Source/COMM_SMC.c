@@ -43,6 +43,8 @@ extern dac_sysinfo_t DAC_sysinfo;					/* from cpu_sm.c */
 //event_register_t Shadows[MAXIMUM_NO_OF_CPU]; /* shadow will have present status of Both Cpus */
 smc_sch_info_t             Smc_Sch_Info;			/* structure holds station master interface communication scheduler */
 extern smc_info_t					Smc1XmitObject;
+query_info_t QueryInfObject;
+extern system_t SystemObject;
 extern rb_info_t RB_Info;					/* from ACC_RB.C */
 extern dac_comm_error Dac_Comm_Err;				/* Dac external communication CRC error count information */
 unsigned char System_error_code;
@@ -105,12 +107,13 @@ Output Element		:void
 **********************************************************************************/
 void Initialise_Smc_CommSch(void)
 {
-    
-	Smc_Sch_Info.State      = SMC_SCHEDULER_NOT_STARTED;		 /*  set smc comm scheduler to "SMC_SCHEDULER_NOT_STARTED" state  */
+    Set_Modem_RX_Mode();
+    Smc_Sch_Info.Query.Header_byte =  QUERY_HEADER;
+	Smc_Sch_Info.State      = SMC_SCHEDULE_DECIDE;		 /*  set smc comm scheduler to "SMC_SCHEDULER_NOT_STARTED" state  */
+    Smc_Sch_Info.Timeout_ms = 5000;
 	Smc_Sch_Info.ScanPeriod = SMC_COMM_SCHEDULER_SCAN_RATE;
 	Smc_Sch_Info.BytePeriod = BYTE_PERIOD_9MS;				     /* set byte PERIOD to 1ms for 1200 Baud Rate* */
-	SetupCOM1BaudRate(BAUDRATE_1200);						     /*  set smc comm baudrate to 1200bps */
-	Set_Modem_RX_Mode();
+	SetupCOM1BaudRate(BAUDRATE_1200);						     /*  set smc comm baudrate to 1200bps */	
 	Smc_Sch_Info.Setup_Timeout_ms = MODEM_TRC_ON_TIMEOUT;
 	Status.Flags.MDM_TX_Mode = SET_LOW;
 }
@@ -153,7 +156,7 @@ void SetupCOM1BaudRate(BYTE uchBaudRate)
 //        RPINR18bits.U1RXR = 10;
 //        RPOR8bits.RP17R = 3;
           RPINR18bits.U1RXR = 17;       // For communication with SMCPU. DO not change
-//          RPOR5bits.RP10R = 3;          // For communication with SMCPU. DO not change COM1
+          RPOR5bits.RP10R = 3;          // For communication with SMCPU. DO not change COM1
 
           RPINR19bits.U2RXR  = 30;      // For communication with Android
           RPOR8bits.RP16R = 5;          // For communication with Android COM2
@@ -171,7 +174,7 @@ void SetupCOM1BaudRate(BYTE uchBaudRate)
 
     U1MODE = 0;
     U1STA = 0;
-
+    
     U1MODEbits.RTSMD = 1;   // Operate in Simplex Mode
 
     U1MODEbits.BRGH = 0;    // Low Speed Clocks to BRG @ 16x of Fp
@@ -193,7 +196,7 @@ void SetupCOM1BaudRate(BYTE uchBaudRate)
     IFS0bits.U1TXIF = 0;
     //U1MODEbits.LPBACK = 1;
     U1MODEbits.UARTEN = 1;  // Enable UART
-
+    U1STAbits.UTXEN = 1;
 
     U2MODE = 0;
     U2STA = 0;
@@ -247,7 +250,7 @@ void SetupCOM1BaudRate(BYTE uchBaudRate)
     IFS0bits.U1TXIF = 0;
     //U1MODEbits.LPBACK = 1;
     U1MODEbits.UARTEN = 1;  // Enable UART
-    U1STA = 0x0000;
+
 }
 /*********************************************************************************
 File name 			:comm_smc.c
@@ -275,9 +278,8 @@ void Start_Smc_Communication(void)
 	 */
 //	U1STAbits.UTXEN = SET_HIGH;	/* Enable Transmitter */
 	//CREN = SET_LOW;		/* Disable Receive */
-        Smc_Sch_Info.State =  SM_NO_DATA_RECEIVED;
+    Smc_Sch_Info.State =  SMC_SCHEDULE_DECIDE;
 	Smc_Sch_Info.Timeout_ms = SM_COMM_LINK_FAILURE_TIMEOUT;
-	M0 = SET_LOW;
 }
 /*********************************************************************************
 File name 			:comm_smc.c
@@ -308,77 +310,115 @@ Output Element		:void
 
 **********************************************************************************/
 unsigned char CD_check=1;
+#if 0
 void Update_Smc_Sch_State(void)
 {
         BYTE uchData=0;
-        wordtype_t checksum;
-        BYTE send_data_cmd[3];
-        send_data_cmd[0] = 0xAA;  
-        //GS_LED = 0;
-        if(MODEM_CD == 1)
-        {
-            if(CD_check==1)
-            {
-                CD_check = 0;
-                U1STA = 0;
-                SetupCOM1BaudRate(BAUDRATE_1200);
-            }
-            //start CD timer
-        }
-        else
-        {
-            Smc1XmitObject.Index = 0;
-            Smc_Sch_Info.State = SM_NO_DATA_RECEIVED;
-            CD_check = 1;
-            return;
-        }
+        int size = 0;
+        wordtype_t checksum,query_crc;
+        
+               
 	switch (Smc_Sch_Info.State)
 	{
-
 		case SMC_SCHEDULER_NOT_STARTED:
+            LATGbits.LATG14 = 1;
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT){
+                return;
+            }
+            LATGbits.LATG14 = 0;
+            Set_Modem_TX_Mode();
+            SetupCOM1BaudRate(BAUDRATE_1200);
+            Clear_Com1_Error(); 
+            Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+            Smc_Sch_Info.State = WAIT_FOR_TX_MODE;
+            break;
+            
+        case WAIT_FOR_TX_MODE:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;                      
+            QueryInfObject.Index = 0; 
+            Smc_Sch_Info.State = SEND_QUERY;            
 			break;
-                case SM_NO_DATA_RECEIVED:
-//                    Set_Modem_TX_Mode();
-//                    checksum.Word = Crc16((const BYTE *)send_data_cmd,1);
-//                    send_data_cmd[1] = checksum.Byte.Hi;
-//                    send_data_cmd[2] = checksum.Byte.Lo;
-//                    U1STAbits.UTXEN = 1;
-//                    while(1){
-//                    for(t=0; t<3;t++){
-//                        if(U1STAbits.TRMT)
-//                        {
-//                            U1TXREG = send_data_cmd[t];
-//                        }while(!U1STAbits.TRMT);
-//                        }
-//                    }
-//                    U1TXREG = 0xaa;
-//                    while(!U1STAbits.TRMT);
-
-
-//                    if(U1STAbits.FERR == 1 || U1STAbits.OERR==1)
-//                    {
-//
-//                        break;
-//                    }
-			if (U1STAbits.URXDA)
+            
+        case SEND_QUERY: 
+            Smc_Sch_Info.Query.Query_buffer[2] = 3;
+            for(uchData=0;uchData<QUERY_SIZE;uchData++){
+                QueryInfObject.query_buf[uchData] = Smc_Sch_Info.Query.Query_buffer[uchData];
+            }
+            QueryInfObject.Msg_Length = QUERY_SIZE;
+            query_crc.Word = Crc16((const BYTE *)QueryInfObject.query_buf,QueryInfObject.Msg_Length-2);
+            QueryInfObject.query_buf[3] = query_crc.Byte.Lo;
+            QueryInfObject.query_buf[4] = query_crc.Byte.Hi;
+            if ((U1STAbits.TRMT==1 && U1STAbits.UTXBF == 0) && (QueryInfObject.Index < 5))
+			{
+				IFS0bits.U1TXIF = 0;	
+				while((U1STAbits.UTXBF == 0) && QueryInfObject.Index < (5))
+				{
+					U1TXREG = QueryInfObject.query_buf[QueryInfObject.Index];
+					QueryInfObject.Index = QueryInfObject.Index + 1;
+				}
+			}
+            if(QueryInfObject.Index==QUERY_SIZE && U1STAbits.TRMT==1){
+                    Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+                    Smc_Sch_Info.State = SET_MODEM_RX;
+            }          
+            
+            break;
+            
+        case SET_MODEM_RX:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;
+            Set_Modem_RX_Mode();
+            Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+            Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
+            
+        case CHECK_FOR_CD_WAIT:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;
+            else {
+                Smc_Sch_Info.Timeout_ms = 1000;
+                Smc_Sch_Info.State = CHECK_FOR_CD_STATUS;
+            }
+        case  CHECK_FOR_CD_STATUS:
+            if(MODEM_CD == 1){
+                Smc_Sch_Info.State =  SM_NO_DATA_RECEIVED;
+                Smc_Sch_Info.Timeout_ms = 1000;
+                Smc1XmitObject.Index = 0;
+                Smc1XmitObject.Msg_Length = SM_MESSAGE_LENGTH;
+                Clear_Com1_Error();
+            }else{
+                SetupCOM1BaudRate(BAUDRATE_1200);
+                Clear_Com1_Error();
+            }
+            if(Smc_Sch_Info.Timeout_ms ==  TIMEOUT_EVENT)
+                Smc_Sch_Info.State =  SMCPU_DEAD;
+            break;
+        case SM_NO_DATA_RECEIVED:
+//			if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+//                return;            
+//            Clear_Com1_Error();
+            if(IFS0bits.U1RXIF)
+            {
+                while(U1STAbits.URXDA)
 				{
 				uchData = U1RXREG;
-				Smc1XmitObject.Msg_Buffer[0] = uchData;
-				Smc1XmitObject.Index = 1;
-				Smc1XmitObject.Msg_Length = SM_MESSAGE_LENGTH;
-				Smc_Sch_Info.State = SM_DATA_RECEPTION_STARTED;
-				Smc_Sch_Info.Timeout_ms = SM_DATA_RECEIVE_TIMEOUT;
-				break;
+				Smc1XmitObject.Msg_Buffer[Smc1XmitObject.Index] = uchData;
+				Smc1XmitObject.Index = Smc1XmitObject.Index + 1;
 				}
+                IFS0bits.U1RXIF = 0;
+            }
 			if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
 				{
-				Initialise_RB_Info();
-				Set_Smc_Sch_Idle();
+				Smc_Sch_Info.State = SMCPU_DEAD;
 				}
-            
-			break;
+            if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
+				{
+				Smc_Sch_Info.State = SM_DATA_RECEPTION_COMPLETE;
+				Smc_Sch_Info.Timeout_ms = 0;
+				break;
+				}
+		break;
 		case SM_DATA_RECEPTION_STARTED:
-//            GS_LED = 1;
 			if (U1STAbits.URXDA)
 				{
 				uchData = U1RXREG;
@@ -395,8 +435,8 @@ void Update_Smc_Sch_State(void)
 				}
 			if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
 				{
-				Set_Smc_Sch_Idle();
-                                Smc1XmitObject.Index = 0;
+				Smc_Sch_Info.State = SMCPU_DEAD;
+                Smc1XmitObject.Index = 0;
 				}
 			break;
 		case SM_DATA_RECEPTION_COMPLETE:
@@ -425,7 +465,9 @@ void Update_Smc_Sch_State(void)
                                         temp8=0;
                                     }
                                 }
-                                GS_LED_PORT=1;
+                                BI_COLOR_GREEN_LED_PORT=1;
+                                BI_COLOR_RED_LED_PORT =0;
+                                
                                 if(temp18==0x18 && temp8==0x8){                                    
                                     temp18=0;
                                     temp8=0;
@@ -444,52 +486,346 @@ void Update_Smc_Sch_State(void)
                                         /* CPU2 over, now select CPU1 */
                                         uchSelectedCPU = 1;											/* Select Cpu 1 */
                                 }
-//                                Smc_Sch_Info.State = SM_TRANSMIT_SMC_DATA;
-//                                Smc1XmitObject.Index =0;
+                                Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
+                                Smc_Sch_Info.Timeout_ms = DELAY_100MS;
+                                Smc1XmitObject.Index =0;
 				Nop();
 				}
                                 else{
-                                    GS_LED_PORT = 0;
+                                    BI_COLOR_GREEN_LED_PORT = 0;
+                                    BI_COLOR_RED_LED_PORT = 1;
                                     Smc1XmitObject.Index = 0;
-                                    Smc_Sch_Info.State = SM_NO_DATA_RECEIVED;
+                                    Smc_Sch_Info.Timeout_ms = DELAY_1_SEC;
+                                    Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
                                 }
                         Set_Smc_Sch_Idle();
 			break;
-
-                case SM_TRANSMIT_SMC_DATA:
-                       
-			if (Smc1XmitObject.Index >= Smc1XmitObject.Msg_Length)
+        case SMCPU_DEAD:
+            if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
 			{
-				Smc_Sch_Info.State      = HOLD_SMC_MODEM_RS_LOW;
-				Smc_Sch_Info.Timeout_ms = RS_HOLD_LOW_TIMEOUT;
-				break;
+                BI_COLOR_RED_LED_PORT = 1;
+                BI_COLOR_GREEN_LED_PORT = 0;
+				Smc_Sch_Info.State =  SMC_SCHEDULER_NOT_STARTED;
 			}
-			if (U2STAbits.UTXBF == 0)
+            Set_Smc_Sch_Idle();
+            break;
+		default:
+			Set_Smc_Sch_Idle();
+			break;
+	  }
+}
+#endif
+void Update_Smc_Sch_State(void)
+{
+        BYTE uchData=0;
+        int size = 0;
+        wordtype_t checksum,query_crc;
+        
+               
+	switch (Smc_Sch_Info.State)
+	{
+		case SMC_SCHEDULE_DECIDE:
+			if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)//check for  5000ms
 			{
-				U2TXREG = Smc1XmitObject.Msg_Buffer[Smc1XmitObject.Index];
-                                while(!U2STAbits.TRMT);
+				//check for CD
+				if(MODEM_CD == 1)
+				{
+					//Listner
+					Smc_Sch_Info.Timeout_ms = 8000;
+					Smc_Sch_Info.State = SMC_LISTEN_SCHEDULER;
+				}
+			}
+			else{
+				//No CD be master
+                Clear_Com1_Error(); 
+                Set_Modem_TX_Mode();
+                SetupCOM1BaudRate(BAUDRATE_1200);
+                Smc_Sch_Info.Timeout_ms = 100;
+				Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
+			}
+			
+			break;
+		case SMC_SCHEDULER_NOT_STARTED:
+            LATGbits.LATG14 = 1;
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT){
+                return;
+            }
+            LATGbits.LATG14 = 0;
+            Set_Modem_TX_Mode();
+            SetupCOM1BaudRate(BAUDRATE_1200);
+            Clear_Com1_Error(); 
+            Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+            Smc_Sch_Info.State = WAIT_FOR_TX_MODE;
+            break;
+            
+        case WAIT_FOR_TX_MODE:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;                      
+            QueryInfObject.Index = 0; 
+            Smc_Sch_Info.State = SEND_QUERY;            
+			break;
+            
+        case SEND_QUERY: 
+            Smc_Sch_Info.Query.Query_buffer[2] = 3;
+            for(uchData=0;uchData<QUERY_SIZE;uchData++){
+                QueryInfObject.query_buf[uchData] = Smc_Sch_Info.Query.Query_buffer[uchData];
+            }
+            QueryInfObject.Msg_Length = QUERY_SIZE;
+            query_crc.Word = Crc16((const BYTE *)QueryInfObject.query_buf,QueryInfObject.Msg_Length-2);
+            QueryInfObject.query_buf[3] = query_crc.Byte.Lo;
+            QueryInfObject.query_buf[4] = query_crc.Byte.Hi;
+            if ((U1STAbits.TRMT==1 && U1STAbits.UTXBF == 0) && (QueryInfObject.Index < 5))
+			{
+				IFS0bits.U1TXIF = 0;	
+				while((U1STAbits.UTXBF == 0) && QueryInfObject.Index < (5))
+				{
+					U1TXREG = QueryInfObject.query_buf[QueryInfObject.Index];
+					QueryInfObject.Index = QueryInfObject.Index + 1;
+				}
+			}
+            if(QueryInfObject.Index==QUERY_SIZE && U1STAbits.TRMT==1){
+                    Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+                    Smc_Sch_Info.State = SET_MODEM_RX;
+            }          
+            
+            break;
+            
+        case SET_MODEM_RX:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;
+            Set_Modem_RX_Mode();
+            Smc_Sch_Info.Timeout_ms = DELAY_20MS;
+            Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
+            
+        case CHECK_FOR_CD_WAIT:
+            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+                return;
+            else {
+                Smc_Sch_Info.Timeout_ms = 1000;
+                Smc_Sch_Info.State = CHECK_FOR_CD_STATUS;
+            }
+        case  CHECK_FOR_CD_STATUS:
+            if(MODEM_CD == 1){
+                Smc_Sch_Info.State =  SM_NO_DATA_RECEIVED;
+                Smc_Sch_Info.Timeout_ms = 1000;
+                Smc1XmitObject.Index = 0;
+                Smc1XmitObject.Msg_Length = SM_MESSAGE_LENGTH;
+                Clear_Com1_Error();
+            }else{
+                SetupCOM1BaudRate(BAUDRATE_1200);
+                Clear_Com1_Error();
+            }
+            if(Smc_Sch_Info.Timeout_ms ==  TIMEOUT_EVENT)
+                Smc_Sch_Info.State =  SMCPU_DEAD;
+            break;
+        case SM_NO_DATA_RECEIVED:
+//			if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+//                return;            
+//            Clear_Com1_Error();
+            if(IFS0bits.U1RXIF)
+            {
+                while(U1STAbits.URXDA)
+				{
+				uchData = U1RXREG;
+				Smc1XmitObject.Msg_Buffer[Smc1XmitObject.Index] = uchData;
 				Smc1XmitObject.Index = Smc1XmitObject.Index + 1;
-			}
-//			if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
-//			{
-//				Set_Smc_Sch_Idle();
-//			}
-			break;
-		case HOLD_SMC_MODEM_RS_LOW:
+				}
+                IFS0bits.U1RXIF = 0;
+            }
 			if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
+				{
+				Smc_Sch_Info.State = SMCPU_DEAD;
+				}
+            if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
+				{
+				Smc_Sch_Info.State = SM_DATA_RECEPTION_COMPLETE;
+				Smc_Sch_Info.Timeout_ms = 0;
+				break;
+				}
+		break;
+		case SM_DATA_RECEPTION_STARTED:
+			if (U1STAbits.URXDA)
+				{
+				uchData = U1RXREG;
+				Smc1XmitObject.Msg_Buffer[Smc1XmitObject.Index] = uchData;
+				Smc1XmitObject.Index = Smc1XmitObject.Index + 1;
+				Smc_Sch_Info.Timeout_ms = SM_DATA_RECEIVE_TIMEOUT;
+				break;
+				}
+			if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
+				{
+				Smc_Sch_Info.State = SM_DATA_RECEPTION_COMPLETE;
+				Smc_Sch_Info.Timeout_ms = 0;
+				break;
+				}
+			if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
+				{
+				Smc_Sch_Info.State = SMCPU_DEAD;
+                Smc1XmitObject.Index = 0;
+				}
+			break;
+		case SM_DATA_RECEPTION_COMPLETE:
+                        
+                        checksum.Word = Crc16((const BYTE *)Smc1XmitObject.Msg_Buffer,Smc1XmitObject.Msg_Length-2);
+                                if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79]
+                                && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]){
+                                    
+                                Process_SM_Message(uchSelectedCPU);
+                                
+                                if(Smc1XmitObject.Msg_Buffer[76] != 0x8 )
+                                {
+                                    if(Smc1XmitObject.Msg_Buffer[76]==0x18){
+                                    temp18 = Smc1XmitObject.Msg_Buffer[76];
+                                    }
+                                    else{
+                                    temp18=0;
+                                    }
+                                }
+                                
+                                if(Smc1XmitObject.Msg_Buffer[76] != 0x18 )
+                                {
+                                    if(Smc1XmitObject.Msg_Buffer[76]==0x8){
+                                        temp8 = Smc1XmitObject.Msg_Buffer[76];
+                                    }else{
+                                        temp8=0;
+                                    }
+                                }
+                                BI_COLOR_GREEN_LED_PORT=1;
+                                BI_COLOR_RED_LED_PORT =0;
+                                
+                                if(temp18==0x18 && temp8==0x8){                                    
+                                    temp18=0;
+                                    temp8=0;
+                                }
+//                                else
+//                                {
+//                                    GS_LED = 0;
+//                                }
+                                if (uchSelectedCPU == 1)
+                                {
+                                        /* CPU1 over, now select CPU2 */
+                                        uchSelectedCPU = 2;											/* Select Cpu 2 */
+                                }
+                                else
+                                {
+                                        /* CPU2 over, now select CPU1 */
+                                        uchSelectedCPU = 1;											/* Select Cpu 1 */
+                                }
+                                Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
+                                Smc_Sch_Info.Timeout_ms = DELAY_100MS;
+                                Smc1XmitObject.Index =0;
+				Nop();
+				}
+                                else{
+                                    BI_COLOR_GREEN_LED_PORT = 0;
+                                    BI_COLOR_RED_LED_PORT = 1;
+                                    Smc1XmitObject.Index = 0;
+                                    Smc_Sch_Info.Timeout_ms = DELAY_1_SEC;
+                                    Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
+                                }
+                        Set_Smc_Sch_Idle();
+			break;
+        case SMCPU_DEAD:
+            if (Smc_Sch_Info.Timeout_ms == TIMEOUT_EVENT)
 			{
-				Set_Smc_Sch_Idle();
+                BI_COLOR_RED_LED_PORT = 1;
+                BI_COLOR_GREEN_LED_PORT = 0;
+				Smc_Sch_Info.State =  SMC_SCHEDULER_NOT_STARTED;
+			}
+			Set_Smc_Sch_Idle();
+			break;
+			
+		case SMC_LISTEN_SCHEDULER:
+			if(MODEM_CD == 1)
+			{
+				Smc1XmitObject.Index = 0;
+				Smc1XmitObject.Msg_Length = SM_MESSAGE_LENGTH;
+				Clear_Com1_Error();
+				Smc_Sch_Info.State = SMC_LISTEN_DATA;
+			}
+			else
+			{
+				Smc_Sch_Info.Timeout_ms = 5000;
+				Smc_Sch_Info.State = SMC_SCHEDULE_DECIDE;
 			}
 			break;
-		case SM_CLEAR_FRAME_ERROR:
-			uchData = U1RXREG;
-			Set_Smc_Sch_Idle();
+		case SMC_LISTEN_DATA:
+			if(MODEM_CD == 1)
+			{
+				if(IFS0bits.U1RXIF)
+				{
+					while(U1STAbits.URXDA)
+					{
+						uchData = U1RXREG;
+						Smc1XmitObject.Msg_Buffer[Smc1XmitObject.Index] = uchData;
+						Smc1XmitObject.Index = Smc1XmitObject.Index + 1;
+					}
+					IFS0bits.U1RXIF = 0;
+				}
+				if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
+				{
+					Smc_Sch_Info.State = SM_LISTEN_DATA_RECEPTION_COMPLETE;
+					Smc_Sch_Info.Timeout_ms = 0;
+					break;
+				}
+			}
+			else
+			{
+				Smc_Sch_Info.Timeout_ms = 5000;
+				Smc_Sch_Info.State = SMC_SCHEDULE_DECIDE;
+			}	
 			break;
-		case SM_CLEAR_OVERRUN_ERROR:
-//			TXEN = SET_LOW;
-//			CREN = SET_LOW;
-//			CREN = SET_HIGH;
-			Set_Smc_Sch_Idle();
+		case SM_LISTEN_DATA_RECEPTION_COMPLETE:
+            checksum.Word = Crc16((const BYTE *)Smc1XmitObject.Msg_Buffer,Smc1XmitObject.Msg_Length-2);
+            if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79] && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78])
+			{
+                Process_SM_Message(uchSelectedCPU);
+                if(Smc1XmitObject.Msg_Buffer[76] != 0x8 )
+                {
+                    if(Smc1XmitObject.Msg_Buffer[76]==0x18){
+                    temp18 = Smc1XmitObject.Msg_Buffer[76];
+                    }
+                    else{
+                    temp18=0;
+                    }
+                }
+                
+                if(Smc1XmitObject.Msg_Buffer[76] != 0x18 )
+                {
+                    if(Smc1XmitObject.Msg_Buffer[76]==0x8){
+                        temp8 = Smc1XmitObject.Msg_Buffer[76];
+                    }else{
+                        temp8=0;
+                    }
+                }
+                BI_COLOR_GREEN_LED_PORT=1;
+                BI_COLOR_RED_LED_PORT =0;
+                                
+                if(temp18==0x18 && temp8==0x8){                                    
+                    temp18=0;
+                    temp8=0;
+                }
+
+                if (uchSelectedCPU == 1)
+                {
+                        /* CPU1 over, now select CPU2 */
+                        uchSelectedCPU = 2;											/* Select Cpu 2 */
+                }
+                else
+                {
+                        /* CPU2 over, now select CPU1 */
+                        uchSelectedCPU = 1;											/* Select Cpu 1 */
+                }
+                Smc1XmitObject.Index =0;
+                Smc_Sch_Info.State = SMC_LISTEN_SCHEDULER;
+				Nop();
+			}
+            else{
+                BI_COLOR_GREEN_LED_PORT = 0;
+                BI_COLOR_RED_LED_PORT = 1;
+                Smc1XmitObject.Index = 0;
+                Smc_Sch_Info.State = SMC_LISTEN_SCHEDULER;
+            }
 			break;
 		default:
 			Set_Smc_Sch_Idle();
@@ -517,8 +853,8 @@ Output Element		:void
 **********************************************************************************/
 void Set_Smc_Sch_Idle(void)
 {
-	Smc_Sch_Info.State =  SM_NO_DATA_RECEIVED;
-	Smc_Sch_Info.Timeout_ms = SM_COMM_LINK_FAILURE_TIMEOUT;
+	Smc_Sch_Info.State =  SMC_SCHEDULER_NOT_STARTED;
+	Smc_Sch_Info.Timeout_ms = 700;
 }
 
 /*********************************************************************************
@@ -577,18 +913,23 @@ void Clear_Com1_Error(void)
 	if (U1STAbits.OERR)
 	{
 		/* Overrun Error! Clear the error */
+        U1STAbits.OERR = 0;
 		U1MODEbits.UARTEN = SET_LOW;
-                U1MODEbits.UARTEN = SET_HIGH;
+        U1MODEbits.UARTEN = SET_HIGH;
+        IFS0bits.U1RXIF = 0;
 	}
 	if (U1STAbits.FERR)
 	{
 		/* Framing Error! Clear the error */
 		uchCnt= U1RXREG;
-                U1MODEbits.UARTEN = SET_LOW;
-                U1MODEbits.UARTEN = SET_HIGH;
+        IFS0bits.U1RXIF = 0;
+        U1MODEbits.UARTEN = SET_LOW;
+        U1MODEbits.UARTEN = SET_HIGH;
 	}
+//    U1STAbits.UTXEN = SET_HIGH;
+} 
+ 
 
-}
 
 void Initialise_Modem(void)
 {

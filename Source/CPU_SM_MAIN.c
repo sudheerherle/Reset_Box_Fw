@@ -136,11 +136,11 @@ extern smc_sch_info_t             Smc_Sch_Info;
 void Initialise_System(void)
 {
     unsigned int pll_startup_counter = 600;
-        /*Set clock frequency*/
-        CLKDIVbits.CPDIV = 0;   // 8MHz input, 32MHz System Clock
-                                //8MHz crystal, Fosc = 32MHz, Fcy = FOSC/2 = 16Mhz
-                CLKDIVbits.PLLEN = 1;
-        while(pll_startup_counter--);
+    /*Set clock frequency*/
+    CLKDIVbits.CPDIV = 0;   // 8MHz input, 32MHz System Clock
+                            //8MHz crystal, Fosc = 32MHz, Fcy = FOSC/2 = 16Mhz
+            CLKDIVbits.PLLEN = 1;
+    while(pll_startup_counter--);
 
 	/* Clear ports */
 	PORTA = 0;
@@ -148,8 +148,8 @@ void Initialise_System(void)
 	PORTC = 0;
 	PORTD = 0;
 	PORTE = 0;
-        PORTF = 0;
-        PORTG = 0;
+    PORTF = 0;
+    PORTG = 0;
 	/* set direction registers */
 	TRISA = PORT_A_DIRECTION;
 	TRISB = PORT_B_DIRECTION;
@@ -159,66 +159,66 @@ void Initialise_System(void)
 	TRISF = PORT_F_DIRECTION;
 	TRISG = PORT_G_DIRECTION;
 
-        ANSA   = 0x0400;
-        ANSB   = 0; // it was 0x0038 
-        ANSC   = DIGITAL_CONFIG;
-        ANSD   = DIGITAL_CONFIG;
-        ANSE   = DIGITAL_CONFIG;
-        ANSF   = DIGITAL_CONFIG;
-        ANSG   = DIGITAL_CONFIG;
+    ANSA   = 0x0400;
+    ANSB   = 0; // it was 0x0038 
+    ANSC   = DIGITAL_CONFIG;
+    ANSD   = DIGITAL_CONFIG;
+    ANSE   = DIGITAL_CONFIG;
+    ANSF   = DIGITAL_CONFIG;
+    ANSG   = DIGITAL_CONFIG;
 
 
 	AD1CON1 = ADCON1_CONFIG;
 	AD1CON2 = ADCON2_CONFIG;
 	AD1CON3 = ADCON3_CONFIG;
-        AD1CHS  = A2D_CS_DEFAULT;
-        ANCFG   = A2D_BG_DEFAULT;
-        AD1CSSL = A2D_SC_DEFAULT;
-        AD1CSSH = A2D_SC_DEFAULT;
+    AD1CHS  = A2D_CS_DEFAULT;
+    ANCFG   = A2D_BG_DEFAULT;
+    AD1CSSL = A2D_SC_DEFAULT;
+    AD1CSSH = A2D_SC_DEFAULT;
 
-        CVRCON = 0;
+    CVRCON = 0;
 	CM1CON = 0;
-        CM2CON = 0;
-        CM3CON = 0;
-        /* Turn Comparators Off */
+    CM2CON = 0;
+    CM3CON = 0;
+    /* Turn Comparators Off */
 
-        IC1CON1 = 0;
-        IC1CON2 = 0;
-        IC2CON1 = 0;
-        IC2CON2 = 0;
-        IC3CON1 = 0;
-        IC3CON2 = 0;
-        IC4CON1 = 0;
-        IC4CON2 = 0;
-        IC5CON1 = 0;
-        IC5CON2 = 0;
-        IC6CON1 = 0;
-        IC6CON2 = 0;
-        IC7CON1 = 0;
-        IC7CON2 = 0;
-        IC8CON1 = 0;
-        IC8CON2 = 0;
-        IC9CON1 = 0;
-        IC9CON2 = 0;
+    IC1CON1 = 0;
+    IC1CON2 = 0;
+    IC2CON1 = 0;
+    IC2CON2 = 0;
+    IC3CON1 = 0;
+    IC3CON2 = 0;
+    IC4CON1 = 0;
+    IC4CON2 = 0;
+    IC5CON1 = 0;
+    IC5CON2 = 0;
+    IC6CON1 = 0;
+    IC6CON2 = 0;
+    IC7CON1 = 0;
+    IC7CON2 = 0;
+    IC8CON1 = 0;
+    IC8CON2 = 0;
+    IC9CON1 = 0;
+    IC9CON2 = 0;
 
-        OC1CON1 = 0;
-        OC1CON2 = 0;
-        OC2CON1 = 0;
-        OC2CON2 = 0;
-        OC3CON1 = 0;
-        OC3CON2 = 0;
-        OC4CON1 = 0;
-        OC4CON2 = 0;
-        OC5CON1 = 0;
-        OC5CON2 = 0;
-        OC6CON1 = 0;
-        OC6CON2 = 0;
-        OC7CON1 = 0;
-        OC7CON2 = 0;
-        OC8CON1 = 0;
-        OC8CON2 = 0;
-        OC9CON1 = 0;
-        OC9CON2 = 0;
+    OC1CON1 = 0;
+    OC1CON2 = 0;
+    OC2CON1 = 0;
+    OC2CON2 = 0;
+    OC3CON1 = 0;
+    OC3CON2 = 0;
+    OC4CON1 = 0;
+    OC4CON2 = 0;
+    OC5CON1 = 0;
+    OC5CON2 = 0;
+    OC6CON1 = 0;
+    OC6CON2 = 0;
+    OC7CON1 = 0;
+    OC7CON2 = 0;
+    OC8CON1 = 0;
+    OC8CON2 = 0;
+    OC9CON1 = 0;
+    OC9CON2 = 0;
 									/* Disable Capture/Comparator/PWM  Modules */
 
 
@@ -234,30 +234,30 @@ void Initialise_System(void)
 	/* Configure Timers, CCP Module */
 	T1CON = TIMER1_CONFIG;
 	T2CON = TIMER2_CONFIG;
-        PR1   = PR1_SET;
-        PR2   = PR2_SET;
-        //T3CON = TIMER2_CONFIG;
+    PR1   = PR1_SET;
+    PR2   = PR2_SET;
+    //T3CON = TIMER2_CONFIG;
 
 	TMR1 = TIMER1_SETPOINT;
 	TMR2 = TIMER2_SETPOINT;
 	//PR3 =  TIMER3_SETPOINT;
 
 	
-        INTCON1 = 0;
-        INTCON2 = 0;
+    INTCON1 = 0;
+    INTCON2 = 0;
 
-        IEC0 = 0;
-        IEC1 = 0;
-        IEC2 = 0;
-        IEC3 = 0;
-        IEC4 = 0;
-        IEC5 = 0;
+    IEC0 = 0;
+    IEC1 = 0;
+    IEC2 = 0;
+    IEC3 = 0;
+    IEC4 = 0;
+    IEC5 = 0;
 
 	Status.Byte[0] = (BYTE) 0b11011111;			/* Initialise Status Register */
 	Status.Byte[1] = (BYTE) 0b01001000;			/* Initialise Status Register */
 
-        RB_Status.Byte[0] = (BYTE) 0b00000100;			/* Initialise Status Register */
-        RB_Status.Flags.Reset_Mode = PORTAbits.RA6; // Pilot mode
+    RB_Status.Byte[0] = (BYTE) 0b00000100;			/* Initialise Status Register */
+    RB_Status.Flags.Reset_Mode = PORTAbits.RA6; // Pilot mode
 
 	//Initialise_LCD_Driver();					/* from drv_lcd.c */
 	//Check_Boards();			    				/* Check whether CPU1 and CPU2 boards are present in rack */
@@ -284,31 +284,29 @@ void Initialise_System(void)
 	Initialise_Smc_CommSch();	/* from comm_sm.c */
     TRISFbits.TRISF4 = 0;
 	Initialise_DI_Driver();		/* from drv_di.c */
-	void Initialise_Reset_Seq();
-    void Initialise_Auto_Reset_Seq();
+	Initialise_Reset_Seq();
+    Initialise_Auto_Reset_Seq();
 //	Initialise_RB_Mode();
 	Initialise_RB_Info();
-	Initialise_TrainMon();		
-
-
-	Initialise_A2D_Driver();	/* from drv_a2d.c */
+	Initialise_TrainMon();	
+    Initialise_A2D_Driver();	/* from drv_a2d.c */
 	Initialise_I2C_Driver();	/* from drv_i2c.c */
 	Initialise_RTC_Sch();		/* from drv_rtc.c */
 	Initialise_Host_CommSch();	/* from comm_host.c */
-	Initialise_Smc_CommSch();	/* from comm_smc.c */
+//	Initialise_Smc_CommSch();	/* from comm_smc.c */
 	Initialise_EEPROM_State();	/* from eeprom.c */
 //	Initialise_SPI();			/* from comm_dac.c */
 	Initialise_Events_Sch();	/* from events.c */
-        USBDeviceInit();                //usb_device.c.  Initializes USB module SFRs and firmware variables to known states.//Initialise_Display_State(); /* from display.c */
-        Initialise_GLCD_Driver();
-            Update_Event_logger_ID();
+    USBDeviceInit();                //usb_device.c.  Initializes USB module SFRs and firmware variables to known states.//Initialise_Display_State(); /* from display.c */
+    Initialise_GLCD_Driver();
+    Update_Event_logger_ID();
 //	Read_RTC_Registers();
 	Dac_Comm_Err.CPU1_CommB_Error_Count = 0;     /*Initialise all Communication Err Counts to zero */
 	Dac_Comm_Err.CPU1_CommA_Error_Count = 0;
 	Dac_Comm_Err.CPU2_CommB_Error_Count = 0;
 	Dac_Comm_Err.CPU2_CommA_Error_Count = 0;	
-        Smc_Sch_Info.CD_timeout_ms = CD_LINK_FAILURE_TIMEOUT;
-        Set_Modem_RX_Mode();
+    Smc_Sch_Info.CD_timeout_ms = CD_LINK_FAILURE_TIMEOUT;
+//    Set_Modem_RX_Mode();
 	//DisplaySM_InfoLine();                        /* Display System Id and CheckSum */
 }
 
@@ -404,8 +402,8 @@ Output Element		:void
 
 void Start_Sub_Systems(void)
 {
-        Start_RTC_Sch();
-	Start_Smc_Communication();              /* from comm_sm.c */
+    Start_RTC_Sch();
+	//Start_Smc_Communication();              /* from comm_sm.c */
 	Start_DI_Scan();			/* from drv_di.c */
 	Start_Reset_Seq();
     Start_Auto_Reset_Seq();
@@ -413,81 +411,6 @@ void Start_Sub_Systems(void)
 	Start_Printer();			/* from print.c */
 }
 
-/*********************************************************************************
-File name 			:cpu_sm.c
-Function Name		:void DisplaySM_InfoLine(void)
-Created By			:Sudheer Herle
-Date Created		:
-Modification History:
-					Rev No			Date		Description
-					 --				 --				--
-Tracability:
-		SRS()    	:
-
-Abstract			:Module for displaying  id and checksum of Flash memory.
-Algorithm			:
-Description			: 
-Input Element		:None
-Output Element		:void
-
-**********************************************************************************/
-//void DisplaySM_InfoLine(void)
-//{
-//	Display_on_LCD(0,0, uchIDInfo);
-//	Display_on_LCD(0,12, uchCheckSum);			
-//}
-///*********************************************************************************
-//File name 			:cpu_sm.c
-//Function Name		:void Itoac(UINT16 uiInput, BYTE uchOutput[])
-//Created By			:Sudheer Herle
-//Date Created		:
-//Modification History:
-//					Rev No			Date		Description
-//					 --				 --				--
-//Tracability:
-//		SRS()    	:
-//
-//Abstract			:It converts integer value to ascii characters.
-//Algorithm			:
-//					 1.Do the modulus 10 for  integer value which gives last digit of that Integer
-//					 2.Add ascii value of Zero to the last digit. Store the resultant character in Output Array.
-//					 3.Divide the integer value by 10. Then check whether Integer value is more than Zero,
-//					    go to Step 1.
-//					 4.Return from the function
-//Description			:
-//
-//Input Element		:uiInput- Integer value to be converted
-//					 uchOutput-where the output characters copied
-//Output Element		:void
-//
-//**********************************************************************************/
-//void Itoac(UINT16 uiInput, BYTE uchOutput[])
-//{
-//	BYTE uchi=0;
-//
-//	if (uiInput > LARGEST_CONVERTABLE_INTEGER)
-//	{
-//		/* Invalid Range */
-//		uchOutput[0] = '*';
-//		uchOutput[1] = '*';
-//		uchOutput[2] = '*';
-//		uchOutput[3] = '*';
-//		return;
-//	}
-//	else
-//	{
-//		uchOutput[0] = '0';
-//		uchOutput[1] = '0';
-//		uchOutput[2] = '0';
-//		uchOutput[3] = '0';
-//	}
-//	uchi = (BYTE) 3;
-//
-// do {
-//		uchOutput[uchi] = uiInput % 10 + '0';
-//		uchi = uchi - 1;								/* Store character in reverse order */
-//    } while ((uiInput /= 10) > 0);
-//}
 
 /*********************************************************************************
 File name 			:cpu_sm.c
@@ -519,7 +442,6 @@ extern glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds
 extern smc_info_t					Smc1XmitObject;
 int main(void)
 {
-//    delay();
     inspect_event_done = 0;
     inspect_CPU1_data_done = 0;
     inspect_CPU2_data_done = 0;
@@ -527,7 +449,6 @@ int main(void)
     GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
 	Initialise_System();					 /* Initialise Ports and All Schedulers */
     Start_Sub_Systems();					 /* Start Schedulers */
-//    delay();
     G_SPI_SS= SET_HIGH;
     G_SPI_SS2= SET_HIGH;
     TRISFbits.TRISF4 = 0;
@@ -536,7 +457,7 @@ int main(void)
     TRISDbits.TRISD12 = 0;
     LATDbits.LATD12 = 1;
 //	Add_SM_Event_to_Queue(EVENT_SM_POWERED_ON);	/* POWER ON event is added to Event Queue */
-        Smc1XmitObject.Msg_Length = 0;
+    Smc1XmitObject.Msg_Length = 0;
 	do {
 //        GS_LED_PORT = 0;
 		if (IFS0bits.T1IF)
@@ -561,6 +482,7 @@ int main(void)
 		{
 			/* 1-mS Timer has overflowed */
 			IFS0bits.T2IF = 0;
+            
 			TMR2 = TIMER2_SETPOINT;
 //			Decrement_SPI_Sch_msTmr();		/* from comm_dac.c */
 //			Decrement_LCD_msTmr();			/* from drv_lcd.c */
@@ -569,7 +491,7 @@ int main(void)
 //			Decrement_itoa_msTmr();			/* from display.c */
 			Decrement_EEPROM_msTmr();		/* from eeprom.c */
 			Decrement_GLCD_msTmr();
-                }
+        }
 		Update_Host_Sch_State();			/* from comm_host.c */
         Update_Preparatory_LED_State();		/* from drv_led.c */
 		Update_Cnt_State();					/* from drv_cnt.c */
