@@ -66,10 +66,10 @@ BYTE CPU1_data[SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 
 BYTE CPU2_data[SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
 extern  BYTE CPU1_Address;				/* from cpu_sm.c */
 extern  BYTE CPU2_Address;				/* from cpu_sm.c */
-
+extern BYTE Network_config;
 BYTE CPU1_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
 BYTE CPU2_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
-extern char inspect_CPU1_data_done, inspect_CPU2_data_done;
+extern char inspect_CPU1_data_done, inspect_CPU2_data_done, inspect_DAC_info_done;
 extern char CPU1_System_error,CPU2_System_error;
 void SetupCOM1BaudRate(BYTE);
 void Clear_Com1_Error(void);
@@ -108,6 +108,8 @@ Output Element		:void
 void Initialise_Smc_CommSch(void)
 {
     Set_Modem_RX_Mode();
+    Smc_Sch_Info.Query.CPU_Index = 1;
+    Smc_Sch_Info.Query.Network_Index = 1;
     Smc_Sch_Info.Query.Header_byte =  QUERY_HEADER;
 	Smc_Sch_Info.State      = SMC_SCHEDULE_DECIDE;		 /*  set smc comm scheduler to "SMC_SCHEDULER_NOT_STARTED" state  */
     Smc_Sch_Info.Timeout_ms = 5000;
@@ -566,7 +568,6 @@ void Update_Smc_Sch_State(void)
 			break;
             
         case SEND_QUERY: 
-            Smc_Sch_Info.Query.Query_buffer[2] = 3;
             for(uchData=0;uchData<QUERY_SIZE;uchData++){
                 QueryInfObject.query_buf[uchData] = Smc_Sch_Info.Query.Query_buffer[uchData];
             }
@@ -593,6 +594,19 @@ void Update_Smc_Sch_State(void)
         case SET_MODEM_RX:
             if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
                 return;
+            if(Smc_Sch_Info.Query.Network_Index > Network_config){
+                Smc_Sch_Info.Query.Network_Index = 1;
+            }
+            if(Smc_Sch_Info.Query.CPU_Index == 1){
+                Smc_Sch_Info.Query.CPU_Index = 2;
+            }
+            else if(Smc_Sch_Info.Query.CPU_Index == 2){
+                Smc_Sch_Info.Query.CPU_Index = 1;
+                Smc_Sch_Info.Query.Network_Index++;
+                    if(Smc_Sch_Info.Query.Network_Index > Network_config){
+                    Smc_Sch_Info.Query.Network_Index = 1;
+                    }
+            }
             Set_Modem_RX_Mode();
             Smc_Sch_Info.Timeout_ms = DELAY_20MS;
             Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
@@ -668,7 +682,8 @@ void Update_Smc_Sch_State(void)
                         
                         checksum.Word = Crc16((const BYTE *)Smc1XmitObject.Msg_Buffer,Smc1XmitObject.Msg_Length-2);
                                 if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79]
-                                && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]){
+                                && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]
+                                && Smc1XmitObject.Msg_Buffer[0]!=0){ //have to compare the first byte which is CPU address to 0 because SMCPU sends 80 bytes with 0 in it and it will match checksum too.
                                     
                                 Process_SM_Message(uchSelectedCPU);
                                 
@@ -768,16 +783,24 @@ void Update_Smc_Sch_State(void)
 					Smc_Sch_Info.Timeout_ms = 0;
 					break;
 				}
+//                else{         // uncomment this to check if the CRC fail does not happen
+//                    Smc1XmitObject.Index = 0;
+//                    Clear_Com1_Error();
+//                }
 			}
 			else
 			{
+//                SetupCOM1BaudRate(BAUDRATE_1200); //uncomment this to check if the CRC fail does not happen
+//                Clear_Com1_Error();
 				Smc_Sch_Info.Timeout_ms = 5000;
 				Smc_Sch_Info.State = SMC_SCHEDULE_DECIDE;
 			}	
 			break;
 		case SM_LISTEN_DATA_RECEPTION_COMPLETE:
             checksum.Word = Crc16((const BYTE *)Smc1XmitObject.Msg_Buffer,Smc1XmitObject.Msg_Length-2);
-            if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79] && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78])
+            if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79] 
+                    && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]
+                    && Smc1XmitObject.Msg_Buffer[0]!=0)
 			{
                 Process_SM_Message(uchSelectedCPU);
                 if(Smc1XmitObject.Msg_Buffer[76] != 0x8 )
@@ -822,7 +845,7 @@ void Update_Smc_Sch_State(void)
 			}
             else{
                 BI_COLOR_GREEN_LED_PORT = 0;
-                BI_COLOR_RED_LED_PORT = 1;
+//                BI_COLOR_RED_LED_PORT = 1;
                 Smc1XmitObject.Index = 0;
                 Smc_Sch_Info.State = SMC_LISTEN_SCHEDULER;
             }
@@ -1010,8 +1033,8 @@ void Process_SM_Message(BYTE uchCPU_ID)
 			}
     	}
     else{
-        DAC_sysinfo.Unit_Type = Smc1XmitObject.Msg_Buffer[35];
-		DAC_sysinfo.SW_Version = Smc1XmitObject.Msg_Buffer[36];
+        DAC_sysinfo.Unit_Type = Smc1XmitObject.Msg_Buffer[70];
+		DAC_sysinfo.SW_Version = Smc1XmitObject.Msg_Buffer[71];
         DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi = Smc1XmitObject.Msg_Buffer[31];
         DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo = Smc1XmitObject.Msg_Buffer[31 + 1];
         DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi = Smc1XmitObject.Msg_Buffer[31 + 2];
@@ -1025,20 +1048,21 @@ void Process_SM_Message(BYTE uchCPU_ID)
 //            BI_COLOR_RED_LED_PORT == 1;
 //        }       
     }
-    if(cpu_crc.DWord.HiWord.Byte.Hi == DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi
-            && cpu_crc.DWord.HiWord.Byte.Lo == DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo
-            && cpu_crc.DWord.LoWord.Byte.Hi == DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi
-            && cpu_crc.DWord.LoWord.Byte.Lo == DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo){
-            BI_COLOR_GREEN_LED_PORT == 1;
-            BI_COLOR_RED_LED_PORT == 0;
-            PORTEbits.RE9 = 0x0;
-            PORTEbits.RE8 = 0x1;
-        }else{
-            BI_COLOR_GREEN_LED_PORT == 0;
-            BI_COLOR_RED_LED_PORT == 1;
-            PORTEbits.RE9 = 0x1;
-            PORTEbits.RE8 = 0x0;
-        }
+//    if(cpu_crc.DWord.HiWord.Byte.Hi == DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi
+//            && cpu_crc.DWord.HiWord.Byte.Lo == DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo
+//            && cpu_crc.DWord.LoWord.Byte.Hi == DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi
+//            && cpu_crc.DWord.LoWord.Byte.Lo == DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo){
+//            BI_COLOR_GREEN_LED_PORT == 1;
+//            BI_COLOR_RED_LED_PORT == 0;
+//            PORTEbits.RE9 = 0x0;
+//            PORTEbits.RE8 = 0x1;
+//        }else{
+//            BI_COLOR_GREEN_LED_PORT == 0;
+//            BI_COLOR_RED_LED_PORT == 1;
+//            PORTEbits.RE9 = 0x1;
+//            PORTEbits.RE8 = 0x0;
+//        }
+    inspect_DAC_info_done = 1;
 	Update_Comm_Err_Counter(uchCPU_ID);	/* update Count for the Crc error Occured in External Communication */
 	Update_Shadow_Register(uchCPU_ID);	/* Update our copy of event register */
 	Detect_DAC_Events(uchCPU_ID, (event_register_t *)&Shadow[(uchCPU_ID - 1)]);	/* Event detection */

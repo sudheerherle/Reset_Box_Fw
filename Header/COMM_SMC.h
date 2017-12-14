@@ -78,7 +78,7 @@ typedef enum {
  typedef union {
                 struct{
                         BYTE	Header_byte;						
-                        BYTE	Network_Address;	
+                        BYTE	Network_Index;	
                         BYTE    CPU_Index;
                         BYTE	CRC[CRC16_LENGTH];
                 };

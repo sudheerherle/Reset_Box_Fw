@@ -101,7 +101,7 @@ BYTE uchIDInfo[15];							/* smcpu ID information */
 BYTE uchCheckSum[10];						/* Calculated CheckSum value of FLASH Memory */
 BYTE CPU1_Address;						/* holds cpu1 address */
 BYTE CPU2_Address;						/* holds cpu2 address */
-BYTE Event_Logger_ID;
+BYTE Network_config;
 reset_seq_t Reset_Seq;						/* Reset Sequence information */
 auto_reset_seq_t Auto_Reset_Seq;
 rb_info_t RB_Info;
@@ -109,6 +109,7 @@ extern longtype_t cpu_crc;
 dac_comm_error Dac_Comm_Err;				/* Dac external communication CRC error count information */
 char inspect_CPU1_data_done;
 char inspect_CPU2_data_done;
+char inspect_DAC_info_done;
 /*********************************************************************************
 File name 			:cpu_sm.c
 Function Name		:void Initialise_System(void)
@@ -272,6 +273,7 @@ void Initialise_System(void)
 	 * - Initialise_Events_Sch() 
 	 */
     GS_LED_PORT = 0;
+	Initialise_Smc_CommSch();	/* from comm_sm.c */
     delay();
     cpu_crc.DWord.HiWord.Byte.Hi = 0x9a;
     cpu_crc.DWord.HiWord.Byte.Lo = 0xfa;
@@ -281,7 +283,7 @@ void Initialise_System(void)
 	Initialise_LED_Driver();	/* from drv_led.c */
 	Initialise_Cnt_Driver();	/* from drv_cnt.c */
     Initialise_Auto_Cnt_Driver();
-	Initialise_Smc_CommSch();	/* from comm_sm.c */
+
     TRISFbits.TRISF4 = 0;
 	Initialise_DI_Driver();		/* from drv_di.c */
 	Initialise_Reset_Seq();
@@ -299,7 +301,7 @@ void Initialise_System(void)
 	Initialise_Events_Sch();	/* from events.c */
     USBDeviceInit();                //usb_device.c.  Initializes USB module SFRs and firmware variables to known states.//Initialise_Display_State(); /* from display.c */
     Initialise_GLCD_Driver();
-    Update_Event_logger_ID();
+    Update_Network_Configuration();
 //	Read_RTC_Registers();
 	Dac_Comm_Err.CPU1_CommB_Error_Count = 0;     /*Initialise all Communication Err Counts to zero */
 	Dac_Comm_Err.CPU1_CommA_Error_Count = 0;
@@ -445,6 +447,7 @@ int main(void)
     inspect_event_done = 0;
     inspect_CPU1_data_done = 0;
     inspect_CPU2_data_done = 0;
+    inspect_DAC_info_done = 0;
     GLCD_Info.State = GLCD_IDLE;    
     GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
 	Initialise_System();					 /* Initialise Ports and All Schedulers */
@@ -777,7 +780,7 @@ void Decrement_Auto_Reset_Seq_10msTmr(void)
 		Auto_Reset_Seq.Timeout_10ms = Auto_Reset_Seq.Timeout_10ms - 1;
 		}
 }
-void Update_Event_logger_ID(void)
+void Update_Network_Configuration(void)
 {
     unsigned char DIP_val, uchTemp;
     TRISDbits.TRISD6 = 1;
@@ -785,24 +788,24 @@ void Update_Event_logger_ID(void)
     TRISFbits.TRISF0 = 1;
     TRISFbits.TRISF1 = 1;
     
-    TRISEbits.TRISE2 = 0;
-    TRISEbits.TRISE3 = 0;
-    TRISEbits.TRISE4 = 0;
+    TRISAbits.TRISA6 = 0;
+    TRISGbits.TRISG0 = 0;
+    TRISGbits.TRISG1 = 0;
 
-    LATEbits.LATE2 = 0;
-    LATEbits.LATE3 = 1;
-    LATEbits.LATE4 = 1;
+    LATAbits.LATA6 = 1;
+    LATGbits.LATG0 = 1;
+    LATGbits.LATG1 = 0;
     
     DIP_val = 0;
     for(uchTemp=0;uchTemp<100;uchTemp++);
     DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0F;
     
-    LATEbits.LATE2 = 1;
-    LATEbits.LATE3 = 0;
-    LATEbits.LATE4 = 1;
+    LATAbits.LATA6 = 1;
+    LATGbits.LATG0 = 0;
+    LATGbits.LATG1 = 1;
     
     for(uchTemp=0;uchTemp<100;uchTemp++);
     DIP_val |= ((~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0f) <<4;
     
-    Event_Logger_ID = DIP_val;
+    Network_config = DIP_val;
 }

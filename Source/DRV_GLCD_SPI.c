@@ -30,6 +30,7 @@
 #include "DRV_I2C.H"
 #include "DRV_MEM.H"
 #include "COMM_GSM.h"
+
 typedef struct {
 		UINT16 Head;	/* This pointer holds the address of Old Event Token i.e one previous to Lastest Event Token*/
 		UINT16 Tail;	/* This pointer holds the address of Lastest Event Token*/
@@ -135,14 +136,18 @@ Output Element		:void
 **********************************************************************************/
 unsigned char count_rx;
 extern char inspect_event_done;
+extern BYTE Network_config;
 extern char  inspect_CPU1_data_done;
 extern char inspect_CPU2_data_done;
+extern char inspect_DAC_info_done;
 void Update_GLCD_State(void)
 {
 //	BYTE uchBuf=0;
 if(inspect_event_done == 0)
             return;
- if(inspect_CPU1_data_done != 1 && inspect_CPU2_data_done != 1)
+ if(inspect_CPU1_data_done != 1 
+         && inspect_CPU2_data_done != 1
+         && inspect_DAC_info_done != 1)
         return;
         //if(0)
         if(G_ACTIVE == 0)
@@ -296,7 +301,7 @@ void Decrement_GLCD_msTmr(void)
 
 }
 extern glcd_info_t GLCD_Info;
-extern dac_sysinfo_t DAC_sysinfo;;
+extern dac_sysinfo_t DAC_sysinfo;
 unsigned char u_count;
 extern BYTE CPU1_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
 extern BYTE CPU2_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
@@ -335,6 +340,9 @@ void Build_packet_GLCD(void)
     GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM + 2] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi;
     GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM + 3] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo;
     GLCD_Info.Message_Buffer[OFFSET_UNIT_TYPE] = DAC_sysinfo.Unit_Type;
+    if(DAC_sysinfo.Unit_Type==0){
+        DAC_sysinfo.Unit_Type = 1;
+    }
 //    if(CPU1_data_GLCD[70]==1 || CPU2_data_GLCD[70]==1) //Adjustment for LCWS
 //    {
 //       GLCD_Info.Message_Buffer[OFFSET_UNIT_TYPE] = 9;
@@ -419,7 +427,7 @@ void Update_SMPU_data(void)
         GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 1 ]  = SMCPU_CRC.Byte.Byte2;
         GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 2 ]  = SMCPU_CRC.Byte.Byte3;
         GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 3 ]  = SMCPU_CRC.Byte.Byte4;
-
+        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 4 ]  = Network_config;
 
 //        CheckSum.Word = Crc16(puchMsg,14);				/* Calculate CRC 16 for Xmit Buffer */
 
