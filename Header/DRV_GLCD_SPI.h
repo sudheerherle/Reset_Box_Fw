@@ -43,6 +43,8 @@
 #define MAX_COMM_TIMEOUT        100                      /*updated for every 250ms*/
 #define SS_TIMEOUT              50                     /*updated for every 5ms*/
 #define TX_TIMEOUT              20                     /*updated for every 2ms*/
+#define REDUNDANT_NW_INDEX      1
+#define FIRST_NW_INDEX          0
 /* LCD Driver States*/
 typedef enum
 			{
@@ -91,13 +93,14 @@ typedef struct {
 	GLCD_Driver_State		State;	         	/*LCD display driver States */
     GLCD_Data               Data_pack;
 	BYTE                    GLCD1_On_state;
+    BYTE                    Build_network_index;
 	BYTE                    GLCD2_On_state;
     unsigned int            Comm_Timeout_ms;				/*One millisec Timer Variable to Lcd info Scheduler */
     BYTE                    Off_Timeout_ms;
     BYTE                    Packet_index;					/* Line Number to be updated */
 	BYTE                    Packet_Max_length;					/* Coloumn Number to be updated */
     BYTE                    CPU_Data[2][CPU_PACKET_LEN];
-    BYTE                    Message_Buffer[MAX_G_PACKET_LEN]; /* Buffer to Store character which is to be writtern into Lcd */
+    BYTE                    Message_Buffer[MAX_SMCPU][MAX_G_PACKET_LEN]; /* Buffer to Store character which is to be writtern into Lcd */
     BYTE                    Rx_Message_Buffer[MAX_G_PACKET_LEN]; /* Buffer to Store character which is to be writtern into Lcd */
 	GLCD_Display			GLCD_Disp;					/* one for 1st LCD and 2 for 2nd LCD*/
 } glcd_info_t;

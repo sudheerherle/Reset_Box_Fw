@@ -102,6 +102,8 @@ BYTE uchCheckSum[10];						/* Calculated CheckSum value of FLASH Memory */
 BYTE CPU1_Address;						/* holds cpu1 address */
 BYTE CPU2_Address;						/* holds cpu2 address */
 BYTE Network_config;
+BYTE HA_config;
+BYTE Pilot_mode_config;
 reset_seq_t Reset_Seq;						/* Reset Sequence information */
 auto_reset_seq_t Auto_Reset_Seq;
 rb_info_t RB_Info;
@@ -302,6 +304,7 @@ void Initialise_System(void)
     USBDeviceInit();                //usb_device.c.  Initializes USB module SFRs and firmware variables to known states.//Initialise_Display_State(); /* from display.c */
     Initialise_GLCD_Driver();
     Update_Network_Configuration();
+    Update_switch_config();
 //	Read_RTC_Registers();
 	Dac_Comm_Err.CPU1_CommB_Error_Count = 0;     /*Initialise all Communication Err Counts to zero */
 	Dac_Comm_Err.CPU1_CommA_Error_Count = 0;
@@ -808,4 +811,36 @@ void Update_Network_Configuration(void)
     DIP_val |= ((~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0f) <<4;
     
     Network_config = DIP_val;
+}
+
+void Update_switch_config(void)
+{
+    unsigned char DIP_val, uchTemp;
+    TRISDbits.TRISD6 = 1;
+    TRISDbits.TRISD7 = 1;    
+    TRISFbits.TRISF0 = 1;
+    TRISFbits.TRISF1 = 1;
+    
+    TRISAbits.TRISA6 = 0;
+
+    LATAbits.LATA6 = 0;
+    
+    for(uchTemp=0;uchTemp<100;uchTemp++);
+    
+    for(uchTemp=0;uchTemp<100;uchTemp++);
+    DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0F;
+    
+    
+    if(DIP_val & 0x1 == 1){
+        HA_config = 1;
+    }
+    else{
+        HA_config = 0;
+    }
+    
+    if((DIP_val >> 1 )& 0x1 == 1){
+        Pilot_mode_config = 1;
+    }else{
+        Pilot_mode_config = 0;
+    }
 }

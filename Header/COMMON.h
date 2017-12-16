@@ -131,7 +131,7 @@ typedef unsigned long UINT32;
 #define MAXIMUM_MESSAGE_LENGTH		80
 #define SPI_MESSAGE_LENGTH			80
 #define GCPU_SPI_MESSAGE_LENGTH			80
-
+#define MAX_SMCPU                   16
 #define COMM1						1
 #define COMM2						2
 #define VOLTAGE_OK					1

@@ -39,7 +39,7 @@ typedef struct {
 
 
 glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds lcd Information */
-
+extern BYTE HA_config;
 void Initialise_GLCD_Display(void);
 void Build_packet_GLCD(void);
 BOOL Compare_Data_Sent_prev(void);
@@ -196,12 +196,12 @@ if(inspect_event_done == 0)
 				if(GLCD_Info.GLCD_Disp == DISPLAY1)
 				{
 					G_SPI_SS = SET_LOW;
-//                    G_SPI_SS2 = SET_HIGH;
+                    G_SPI_SS2 = SET_HIGH;
 				}
 				else 
 				{
 					G_SPI_SS2 = SET_LOW;
-//                    G_SPI_SS = SET_HIGH;
+                    G_SPI_SS = SET_HIGH;
 				}
                 GLCD_Info.Comm_Timeout_ms = SS_TIMEOUT; //wait for 10 ms for SS to stabilize
                 GLCD_Info.State = GLCD_SS_WAIT;
@@ -235,9 +235,15 @@ if(inspect_event_done == 0)
             }
             while((SPI1STATbits.SPITBF == 0) && (GLCD_Info.Packet_index < GLCD_Info.Packet_Max_length))//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
             {
-                /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
-                SPI1BUF = GLCD_Info.Message_Buffer[GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
-                GLCD_Info.Packet_index++;
+                if(PORTGbits.RG13 == 0){
+//                    /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
+                    SPI1BUF = GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
+                       
+                }else if(PORTDbits.RD13 == 0) {
+//                    PORTe can Put the Next Byte */
+                    SPI1BUF = GLCD_Info.Message_Buffer[FIRST_NW_INDEX][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
+                }    
+                GLCD_Info.Packet_index++;                
             }
 			if((GLCD_Info.Packet_index >= GLCD_Info.Packet_Max_length) && (SPI1STATbits.SRMPT==1))
             {
@@ -249,7 +255,7 @@ if(inspect_event_done == 0)
             if(GLCD_Info.Comm_Timeout_ms == 0)
             {
 				//end of transmission
-				if((GLCD_Info.GLCD_Disp == DISPLAY1) && (GLCD_Info.GLCD2_On_state==1))
+				if((GLCD_Info.GLCD_Disp == DISPLAY1) && (GLCD_Info.GLCD2_On_state==1) && (HA_config==1))
 				{
 					G_SPI_SS = SET_HIGH;
 					GLCD_Info.GLCD_Disp = DISPLAY2;
@@ -302,68 +308,78 @@ void Decrement_GLCD_msTmr(void)
 }
 extern glcd_info_t GLCD_Info;
 extern dac_sysinfo_t DAC_sysinfo;
-unsigned char u_count;
-extern BYTE CPU1_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
-extern BYTE CPU2_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
+char NID;
+unsigned char u_count,s_count;
+extern BYTE CPU1_data_GLCD[MAX_SMCPU][GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
+extern BYTE CPU2_data_GLCD[MAX_SMCPU][GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
 
 void Build_packet_GLCD(void)
 {
     unsigned char track;
     //clear the buffer
-    for(u_count = 0;u_count<(MAX_G_PACKET_LEN);u_count++)
-    {
-        GLCD_Info.Message_Buffer[u_count]    = 0;
-    }
+    
+    NID = GLCD_Info.Build_network_index;
+//    for(s_count =0; s_count<MAX_SMCPU; s_count++){
+       for(u_count = 0;u_count<(MAX_G_PACKET_LEN);u_count++)
+        {
+            GLCD_Info.Message_Buffer[NID][u_count]    = 0;
+        } 
+//    }    
 
+//    for(NID =0 ; NID < MAX_SMCPU;NID ++){
+    
     for(u_count = 0;u_count<8;u_count++) // blue
     {
-        GLCD_Info.Message_Buffer[u_count]    = CPU1_data_GLCD[u_count];
-        GLCD_Info.Message_Buffer[u_count+CPU1_PACKET_LEN] = CPU2_data_GLCD[u_count];
+        GLCD_Info.Message_Buffer[NID][u_count]    = CPU1_data_GLCD[NID][u_count];
+        GLCD_Info.Message_Buffer[NID][u_count+CPU1_PACKET_LEN] = CPU2_data_GLCD[NID][u_count];
     }
     track = u_count;//8 - 21
     for(;u_count<21;u_count++) //yellow
     {
-        GLCD_Info.Message_Buffer[u_count]    = CPU1_data_GLCD[u_count + 24 - track];
-        GLCD_Info.Message_Buffer[u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[u_count + 24 - track];
+        GLCD_Info.Message_Buffer[NID][u_count]    = CPU1_data_GLCD[NID][u_count + 24 - track];
+        GLCD_Info.Message_Buffer[NID][u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[NID][u_count + 24 - track];
     }
-        GLCD_Info.Message_Buffer[u_count]    = CPU1_data_GLCD[77];                  //Message ID
-        GLCD_Info.Message_Buffer[u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[77];   //Message ID
+        GLCD_Info.Message_Buffer[NID][u_count]    = CPU1_data_GLCD[NID][77];                  //Message ID
+        GLCD_Info.Message_Buffer[NID][u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[NID][77];   //Message ID
         u_count++;
     track = u_count;
     for(;u_count<55;u_count++) //yellow     //u_count will start from 22 to 54 //Disp Count
     {
-        GLCD_Info.Message_Buffer[u_count]    = CPU1_data_GLCD[u_count + 37 - track];
-        GLCD_Info.Message_Buffer[u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[u_count + 37 - track];
+        GLCD_Info.Message_Buffer[NID][u_count]    = CPU1_data_GLCD[NID][u_count + 37 - track];
+        GLCD_Info.Message_Buffer[NID][u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[NID][u_count + 37 - track];
     }
-    GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi;
-    GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM + 1] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo;
-    GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM + 2] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi;
-    GLCD_Info.Message_Buffer[OFFSET_CODE_CHECKSUM + 3] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo;
-    GLCD_Info.Message_Buffer[OFFSET_UNIT_TYPE] = DAC_sysinfo.Unit_Type;
-    if(DAC_sysinfo.Unit_Type==0){
-        DAC_sysinfo.Unit_Type = 1;
-    }
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 1] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 2] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 3] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo;
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNIT_TYPE] = DAC_sysinfo.Unit_Type;
+    
 //    if(CPU1_data_GLCD[70]==1 || CPU2_data_GLCD[70]==1) //Adjustment for LCWS
 //    {
 //       GLCD_Info.Message_Buffer[OFFSET_UNIT_TYPE] = 9;
 //    }
-    GLCD_Info.Message_Buffer[OFFSET_SW_V] = DAC_sysinfo.SW_Version;
+    GLCD_Info.Message_Buffer[NID][OFFSET_SW_V] = DAC_sysinfo.SW_Version;
     Update_SMPU_data();
 //    GLCD_Info.Message_Buffer[OFFSET_CRC    ]   = 0xAA;
 //    GLCD_Info.Message_Buffer[OFFSET_CRC + 1]   = 0xAA;
-    GLCD_Info.Message_Buffer[OFFSET_UNUSED + 1] = CPU1_data_GLCD[71];
-    GLCD_Info.Message_Buffer[OFFSET_UNUSED + 2] = CPU1_data_GLCD[72];
-    GLCD_Info.Message_Buffer[OFFSET_UNUSED + 3] = CPU1_data_GLCD[73];
-    GLCD_Info.Message_Buffer[OFFSET_UNUSED + 4] = 0xAA;
-    GLCD_Info.Message_Buffer[OFFSET_UNUSED + 5] = 0xAA;
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNUSED + 1] = CPU1_data_GLCD[NID][71];
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNUSED + 2] = CPU1_data_GLCD[NID][72];
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNUSED + 3] = CPU1_data_GLCD[NID][73];
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNUSED + 4] = 0xAA;
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNUSED + 5] = 0xAA;
 //    CheckSum_G.Word = Crc16(GLCD_INFO, MAX_G_PACKET_LEN - 2);
-    GLCD_Info.Message_Buffer[OFFSET_CRC]   = 0;
-    GLCD_Info.Message_Buffer[OFFSET_CRC + 1]   = 0;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CRC]   = 0;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CRC + 1]   = 0;
 //    GLCD_Info.Message_Buffer[13] = Event_Logger_ID ;
 //    GLCD_Info.Message_Buffer[14] = 0;
 //    GLCD_Info.Message_Buffer[15] = (High_Availability | (GSM_Sch_Info.GSM_Enable<<1)) & 0x03;
 //    GLCD_Info.Message_Buffer[16] = 0;
     
+//}
+    GLCD_Info.Build_network_index++;
+    if(GLCD_Info.Build_network_index >= Network_config){
+        GLCD_Info.Build_network_index = 0;
+    }
 }
 
 extern ring_buffer_t     Events_Ring_Buffer;
@@ -403,31 +419,31 @@ void Update_SMPU_data(void)
             S_Time.LWord = 0x0000;
             Event_count.LWord = 0;
         }
-        GLCD_Info.Message_Buffer[OFFSET_EVENT_COUNT]     = Event_count.Byte.Byte1; 			   /* Send nuber of events */
-	GLCD_Info.Message_Buffer[OFFSET_EVENT_COUNT + 1] = Event_count.Byte.Byte2;
-	GLCD_Info.Message_Buffer[OFFSET_EVENT_COUNT + 2] = Event_count.Byte.Byte3;
-	GLCD_Info.Message_Buffer[OFFSET_EVENT_COUNT + 3] = Event_count.Byte.Byte4;
-        GLCD_Info.Message_Buffer[OFFSET_START_TIME   ]  = S_Time.Byte.Byte1; 			   /* First event time */
-	GLCD_Info.Message_Buffer[OFFSET_START_TIME + 1]  = S_Time.Byte.Byte2;
-	GLCD_Info.Message_Buffer[OFFSET_START_TIME + 2]  = S_Time.Byte.Byte3;
-	GLCD_Info.Message_Buffer[OFFSET_START_TIME + 3]  = S_Time.Byte.Byte4;
-        GLCD_Info.Message_Buffer[OFFSET_END_TIME      ]  = E_Time.Byte.Byte1; 			   /* End event time */
-	GLCD_Info.Message_Buffer[OFFSET_END_TIME + 1  ]  = E_Time.Byte.Byte2;
-	GLCD_Info.Message_Buffer[OFFSET_END_TIME + 2  ]  = E_Time.Byte.Byte3;
-	GLCD_Info.Message_Buffer[OFFSET_END_TIME + 3  ]  = E_Time.Byte.Byte4;
+        GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT]     = Event_count.Byte.Byte1; 			   /* Send nuber of events */
+	GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT + 1] = Event_count.Byte.Byte2;
+	GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT + 2] = Event_count.Byte.Byte3;
+	GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT + 3] = Event_count.Byte.Byte4;
+        GLCD_Info.Message_Buffer[NID][OFFSET_START_TIME   ]  = S_Time.Byte.Byte1; 			   /* First event time */
+	GLCD_Info.Message_Buffer[NID][OFFSET_START_TIME + 1]  = S_Time.Byte.Byte2;
+	GLCD_Info.Message_Buffer[NID][OFFSET_START_TIME + 2]  = S_Time.Byte.Byte3;
+	GLCD_Info.Message_Buffer[NID][OFFSET_START_TIME + 3]  = S_Time.Byte.Byte4;
+        GLCD_Info.Message_Buffer[NID][OFFSET_END_TIME      ]  = E_Time.Byte.Byte1; 			   /* End event time */
+	GLCD_Info.Message_Buffer[NID][OFFSET_END_TIME + 1  ]  = E_Time.Byte.Byte2;
+	GLCD_Info.Message_Buffer[NID][OFFSET_END_TIME + 2  ]  = E_Time.Byte.Byte3;
+	GLCD_Info.Message_Buffer[NID][OFFSET_END_TIME + 3  ]  = E_Time.Byte.Byte4;
 
         P_Time.LWord = SystemClock;
-        GLCD_Info.Message_Buffer[OFFSET_PRESENT_TIME     ]  = P_Time.Byte.Byte1;
-        GLCD_Info.Message_Buffer[OFFSET_PRESENT_TIME + 1 ]  = P_Time.Byte.Byte2;
-        GLCD_Info.Message_Buffer[OFFSET_PRESENT_TIME + 2 ]  = P_Time.Byte.Byte3;
-        GLCD_Info.Message_Buffer[OFFSET_PRESENT_TIME + 3 ]  = P_Time.Byte.Byte4;
+        GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME     ]  = P_Time.Byte.Byte1;
+        GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME + 1 ]  = P_Time.Byte.Byte2;
+        GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME + 2 ]  = P_Time.Byte.Byte3;
+        GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME + 3 ]  = P_Time.Byte.Byte4;
 
         SMCPU_CRC.LWord = 0x87654321;//substitute with code crc
-        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC     ]  = SMCPU_CRC.Byte.Byte1;
-        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 1 ]  = SMCPU_CRC.Byte.Byte2;
-        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 2 ]  = SMCPU_CRC.Byte.Byte3;
-        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 3 ]  = SMCPU_CRC.Byte.Byte4;
-        GLCD_Info.Message_Buffer[OFFSET_SMCPU_CRC + 4 ]  = Network_config;
+        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC     ]  = SMCPU_CRC.Byte.Byte1;
+        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 1 ]  = SMCPU_CRC.Byte.Byte2;
+        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 2 ]  = SMCPU_CRC.Byte.Byte3;
+        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 3 ]  = SMCPU_CRC.Byte.Byte4;
+        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 4 ]  = NID + 1;
 
 //        CheckSum.Word = Crc16(puchMsg,14);				/* Calculate CRC 16 for Xmit Buffer */
 

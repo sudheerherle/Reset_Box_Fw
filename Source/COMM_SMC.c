@@ -37,7 +37,7 @@ const longtype_t cpu_crc;
 extern time_t SystemClock;
 extern const BYTE uchCommand_Length_Table[8][2];	/* From command_proc.c */
 extern const BYTE BitMask_List[8];					/* From cpu_sm.c */
-BYTE Latest_DAC_data[SPI_MESSAGE_LENGTH];	/* From comm_dac.c */
+
 BYTE Selected_CPU_Addr = 1;
 extern dac_sysinfo_t DAC_sysinfo;					/* from cpu_sm.c */
 //event_register_t Shadows[MAXIMUM_NO_OF_CPU]; /* shadow will have present status of Both Cpus */
@@ -62,15 +62,18 @@ void Update_Shadow_Register(BYTE);
 void Synchronise_Shadow_Register(void);
 void Update_Comm_Err_Counter(BYTE);
 
-BYTE CPU1_data[SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
-BYTE CPU2_data[SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
+
 extern  BYTE CPU1_Address;				/* from cpu_sm.c */
 extern  BYTE CPU2_Address;				/* from cpu_sm.c */
 extern BYTE Network_config;
-BYTE CPU1_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
-BYTE CPU2_data_GLCD[GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
+BYTE CPU1_data_GLCD[MAX_SMCPU][GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
+BYTE CPU2_data_GLCD[MAX_SMCPU][GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
 extern char inspect_CPU1_data_done, inspect_CPU2_data_done, inspect_DAC_info_done;
 extern char CPU1_System_error,CPU2_System_error;
+BYTE Latest_DAC_data[MAX_SMCPU][SPI_MESSAGE_LENGTH];	/* From comm_dac.c */
+BYTE CPU1_data[MAX_SMCPU][SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
+BYTE CPU2_data[MAX_SMCPU][SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu2 */
+
 void SetupCOM1BaudRate(BYTE);
 void Clear_Com1_Error(void);
 void Clear_COM1_Receive_Buffer(void);
@@ -79,7 +82,6 @@ void Build_smc_broadcast_message(void);
 void Initialise_Modem(void);
 void Set_Modem_TX_Mode(void);
 void Set_Modem_RX_Mode(void);
-
 void Process_SM_Message(BYTE uchCPU_ID);
 void Save_DS_Data(void);
 void Save_US_Data(void);
@@ -979,39 +981,40 @@ void Process_SM_Message(BYTE uchCPU_ID)
 //	longtype_t Sys_Time;
 //        dac_status_t DAC_Status;
         BYTE uchCommand = Smc1XmitObject.Msg_Buffer[MESSAGE_TYPE_OFFSET];
+        BYTE Network_ID = Smc1XmitObject.Msg_Buffer[MESSAGE_TYPE_OFFSET - 1] - 1;
        if (uchCPU_ID == CPU1_ID)
 	{
 		/* If Data received from CPU1, then store into CPU1 Buffer */
 		for(i =0 ;i<SPI_MESSAGE_LENGTH;i++)
 		{
-            CPU1_data[i] = Smc1XmitObject.Msg_Buffer[i];
-            CPU1_data_GLCD[i] = Smc1XmitObject.Msg_Buffer[i];     
-			Latest_DAC_data[i] = Smc1XmitObject.Msg_Buffer[i];
+            CPU1_data[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];
+            CPU1_data_GLCD[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];     
+			Latest_DAC_data[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];
 		}
-            if(CPU1_data_GLCD[0]==4){
-                int p = CPU1_data_GLCD[0];
-            }
-            CPU1_Address = CPU1_data[0];		/* Save the address of CPU1 into Cpu1_Addrss Variable */
+//            if(CPU1_data_GLCD[0]==4){
+//                int p = CPU1_data_GLCD[0];
+//            }
+            CPU1_Address = CPU1_data[Network_ID][0];		/* Save the address of CPU1 into Cpu1_Addrss Variable */
             inspect_CPU1_data_done = 1;
-            CPU1_System_error = CPU1_data[69];
-            System_error_code = CPU1_data[69];
+            CPU1_System_error = CPU1_data[Network_ID][69];
+            System_error_code = CPU1_data[Network_ID][69];
 	}
 	if (uchCPU_ID == CPU2_ID)
 	{
 		/* If Data received from CPU2, then store into CPU2 Buffer */
 		for(i =0 ;i<SPI_MESSAGE_LENGTH;i++)
 		{
-            CPU2_data[i] = Smc1XmitObject.Msg_Buffer[i];
-            CPU2_data_GLCD[i] = Smc1XmitObject.Msg_Buffer[i];
-            Latest_DAC_data[i] = Smc1XmitObject.Msg_Buffer[i];
+            CPU2_data[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];
+            CPU2_data_GLCD[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];
+            Latest_DAC_data[Network_ID][i] = Smc1XmitObject.Msg_Buffer[i];
 		}		
-        inspect_CPU2_data_done = 1;
-            CPU2_Address = CPU2_data[0];		/* Save the address of CPU2 into Cpu2_Addrss Variable */
-            CPU2_System_error = CPU2_data[69];
-            System_error_code = CPU2_data[69];
+            inspect_CPU2_data_done = 1;
+            CPU2_Address = CPU2_data[Network_ID][0];		/* Save the address of CPU2 into Cpu2_Addrss Variable */
+            CPU2_System_error = CPU2_data[Network_ID][69];
+            System_error_code = CPU2_data[Network_ID][69];
     }
         
-        if(CPU1_data[69]!=255 || CPU2_data[69]!=255)
+        if(CPU1_data[Network_ID][69]!=255 || CPU2_data[Network_ID][69]!=255)
         {
             System_error = 1;
         }
