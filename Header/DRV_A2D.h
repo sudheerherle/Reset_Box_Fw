@@ -4,8 +4,8 @@
 	Revision	:	1	
 	Filename	: 	drv_a2d.h
 	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
+    Compiler	: 	XC16 Compiler V1.31  
+	Author		:	EM003 
 	Date		:	25/12/2005
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -28,29 +28,41 @@
 
 #define NO_OF_READINGS_TO_BE_AVGD	(10)		
 /*
- *  Vdd o-----\/\/\/\/\----+----\/\/\/\-----| Ground
- *              10K        |      6.8K
- *                         |
- *                         |
- *                         o
- *                         AN4
- *
- *  Vdd will be scaled down to (6.8)/(10+6.8) = 0.4047691
  */
-//#define VDD_HIGH_SET_VALUE			(854)	/* VDD >  5.2V, AN4 = 2.108V */
+//#define VDD_HIGH_SET_VALUE		(854)	/* VDD >  5.2V, AN4 = 2.108V */
 //#define VDD_HIGH_CLEAR_VALUE		(839)	/* VDD <= 5.1V, AN4 = 2.071V */
 //#define VDD_LOW_SET_VALUE			(772)	/* VDD <  4.7V, AN4 = 1.905V */
-//#define VDD_LOW_CLEAR_VALUE			(805)	/* VDD >= 4.9V, AN4 = 1.987V */
+//#define VDD_LOW_CLEAR_VALUE		(805)	/* VDD >= 4.9V, AN4 = 1.987V */
 //#define VDD_DEFAULT_VALUE			(821)	/* VDD >= 5.0V, AN4 = 2.027V */
 
-#define VDD_HIGH_SET_VALUE			(619)	/* VDD >= 3.7V, AN4 = 1.497V */
-#define VDD_HIGH_CLEAR_VALUE                    (588)	/* VDD <= 3.5V, AN4 = 1.416V */
-#define VDD_LOW_SET_VALUE			(421)	/* VDD <= 2.5V, AN4 = 1.011V */
-#define VDD_LOW_CLEAR_VALUE			(459)	/* VDD >= 3.0V, AN4 = 1.104V */
-#define VDD_DEFAULT_VALUE			(536)	/* VDD >= 3.2V, AN4 = 1.295V */
+/*
+ * 511/2.45 = 208.5
+ Ip	Mon     Vref    ADC_Mon
+3.5	1.305	2.44    271.1
+3.4	1.28	2.45    266.8
+3.3	1.24	2.45    258.5
+3.2	1.21	2.45    252.8
+3.1	1.18	2.46    246.0
+3	1.15	2.46    239.7
+2.9	1.12	2.47    233.5
+2.8	1.08	2.45    225.18
+ */
+
+//Vref = 2.45, 1023/2.45 = 417.5
+#define VDD_HIGH_SET_VALUE			(542)	/* VDD >= 3.5V, AN3 = 1.30V */
+#define VDD_HIGH_CLEAR_VALUE        (534)	/* VDD <= 3.4V, AN3 = 1.28V */
+#define VDD_LOW_SET_VALUE			(451)	/* VDD <= 2.8V, AN3 = 1.08V */
+#define VDD_LOW_CLEAR_VALUE			(480)	/* VDD >= 3.0V, AN3 = 1.15V */
+#define VDD_DEFAULT_VALUE			(517)	/* VDD >= 3.3V, AN3 = 1.24V */
+
+#define RTC_HIGH_SET_VALUE			(893)	/* RTC >= 3.6V, AN4 = 2.25V */
+#define RTC_HIGH_CLEAR_VALUE        (879)	/* RTC <= 3.5V, AN4 = 2.16V */
+#define RTC_LOW_SET_VALUE			(368)	/* RTC <= 1.5V, AN4 = 0.92V */
+#define RTC_LOW_CLEAR_VALUE			(490)	/* RTC >= 2.0V, AN4 = 1.23V */
+#define RTC_DEFAULT_VALUE			(840)	/* RTC >= 3.3V, AN4 = 2.04V */
 
 
-#define A2D_MAX_ITERATIONS			(14)	/* Number of iteration for averaging (16*14 = 224 samples) */
+#define A2D_MAX_ITERATIONS			(15)	/* Number of iteration for averaging (32*15 = 480 samples) */
 
 typedef enum {
 			VDD_MON_NOT_STARTED = 0,
@@ -74,15 +86,33 @@ typedef struct {
 			UINT32		Summation;
 } a2d_data_t;
 
+typedef enum{
+    ADC_WAIT,
+    ADC_DONE
+}ADC_CON;
+
 typedef struct {
 			vdd_mon_state_t State;
+            ADC_CON Conv;
 			UINT16	Vdd_Value;
 } vdd_mon_info_t;
+
+typedef enum{
+    VDD,
+    BAT
+}ADC_USAGE;
+
+#define ADC_SCHEDULER_IDLE_TIMEOUT	50
 
 extern void Initialise_A2D_Driver(void);
 extern void Start_A2D_Driver(void);
 extern void Update_Vdd_Mon_State(void);
+extern void Update_Feedback_State(void);
 extern void Decrement_A2D_10msTmr(void);
-
+extern BYTE Check_Theft_Detect(void);
+extern BYTE Check_Door_Open(void);
+extern BYTE Check_YLED_State(void);
+extern BYTE Check_RLED_State(void);
+extern BYTE Check_SPK_State(void);
 #endif
 

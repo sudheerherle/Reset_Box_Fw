@@ -1,11 +1,11 @@
-#ifndef _DRV_CNT_H_
-#define _DRV_CNT_H_
+#ifndef _DRV_AUTO_CNT_H_
+#define _DRV_AUTO_CNT_H_
 
 typedef enum {
-			CNT_IDLE = 0,
-			CNT_SET_HIGH,
-			CNT_HOLD_HIGH,
-			CNT_SET_LOW
+			AUTO_RESET_CNT_IDLE = 0,
+			AUTO_RESET_CNT_SET_HIGH,
+			AUTO_RESET_CNT_HOLD_HIGH,
+			AUTO_RESET_CNT_SET_LOW
 } auto_cnt_state_t;
 
 #define AUTO_RESET_COUNTER_PORT				PORTDbits.RD8
@@ -18,10 +18,15 @@ typedef struct {
 			UINT16	Timeout_10ms;
 } Auto_Reset_Counter_t;
 
-extern void Initialise_Auto_Cnt_Driver(void);
-extern void Update_Auto_Cnt_State(void);
-extern void Decrement_Auto_Cnt_10msTmr(void);
-extern void Increment_Auto_Reset_Counter(void);
+void Initialise_Auto_Cnt_Driver(void);
+void Update_Auto_Cnt_State(void);
+void Initialise_Auto_Reset_Seq(void);
+void Start_Auto_Reset_Seq(void);
+void Update_Auto_Reset_Seq_State(void);
+void Decrement_Auto_Reset_Seq_10msTmr(void);
+void Update_Reset_Seq_State(void);
+void Decrement_Auto_Cnt_10msTmr(void);
+void Increment_Auto_Reset_Counter(void);
 
 #endif
 

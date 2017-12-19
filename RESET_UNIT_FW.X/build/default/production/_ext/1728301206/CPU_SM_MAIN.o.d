@@ -22,4 +22,5 @@ build/default/production/_ext/1728301206/CPU_SM_MAIN.o:  \
 ../Header/TRAINMON.H  \
  ../Header/PRINT.H  \
 ../Header/DRV_CNT.H  \
-../Header/COMMON.h 
+../Header/AUTO_DRV_CNT.h  \
+ ../Header/COMMON.h 

@@ -16,6 +16,8 @@ relay_info_t Prep_Relay2;
 void Update_PB_State(void);
 void Update_Vital_Relay_State(void);
 void Update_Prep_Relay_State(void);
+void Update_Vital_Relay2_State(void);
+void Update_Prep_Relay2_State(void);
 
 void Initialise_DI_Driver(void)
 {

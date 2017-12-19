@@ -4,8 +4,8 @@
 	Revision	:	1	
 	Filename	: 	events.h
 	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
+    Compiler	: 	XC16 Compiler V1.31  
+	Author		:	EM003 
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -16,8 +16,8 @@
 #define _EVENTS_H_
 
 
-#define EVENTS_QUEUE_SIZE			(100)		/* Maximum events can be stored into Event Queue */
-#define SERIAL_EEPROM_TWC_TIMEOUT	(2)			/* 20ms - Time gap is maintained between Record write into Serial EEPROM */
+#define EVENTS_QUEUE_SIZE			(500)		/* Maximum events can be stored into Event Queue */
+#define SERIAL_EEPROM_TWC_TIMEOUT	(10)			/* 20ms - Time gap is maintained between Record write into Serial EEPROM */
 
 
 /* Event Register Default Values */
@@ -62,7 +62,7 @@ typedef enum {
 			SAVE_EVENTS_ON_EEPROM_WAIT,		/* Delay Time between Records */
 			MODIFY_OLD_EVENTS_TOKEN,		/* Modify Old events with "OlD_EVENT_TOKEN" */
 			MODIFY_OLD_EVENTS_TOKEN_WAIT,	/* Delay Time between Records */
-			ERASE_EEPROM_BLOCK,				/* calls Erase_Serial_EEProm_Block() function with Block No to be Erased*/
+            ERASE_EEPROM_BLOCK,				/* calls Erase_Serial_EEProm_Block() function with Block No to be Erased*/
 			ERASE_EEPROM_BLOCK_WAIT			/* Delay Time Between Two Erase Blcoks */
 } events_sch_state_t;
 
@@ -74,11 +74,20 @@ typedef struct {
 		BYTE Count;		/* it counts the number of record logged into EEPROM */
 } ring_buffer_t;
 
+typedef union {
+    struct {
+    UINT16 L_Token; /*0xaa55, 0x55aa, if this bad, memory is corrupted, start from begining*/
+    UINT16 Head;	/* This pointer holds the address of Old Event Token i.e one previous to Lastest Event Token*/
+	UINT16 Tail;	/* This pointer holds the address of Lastest Event Token*/
+    } mem_ref;
+    BYTE Memory_ref_array[6];
+} Location_Ref_t;
+
 
 /* Event Queue Structure used to hold Events Record which is to be stored into Serial EEPROM */
 typedef struct {
-		BYTE	FrontIndex;				
-		BYTE	RearIndex;
+		UINT16	FrontIndex;				
+		UINT16	RearIndex;
 		struct {
 			BYTE	Source_Id;					/* CPU ID */
 			BYTE	Event_Id;					/* Event Identification code */
@@ -97,12 +106,78 @@ typedef struct {
 			events_sch_state_t	Next_State;		/* Event Scheduler next State */
 			UINT16				Block_Number;	/* Block No to be accessed */
 			INT32				Record_No;		/* Record No to be accessed */
+            BYTE                Update_location_ref; /*0-not done, 1-done*/
 } events_sch_info_t;
 
 extern void Initialise_Events_Sch(void);
-extern void Detect_DAC_Events(BYTE, event_register_t *);
+extern void Detect_DAC_Events(BYTE, event_register_t);
 extern void Start_Events_Sch(void);
 extern void Update_Events_Sch_State(void);
 extern void Decrement_Events_Sch_10msTmr(void);
 extern BOOL Setup_Events_Erasure(void);
+
+#define PRELIMINARY_RELAY_A_FAILURE_ERROR_NUM  	0
+#define PRELIMINARY_RELAY_B_FAILURE_ERROR_NUM  	1
+#define CRITICAL_RELAY_A_FAILURE_ERROR_NUM     	2
+#define CRITICAL_RELAY_B_FAILURE_ERROR_NUM     	3
+#define TRANSIENT_POWER_FAILURE_DS1_ERROR_NUM    	4
+#define TRANSIENT_POWER_FAILURE_DS2_ERROR_NUM    	5
+#define TRANSIENT_POWER_FAILURE_US1_ERROR_NUM    	6
+#define TRANSIENT_POWER_FAILURE_US2_ERROR_NUM    	7
+
+#define INOPERATIVE_NETWORK_ADDRESS_ERROR_NUM   	8
+#define INCORRECT_CODE_CRC_ERROR_NUM            	9
+#define INOPERATIVE_CONFIGURATION_ERROR_NUM     	10
+#define INOPERATIVE_COUNTS_ERROR_NUM            	11
+#define RAM_TEST_FAILED_ERROR_NUM               	12
+#define DIRECT_OUT_ERROR_NUM               	13
+#define AD_SUP_MISSING_ERROR_NUM               	14
+
+#define AD1_SUP_LOW_ERROR_NUM                    	16
+#define AD2_SUP_LOW_ERROR_NUM                    	17
+#define AD1_PULSING_ERROR_NUM                    	18
+#define AD2_PULSING_ERROR_NUM                    	19
+#define AD_STATE_MISSING_ERROR_NUM               	20
+#define AD_SUP_PULSATING_ERROR_NUM               	21
+#define AD_STATE_FAIL_ERROR_NUM                  	22
+#define AD_NOT_SENSING_ERROR_NUM                 	23
+
+#define AD1_BOARD_MISSING_ERROR_NUM    	24
+#define AD2_BOARD_MISSING_ERROR_NUM    	25
+#define EVENT_LOGGER_MISSING_ERROR_NUM 	26
+#define MODEM_CARD_A_MISSING_ERROR_NUM 	27
+#define MODEM_CARD_B_MISSING_ERROR_NUM 	28
+#define RELAY_DRIVE_A_MISSING_ERROR_NUM	29
+#define RELAY_DRIVE_B_MISSING_ERROR_NUM	30
+#define ASSOCIATE_CPU_MISSING_ERROR_NUM	31
+
+#define NO_CARRIER_IN_MODEM_ERROR_NUM        	32
+#define ASSOCIATE_CPU_LINK_FAILURE_ERROR_NUM      	33
+#define DS_ERROR_NUM                  	34
+#define US_ERROR_NUM                  	35
+#define AD_PULSE_MISMATCH_ERROR_NUM            	36
+#define BOOTUP_AD_FAIL_ERROR_NUM               	37
+#define DECEPTIVE_AXLE_ERROR_NUM               	38
+#define DOUBLE_COIL_INFLUENCE_ERROR_NUM        	39
+
+ #define LU1_TO_US1_COMMUNICATION_ERROR_NUM	40
+ #define LU1_TO_US2_COMMUNICATION_ERROR_NUM	41
+ #define LU1_TO_DS1_COMMUNICATION_ERROR_NUM	42
+ #define LU1_TO_DS2_COMMUNICATION_ERROR_NUM	43
+ #define US1_TO_LU1_COMMUNICATION_ERROR_NUM	44
+ #define US2_TO_LU1_COMMUNICATION_ERROR_NUM	45
+ #define DS1_TO_LU1_COMMUNICATION_ERROR_NUM	46
+ #define DS2_TO_LU1_COMMUNICATION_ERROR_NUM	47
+
+ #define LU2_TO_US1_COMMUNICATION_ERROR_NUM	48
+ #define LU2_TO_US2_COMMUNICATION_ERROR_NUM	49
+ #define LU2_TO_DS1_COMMUNICATION_ERROR_NUM	50
+ #define LU2_TO_DS2_COMMUNICATION_ERROR_NUM	51
+ #define US1_TO_LU2_COMMUNICATION_ERROR_NUM	52
+ #define US2_TO_LU2_COMMUNICATION_ERROR_NUM	53
+ #define DS1_TO_LU2_COMMUNICATION_ERROR_NUM	54
+ #define DS2_TO_LU2_COMMUNICATION_ERROR_NUM	55
+
+extern Location_Ref_t Mem_addr_ref;
+extern events_queue_t    Events_Queue;	
 #endif

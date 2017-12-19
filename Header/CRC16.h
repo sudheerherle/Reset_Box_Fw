@@ -18,5 +18,16 @@
  *      CRC-16 routines header file
  */
 
-extern UINT16 Crc16(const BYTE *, INT16);
+typedef enum{
+    SMC_OBJ,
+    EEPROM_CPU1,
+    EEPROM_CPU2,
+    COM2_RECV_OBJ,
+    XMIT_QUEUE,
+    GLCD_INFO,
+    SMC_QUERY
+} CRC_PACK;
+
+extern UINT16 Crc16(CRC_PACK, INT16);
+
 #endif

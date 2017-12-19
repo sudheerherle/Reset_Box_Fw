@@ -88,6 +88,11 @@ void Clear_COM3_Transmit_Buffer(void);
 void Build_GSM_Init_Command(void);
 void Check_Error(void);
 void Check_change_number(void);
-extern GSM_sch_info_t      		GSM_Sch_Info;			/* Structure holds GSM comm scheduler information */
+
+extern GSM_sch_info_t GSM_Sch_Info;			/* Structure holds GSM comm scheduler information */
+extern disp_info_t Disp_Info;
+extern BYTE var_count, SF_Error,EF_Error;
+extern BYTE inspect_event_done;
+extern BYTE feedback_error,FB_error_ID;
 #endif	/* COMM_GSM_H */
 

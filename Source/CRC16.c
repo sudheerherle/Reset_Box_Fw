@@ -1,26 +1,41 @@
 /*********************************************************************************************************************
-	Project		: 	Single Section Digital Axle Counter
-	Version		: 	2.0 
-	Revision	:	1	
-	Filename	: 	crc16.c
-	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
-	Date		:	
-	Company Name: 	Insys Digital Systems
-	Modification History:
-					Rev No			Date		Description
-					 --				 --				--    
-	Functions	:   UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)			
+*	Project		: 	Single Section Digital Axle Counter
+*	Version		: 	2.0 
+*	Revision	:	1	
+*	Filename	: 	crc16.c
+*	Target MCU	: 	PIC24FJ256GB210   
+*    Compiler	: 	XC16 Compiler V1.31  
+*	Author		:	EM003
+*	Date		:	
+*	Company Name: 	Insys Digital Systems
+*	Modification History:
+*					Rev No			Date		Description
+*					 --				 --				--    
+*	Functions	:   UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)			
 *********************************************************************************************************************/
-#include <xc.h>
+#include <time.h>
 
+#include "COMMON.h"
+#include "CRC16.h"
+#include "COMM_DAC.h"
+#include "COMM_SMC.h"
+#include "EEPROM.h"
+#include "command_proc.h"
+#include "DRV_GLCD_SPI.h"
 
-#include "COMMON.H"
-#include "CRC16.H"
+extern spirecvobject SPIRecvObject;
+extern smc_info_t Smc1XmitObject;
+extern eeprom_sch_info_t EEPROM_Sch_Info;
 
+extern host_recv_msg_info_t 		Com2RecvObject;
+extern xmit_queue_info_t 		 Xmit_Queue;
+extern query_info_t             QueryInfObject;
+extern glcd_info_t GLCD_Info;
+extern BYTE NID;
+
+extern smc_sch_info_t             Smc_Sch_Info;			/* structure holds station master interface communication scheduler */
 /* Table of CRC values for high-order byte */
-const unsigned char uchCRC16TableHi[256] = {
+const BYTE uchCRC16TableHi[256] = {
 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,
 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01,
@@ -41,7 +56,7 @@ const unsigned char uchCRC16TableHi[256] = {
 0x40 } ;
 
 /* Table of CRC values for low-order byte */
-const unsigned char uchCRC16TableLo[256] = {
+const BYTE uchCRC16TableLo[256] = {
 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7, 0x05, 0xC5, 0xC4,
 0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09,
 0x08, 0xC8, 0xD8, 0x18, 0x19, 0xD9, 0x1B, 0xDB, 0xDA, 0x1A, 0x1E, 0xDE, 0xDF, 0x1F, 0xDD,
@@ -61,24 +76,25 @@ const unsigned char uchCRC16TableLo[256] = {
 0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80,
 0x40 } ;
 /*********************************************************************************
-File name 			:crc16.c
-Function Name		:UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)
-Created By			:Sudheer Herle
-Date Created		:
-Modification History:
-					Rev No			Date		Description
-					 --				 --				--
-Tracability:
-		SRS()    	:
-
-Abstract			:
-Algorithm			:
-Description			: 
-Input Element		:None
-Output Element		:void
-
+*File name 			:crc16.c
+*Function Name		:UINT16 Crc16(CRC_PACK Pack, INT16 iMsgLen)
+*Created By			:EM003
+*Date Created		:
+*Modification History:
+*					Rev No			Date		Description
+*					 --				 --				--
+*Tracability:
+*		SRS()    	:
+*
+*Abstract			:
+*Algorithm			:
+*Description			: 
+*Input Element		:CRC_PACK Pack:Which array should be considered for crc calculation
+*                    INT16 iMsgLen: Array length
+*Output Element		:Calculated CRC value
+*
 **********************************************************************************/
-UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)
+UINT16 Crc16(CRC_PACK Pack, INT16 iMsgLen)
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Computes 16-bit cyclic redundancy check (CRC) value. Look-up table is   *
@@ -88,14 +104,39 @@ UINT16 Crc16(const BYTE *puchMsg, INT16 iMsgLen)
 	BYTE uchCRCHi = 0xFF ; /* high byte of CRC initialized */
 	BYTE uchCRCLo = 0xFF ; /* low byte of CRC initialized */
 	BYTE uchIndex ;        /* will index into CRC lookup table */
-	
-	//CLRWDT();		/* Clear watchdog timer */
+	BYTE uchMsgIndex =0;
 
 	while (iMsgLen)	/* pass through message buffer */
 	{
 		iMsgLen = iMsgLen - 1;
-		uchIndex = uchCRCHi ^ *puchMsg; /* calculate the CRC */
-		puchMsg = puchMsg + 1;
+        switch(Pack)
+        {
+            case SMC_OBJ:
+                uchIndex = uchCRCHi ^ Smc1XmitObject.Msg_Buffer[uchMsgIndex];
+                break;
+            case EEPROM_CPU1:
+                uchIndex = uchCRCHi ^ EEPROM_Sch_Info.CPU1_Data[uchMsgIndex];
+                break;
+            case EEPROM_CPU2:
+                uchIndex = uchCRCHi ^ EEPROM_Sch_Info.CPU2_Data[uchMsgIndex];
+                break;
+            case COM2_RECV_OBJ:
+                uchIndex = uchCRCHi ^ Com2RecvObject.Msg_Buffer[uchMsgIndex];
+                break;
+            case XMIT_QUEUE:
+                uchIndex = uchCRCHi ^ Xmit_Queue.Record[0].Msg_Buffer[uchMsgIndex];
+                break;
+            case GLCD_INFO:
+                uchIndex = uchCRCHi ^ GLCD_Info.Message_Buffer[NID][uchMsgIndex];
+                break;
+            case SMC_QUERY:
+                uchIndex = uchCRCHi ^ QueryInfObject.query_buf[uchMsgIndex];
+                break;
+            default:
+                uchIndex = 0;
+                break;
+        }
+		uchMsgIndex = uchMsgIndex + 1;
 		uchCRCHi = uchCRCLo ^ uchCRC16TableHi[uchIndex];
 		uchCRCLo = uchCRC16TableLo[uchIndex];
 	}

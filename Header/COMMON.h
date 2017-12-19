@@ -66,6 +66,9 @@
 #define CPU2_ID						(2)
 #define SECONDS_PER_DAY				(86400)		/* SECONDS_PER_DAY = 24(hour)*60(min)*60(sec)  */
 
+#define HEAD_LESS_TAIL              (0xAA55) 
+#define HEAD_GREATER_TAIL           (0x55AA) 
+
 #define EVENTS_PER_CHIP				(4096)		/* 65536(one EEPROM Chip Size in Bytes) / 16 (no of Bytes per Event) */
 #define NO_OF_SERIAL_EEPROMS		(4)			/* No of serial EEPROM available for Data Logging */
 #define MAXIMUM_EVENTS				(16384)		/* EVENTS_PER_CHIP (8192) * (2) NO_OF_SERIAL_EEPROMS */
@@ -201,12 +204,10 @@ typedef enum
 #define PRINT_RECORD_SIZE			(62)
 #define PRINT_FOOTER_SIZE			(72)
 #define TOTAL_NO_PRINT_RECORDS		(20)
-                        
-/*
+ /*
  * Event ID - Table
  */
-
-                        typedef enum {
+typedef enum {
 			EVENT_SM_POWERED_ON = 0,
 			EVENT_DATE_TIME_CHANGED,
 			EVENT_DIRECT_OUT_COUNT,
@@ -312,11 +313,92 @@ typedef enum
                                 EVENT_PD2_PULSATING,
                                 EVENT_PD_STATE_MISSING,
                                 EVENT_PD_SUP_PULSATING,
-                                EVENT_STATE_FAIL,
+                                EVENT_PD_STATE_FAIL,
                                 EVENT_PD_NOT_DETECTING,
                                 EVENT_PD_SUP_MISSING,
-			EVENT_NOT_OCCURRED = 255
+                                EVENT_YLED_BAD,
+                                EVENT_RLED_BAD,
+                                EVENT_SPEAKER_BAD,
+                                EVENT_THEFT,
+                                EVENT_SYSTEM_DOOR_OPEN,
+                                EVENT_YLED_RESTORED,
+                                EVENT_RLED_RESTORED,
+                                EVENT_SPEAKER_RESTORED,
+                                EVENT_THEFT_RESTORED,
+                                EVENT_SYSTEM_DOOR_CLOSED,
+                                EVENT_MEMORY_ERASED,
+                                EVENT_DECEPTIVE_AXLE,
+                                EVENT_US_BLOCK_CLEAR_FWD_CNT,
+                                EVENT_US_BLOCK_OCCUPIED_FWD_CNT,
+                                EVENT_DS_BLOCK_CLEAR_FWD_CNT,
+                                EVENT_DS_BLOCK_OCCUPIED_FWD_CNT,                    
+                                EVENT_US_BLOCK_CLEAR_REV_CNT,
+                                EVENT_US_BLOCK_OCCUPIED_REV_CNT,
+                                EVENT_DS_BLOCK_CLEAR_REV_CNT,
+                                EVENT_DS_BLOCK_OCCUPIED_REV_CNT,
+                                EVENT_US_BLOCK_CLEAR_ENTRY_CNT,
+                                EVENT_US_BLOCK_OCCUPIED_ENTRY_CNT,
+                                EVENT_DS_BLOCK_CLEAR_ENTRY_CNT,
+                                EVENT_DS_BLOCK_OCCUPIED_ENTRY_CNT,                    
+                                EVENT_US_BLOCK_CLEAR_EXIT_CNT,
+                                EVENT_US_BLOCK_OCCUPIED_EXIT_CNT,
+                                EVENT_DS_BLOCK_CLEAR_EXIT_CNT,
+                                EVENT_DS_BLOCK_OCCUPIED_EXIT_CNT,
+                    			EVENT_RTC_VOLTAGE_HIGH,
+                    			EVENT_RTC_VOLTAGE_LOW,
+                                EVENT_RTC_VOLTAGE_NORMAL,
+                    EVENT_RESET_BOX_TURNED_ON,
+                                EVENT_NOT_OCCURRED = 255
 } event_id_t;
+
+
+typedef enum
+{
+            DAC_UNIT_TYPE_DE = 0,
+    /* Enumarator to define SF Unit type of DAC system */
+              DAC_UNIT_TYPE_SF , // 1
+
+    /* Enumarator to define EF Unit type of DAC system */
+              DAC_UNIT_TYPE_EF, // 2
+
+    /* Enumarator to define CF Unit type of DAC system*/
+              DAC_UNIT_TYPE_CF, // 3
+
+    /* Enumarator to define D3A Unit type of DAC system */
+              DAC_UNIT_TYPE_D3_A, // 4
+
+    /* Enumarator to define D3B Unit type of DAC system */
+              DAC_UNIT_TYPE_D3_B, // 5
+
+    /* Enumarator to define D3C Unit type of DAC system */
+              DAC_UNIT_TYPE_D3_C, // 6
+
+    /* Enumarator to define 3D3S-SF Unit type of DAC system */
+              DAC_UNIT_TYPE_3D_SF, // 7
+
+    /* Enumarator to define 3D3S-EF Unit type of DAC system */
+              DAC_UNIT_TYPE_3D_EF, // 8
+                    
+    /* Enumarator to define LCWS Unit type of DAC system */
+              DAC_UNIT_TYPE_LCWS,   // 9
+
+    /* Enumarator to define LCWS Unit type of DAC system Dual Line*/
+              DAC_UNIT_TYPE_LCWS_DL,   // 10
+
+    /* Enumarator to define D3A Unit type of DAC system */
+              DAC_UNIT_TYPE_D4_A, // 11
+
+    /* Enumarator to define D3A Unit type of DAC system */
+              DAC_UNIT_TYPE_D4_B, // 12
+
+    /* Enumarator to define D3A Unit type of DAC system */
+              DAC_UNIT_TYPE_D4_C, // 13
+
+    /* Enumarator to define D3A Unit type of DAC system */
+              DAC_UNIT_TYPE_D4_D, // 14
+
+}Unit_Type_info;
+
 
 
 typedef union {
@@ -648,6 +730,33 @@ extern void Decrement_SPI_Sch_msTmr(void);
 //extern void Display_on_LCD(BYTE, BYTE, BYTE *);
 extern void Clear_Line_on_LCD(BYTE);
 
+typedef enum{
+        ZERO_MODE = 0,
+        WAITING_FOR_RESET_AT_BOTH_UNITS,
+        RESET_APPLIED_AT_LOCAL_UNIT,
+        RESET_APPLIED_AT_REMOTE_UNIT,
+        RESET_APPLIED_AT_BOTH_UNITS,
+        SECTION_WAIT_FOR_PILOT_TRAIN,
+        SECTION_CLEAR_AT_BOTH_UNITS,
+        SECTION_OCCUPIED_AT_BOTH_UNITS,
+        SECTION_ERROR_AT_BOTH_UNITS,
+        ERROR_RESET_APPLIED_AT_LOCAL_UNIT,
+        ERROR_RESET_APPLIED_AT_REMOTE_UNIT,
+        ERROR_LOCAL_UNIT_WAITING_FOR_RESET,
+        ERROR_REMOTE_UNIT_WAITING_FOR_RESET
+}Reset_info;
+
+typedef struct {
+    char            CPU1_address;
+    char            CPU2_address;
+    Reset_info      Reset_mode;
+    BYTE            MessageID;
+    Reset_info            DS_mode;
+    Reset_info            US_mode;
+    Unit_Type_info        Unit_Type;
+}disp_info_t;
+
+
 
 /* Declaration for global functions defined in drv_rtc.c */
 extern BOOL Set_RTC_Date(BYTE, BYTE, UINT16);
@@ -659,7 +768,6 @@ extern UINT16 Get_Current_Event_Number(void);
 extern BYTE Get_Events_Counter_Value(void);
 extern void Clear_Events_Counter(void);
 extern BOOL Modify_Token_of_old_Events(void);
-extern BYTE Compute_LRC(BYTE *, BYTE);
-extern void Itoac(UINT16,BYTE *);
+extern BYTE Compute_LRC(event_record_t,BYTE);
 extern void Initialise_RB_Info(void);
 #endif

@@ -4,8 +4,8 @@
 	Revision	:	1	
 	Filename	: 	command_proc.h
 	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
+    Compiler	: 	XC16 Compiler V1.31  
+	Author		:	EM003
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -19,11 +19,11 @@
  */
 
 
-#define MAX_HOST_SEND_MESSAGE_LENGTH    (80)    /* Max length of the Record send to Host/Smc */
+#define MAX_HOST_SEND_MESSAGE_LENGTH    (20)    /* Max length of the Record send to Host/Smc */
 #define MAX_RECV_MESSAGE_LENGTH			(12)	/* Host/Smc command Receive Buffer Size */
 #define MAX_XMIT_QUEUE_SIZE 			(1)		/* Host/Smc Reply Data Queue Size */
 
-#define NO_OF_HOST_COMMANDS				(8)		/* No of Host/Smc Commands Available*/
+#define NO_OF_HOST_COMMANDS				(7)		/* No of Host/Smc Commands Available*/
 #define ALL_RECORDS_SUCCESSFULL			(0xFF)  /* indicates that All records Received at Host/Smc correctly */
 #define ALL_EVENTS						(0xFF)  /* indicates that all events in serial EEPROM has to be Transmitted to Host/Smc */
 
@@ -47,7 +47,7 @@
 #define REPLY_TO_RECORDS				(5)		/* Type: Reply of Record Reception status from Host/Smc */ 
 #define CANCEL_GET_LOGGED_EVENTS		(18)	/* Type: Command to cancel when logged data is being transmitted */
 #define GET_EVENT_COUNTS				(6)		/* Type: Command for getting number of events start date and end date	 */
-#define GET_80_BYTES                                    (7)
+
 #define LOGGED_EVENTS_REPLY				(0)		/* Type: Command Id for Logged events */
 #define DATE_TIME_REPLY					(1)		/* Type: Command Id for Date and Time reply */
 #define EEPROM_ERASED_REPLY				(2)		/* Type: Command Id for reply to "Erase command" */
@@ -116,9 +116,17 @@ typedef struct {
 } host_recv_msg_info_t;
 
 
-extern void Process_Host_Command( host_recv_msg_info_t *, BYTE );
+extern void Process_Host_Command(void);
+extern void Setup_Get_Logged_Events_Params(void);
 extern void Build_Next_Logged_Event_Reply(void);
+extern void Build_Time_Record_Message(void);
+extern void Build_Event_Record_Message(void);
 extern void Notify_End_of_Events_Reply(void);
+extern void Process_Set_Date_And_Time_Command(void);
+extern void Build_Reply_To_Erase_Command(void);
 extern void Build_End_EEPROM_Erase_Reply_Command(void);
+extern void Build_Reply_To_Status_Command(void);
 extern void Build_Reply_To_Get_Event_Command(void);
+
+extern BYTE Compute_LRC(event_record_t,BYTE);
 #endif

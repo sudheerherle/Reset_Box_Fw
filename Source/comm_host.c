@@ -538,11 +538,11 @@ void Receive_COM2_Message(void)
 	if(Com2RecvObject.State == CHECK_CRC16)
 	{
             UINT16 temp_crc;
-            temp_crc = Crc16((const BYTE *)Com2RecvObject.Msg_Buffer,Com2RecvObject.Msg_Length-2);
-	   if (Crc16((const BYTE *)Com2RecvObject.Msg_Buffer,Com2RecvObject.Msg_Length-2) == (UINT16)(Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-2]<<8)+Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-1])
+            temp_crc = Crc16(COM2_RECV_OBJ,Com2RecvObject.Msg_Length-2);
+	   if (Crc16(COM2_RECV_OBJ,Com2RecvObject.Msg_Length-2) == (UINT16)(Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-2]<<8)+Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-1])
            {
 	      /* Command received from Host Computer */
-		  Process_Host_Command( (host_recv_msg_info_t *) &Com2RecvObject,(BYTE)COMM2);
+		  Process_Host_Command();
 	   }
 	  Com2RecvObject.State = RECV_BUFFER_EMPTY;
 	}

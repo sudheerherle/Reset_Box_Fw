@@ -74,6 +74,7 @@
       <itemPath>../Source/DRV_GLCD_SPI.c</itemPath>
       <itemPath>../Source/AUTO_DRV_CNT.c</itemPath>
       <itemPath>../Source/TRAINMON.c</itemPath>
+      <itemPath>../Source/COMM_GSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

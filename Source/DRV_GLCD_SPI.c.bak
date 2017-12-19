@@ -138,43 +138,22 @@ extern BYTE Network_config;
 extern char  inspect_CPU1_data_done;
 extern char inspect_CPU2_data_done;
 extern char inspect_DAC_info_done;
-unsigned char Interested_Nw_Index = 0;
+
 
 void Update_GLCD_State(void)
 {
 
 //    if(inspect_event_done == 0)
 //        return;
-    if(inspect_CPU1_data_done != 1 
-         && inspect_CPU2_data_done != 1
-         && inspect_DAC_info_done != 1)
+    if(G_ACTIVE == 0)
+    {
+        GLCD_Info.State = GLCD_MODULE_NOT_ACTIVE;
         return;
-        //if(0)
-        if(G_ACTIVE == 0)
-        GLCD_Info.GLCD1_On_state = 0;
-    if(G_ACTIVE2 == 0)
-	    GLCD_Info.GLCD2_On_state = 0;
-	if((G_ACTIVE == 0) && (G_ACTIVE2 == 0))
-        {
-        GLCD_Info.State = GLCD_IDLE;
-		return;
-	}
-    
-//    if(G_ACTIVE == 0)
-//    {
-//        GLCD_Info.State = GLCD_MODULE_NOT_ACTIVE;
-//        return;
-//    }
-//    
-    GLCD_Info.GLCD1_On_state = G_ACTIVE;
-	GLCD_Info.GLCD2_On_state = G_ACTIVE2;
-    if(HA_config==0){
-        GLCD_Info.GLCD2_On_state = 0;
     }
 	switch (GLCD_Info.State)
 	{
 		case GLCD_MODULE_NOT_ACTIVE:
-            if (G_ACTIVE == 1 || G_ACTIVE2 == 1)
+            if (G_ACTIVE == 1)
 			{
                 count_rx = 0;
                 GLCD_Info.Comm_Timeout_ms = SS_TIMEOUT; //wait for 5 ms for SS to stabilize
@@ -184,43 +163,24 @@ void Update_GLCD_State(void)
         case GLCD_IDLE:
             if(GLCD_Info.Comm_Timeout_ms == 0)
             {
+                G_SPI_SS = SET_LOW;
                 count_rx = 0;
                 GLCD_Info.State = GLCD_COMPARE_DATA;
-				if(GLCD_Info.GLCD1_On_state == 1)
-				{
-					GLCD_Info.GLCD_Disp = DISPLAY1;
-				}
-				else
-				{
-					GLCD_Info.GLCD_Disp = DISPLAY2;
-				}
             }
             break;
         case GLCD_COMPARE_DATA:
-         
-				if(GLCD_Info.GLCD_Disp == DISPLAY1)
-				{
-					G_SPI_SS = SET_LOW;
-                    G_SPI_SS2 = SET_HIGH;
-				}
-				else 
-				{
-					G_SPI_SS2 = SET_LOW;
-                    G_SPI_SS = SET_HIGH;
-				}
-                GLCD_Info.Comm_Timeout_ms = SS_TIMEOUT; //wait for 10 ms for SS to stabilize
-                GLCD_Info.State = GLCD_SS_WAIT;
-            
-                break;
+            G_SPI_SS = SET_LOW;
+            GLCD_Info.Comm_Timeout_ms = SS_TIMEOUT; //wait for 10 ms for SS to stabilize
+            GLCD_Info.State = GLCD_SS_WAIT;
+            break;
         case GLCD_SS_WAIT:
             if(GLCD_Info.Comm_Timeout_ms == 0)
             {
                 GLCD_Info.State = GLCD_INIT_DATA;
-				
             }
             break;
 		case GLCD_INIT_DATA:
-            Build_packet_GLCD();            
+            Build_packet_GLCD();
             GLCD_Info.Packet_Max_length = MAX_G_PACKET_LEN;
             GLCD_Info.State = GLCD_TX_DATA;
             GLCD_Info.Packet_index = 0;
@@ -230,26 +190,15 @@ void Update_GLCD_State(void)
             //SPI1BUF = data;
             if(GLCD_Info.Comm_Timeout_ms != 0)
                 break;
-            while((SPI1STATbits.SPITBF == 0) && (GLCD_Info.Packet_index < GLCD_Info.Packet_Max_length))//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
+            while(SPI1STATbits.SPITBF == 0)//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
             {
-                if(PORTGbits.RG13 == 0){
-//                    /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
-                    SPI1BUF = GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
-                       
-                }else if(PORTDbits.RD13 == 0) {
-//                    PORTe can Put the Next Byte */
-                    SPI1BUF = GLCD_Info.Message_Buffer[Interested_Nw_Index][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
-                }    
-                GLCD_Info.Packet_index++;                
+                /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
+                SPI1BUF = GLCD_Info.Message_Buffer[NID][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
+                GLCD_Info.Packet_index++;
             }
-			if((GLCD_Info.Packet_index >= GLCD_Info.Packet_Max_length) && (SPI1STATbits.SRMPT==1))
-            {
-			    GLCD_Info.Comm_Timeout_ms = TX_TIMEOUT;
-				GLCD_Info.State = GLCD_CM_WAIT;
-			}
-			
+            //GLCD_Info.Comm_Timeout_ms = TX_TIMEOUT;
+            GLCD_Info.State = GLCD_CM_WAIT;
             break;
-           
         case GLCD_CM_WAIT:
             if(SPI1STATbits.SPIRBF==1)
             {
@@ -271,33 +220,9 @@ void Update_GLCD_State(void)
                         GLCD_Info.Comm_Timeout_ms = TX_TIMEOUT;
                         GLCD_Info.State = GLCD_TX_DATA;
                     }
+
                 }
-                }
-if(GLCD_Info.Comm_Timeout_ms == 0)
-            {
-				//end of transmission
-				if((GLCD_Info.GLCD_Disp == DISPLAY1) && (GLCD_Info.GLCD2_On_state==1) && (HA_config==1))
-				{
-					G_SPI_SS = SET_HIGH;
-                    G_SPI_SS2 = SET_LOW;
-					GLCD_Info.GLCD_Disp = DISPLAY2;
-					GLCD_Info.State = GLCD_COMPARE_DATA;
-				}
-				else if(GLCD_Info.GLCD_Disp == DISPLAY2)
-				{
-					G_SPI_SS2 = SET_HIGH;
-                    G_SPI_SS = SET_LOW;
-					GLCD_Info.GLCD_Disp = NO_LCD_DISP;
-					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
-					GLCD_Info.State = GLCD_IDLE;
-				}
-                else
-                {
-					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
-					GLCD_Info.State = GLCD_IDLE;                    
-                }
-			}
-            
+            }
             break;
         default:
 			break;
@@ -344,9 +269,9 @@ void Build_packet_GLCD(void)
 //    for(s_count =0; s_count<MAX_SMCPU; s_count++){
        for(u_count = 0;u_count<(MAX_G_PACKET_LEN);u_count++)
         {           
-            GLCD_Info.Message_Buffer[NID][u_count]    = 0;
+            GLCD_Info.Message_Buffer[0][u_count]    = 0;
         } 
-//    GLCD_Info.Message_Buffer[NID][21]  = 0xAA;
+//    GLCD_Info.Message_Buffer[0][21]  = 0xAA;
 //    return;
 //    }    
 
@@ -372,11 +297,11 @@ void Build_packet_GLCD(void)
         GLCD_Info.Message_Buffer[NID][u_count]    = CPU1_data_GLCD[NID][u_count + 37 - track];
         GLCD_Info.Message_Buffer[NID][u_count + CPU1_PACKET_LEN] = CPU2_data_GLCD[NID][u_count + 37 - track];
     }
-    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM] =  CPU1_data_GLCD[NID][72];// DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi;
-    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 1] = CPU1_data_GLCD[NID][73];//DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo;
-    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 2] = CPU1_data_GLCD[NID][74];//DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi;
-    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 3] = CPU1_data_GLCD[NID][75];// DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo;
-    GLCD_Info.Message_Buffer[NID][OFFSET_UNIT_TYPE] = CPU1_data_GLCD[NID][70];
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Hi;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 1] = DAC_sysinfo.Checksum.DWord.HiWord.Byte.Lo;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 2] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Hi;
+    GLCD_Info.Message_Buffer[NID][OFFSET_CODE_CHECKSUM + 3] = DAC_sysinfo.Checksum.DWord.LoWord.Byte.Lo;
+    GLCD_Info.Message_Buffer[NID][OFFSET_UNIT_TYPE] = DAC_sysinfo.Unit_Type;
     
 //    if(CPU1_data_GLCD[70]==1 || CPU2_data_GLCD[70]==1) //Adjustment for LCWS
 //    {

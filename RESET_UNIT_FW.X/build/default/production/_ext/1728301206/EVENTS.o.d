@@ -1,8 +1,8 @@
 build/default/production/_ext/1728301206/EVENTS.o:  \
 ../Source/EVENTS.c  \
- ../Header/COMMON.H  \
-../Header/DRV_MEM.H  \
+ ../Header/COMMON.h  \
+../Header/DRV_MEM.h  \
 ../Header/command_proc.h  \
  ../Header/comm_host.h  \
-../Header/EVENTS.H  \
-../Header/EEPROM.H 
+../Header/EVENTS.h  \
+../Header/EEPROM.h 

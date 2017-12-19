@@ -25,6 +25,10 @@
 #include <string.h>
 #include <time.h>
 void Update_USB_Sch_State(void);
+void Decrement_Reset_Seq_10msTmr(void);
+void Initialise_Reset_Seq(void);
+void Update_Network_Configuration(void);
+void Update_switch_config(void);
 /*
  * Set configuration bits/fuses
  */
@@ -87,11 +91,14 @@ void Update_USB_Sch_State(void);
 #include "TRAINMON.H"
 #include "PRINT.H"
 #include "DRV_CNT.H"
-
+#include "AUTO_DRV_CNT.h"
 
 sm_status_t Status;					/* sm status information */
 rb_status_t RB_Status;
 time_t SystemClock;					/* holds system clock time   */
+time_t SystemClock;					/* holds system clock time   */
+time_t SystemDate; 
+BYTE YLED_FB_ERROR = 0, RLED_FB_ERROR = 0, SPK_FB_ERROR = 0, THFT_FB_ERROR = 0, DOOR_FB_ERROR = 0, feedback_error = 0, FB_error_ID =0;
 
 dac_sysinfo_t DAC_sysinfo;					/* Structure to hold DAC System Information */
 const BYTE BitMask_List[8] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 }; /* this table is used mask all bits,except one bit */
@@ -134,7 +141,6 @@ Output Element		:void
 **********************************************************************************/
 void USBDeviceInit();
 void delay();
-void Initialise_GLCD_Driver();
 extern smc_sch_info_t             Smc_Sch_Info;
 void Initialise_System(void)
 {
@@ -170,6 +176,13 @@ void Initialise_System(void)
     ANSF   = DIGITAL_CONFIG;
     ANSG   = DIGITAL_CONFIG;
 
+    AD1CON1 = ADCON1_CONFIG;
+	AD1CON2 = ADCON2_CONFIG;
+	AD1CON3 = ADCON3_CONFIG;
+    AD1CHS  = A2D_CS_DEFAULT;
+    ANCFG   = A2D_BG_DEFAULT;
+    AD1CSSL = A2D_SC_DEFAULT;
+    AD1CSSH = A2D_SC_DEFAULT;
 
 	AD1CON1 = ADCON1_CONFIG;
 	AD1CON2 = ADCON2_CONFIG;
@@ -437,22 +450,22 @@ Output Element		:void
 **********************************************************************************/
 volatile char inspect_event_done;
 int USB_Check(void);
-
-extern glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds lcd Information */
+//
+//extern glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds lcd Information */
 
 //#define GS_LED          LATFbits.LATF4 //SS2
 #define AUTO_RESET_PORT_PIN  LATDbits.LATD9;
 #define AUTO_RESET_FB_PORT_PIN LATDbits.LATD11;
 #include "COMMON.h"
-extern smc_info_t					Smc1XmitObject;
+//extern smc_info_t					Smc1XmitObject;
 int main(void)
 {
     inspect_event_done = 0;
     inspect_CPU1_data_done = 0;
     inspect_CPU2_data_done = 0;
     inspect_DAC_info_done = 0;
-    GLCD_Info.State = GLCD_IDLE;    
-    GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
+//    GLCD_Info.State = GLCD_IDLE;    
+//    GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
 	Initialise_System();					 /* Initialise Ports and All Schedulers */
     Start_Sub_Systems();					 /* Start Schedulers */
     G_SPI_SS= SET_HIGH;
@@ -462,8 +475,8 @@ int main(void)
 	T2CONbits.TON = 1;	/* Enable Timer 2 */
     TRISDbits.TRISD12 = 0;
     LATDbits.LATD12 = 1;
-//	Add_SM_Event_to_Queue(EVENT_SM_POWERED_ON);	/* POWER ON event is added to Event Queue */
-    Smc1XmitObject.Msg_Length = 0;
+	Add_SM_Event_to_Queue(EVENT_RESET_BOX_TURNED_ON);	/* POWER ON event is added to Event Queue */
+//    Smc1XmitObject.Msg_Length = 0;
 	do {
 //        GS_LED_PORT = 0;
 		if (IFS0bits.T1IF)
@@ -706,6 +719,10 @@ void Update_Auto_Reset_Seq_State(void)
 {
 	switch (Auto_Reset_Seq.State)
 		{
+        case CHK_POST__AUTO_RESET_CONDITION:
+            break;
+        case AUTO_RESET_WAIT_FOR_INPUT_TO_CLEAR:
+            break;
 		case AUTO_RESET_SYS_NOT_ON:
 			break;
 		case AUTO_RESET_CHK_CONDITION:
@@ -715,8 +732,8 @@ void Update_Auto_Reset_Seq_State(void)
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
 				}
-            else if (RB_Status.Flags.VR1_Contact_Status ==
-				RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+            else if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
 				{
 				/* Both VR and PR are down, Hence auto reset is required */
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
@@ -727,8 +744,8 @@ void Update_Auto_Reset_Seq_State(void)
             if (RB_Status.Flags.VR1_Contact_Status ==
 				RB_Status.Flags.VR2_Contact_Status)
 				{
-                if (RB_Status.Flags.VR1_Contact_Status ==
-                    RB_Status.Flags.VR2_Contact_Status == SET_LOW)
+                if (RB_Status.Flags.VR1_Contact_Status == SET_LOW
+                    && RB_Status.Flags.VR2_Contact_Status == SET_LOW)
                     Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
                 }
             
@@ -826,19 +843,17 @@ void Update_switch_config(void)
     LATAbits.LATA6 = 0;
     
     for(uchTemp=0;uchTemp<100;uchTemp++);
-    
-    for(uchTemp=0;uchTemp<100;uchTemp++);
-    DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0F;
+    DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & (0X0F);
     
     
-    if(DIP_val & 0x1 == 1){
+    if(((DIP_val) & (0x1)) == 1){
         HA_config = 1;
     }
     else{
         HA_config = 0;
     }
     
-    if((DIP_val >> 1 )& 0x1 == 1){
+    if((((DIP_val) >> 1 )& (0x1)) == 1){
         Pilot_mode_config = 1;
     }else{
         Pilot_mode_config = 0;

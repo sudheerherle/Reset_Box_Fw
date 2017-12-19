@@ -4,8 +4,8 @@
 	Revision	:	1	
 	Filename	: 	eeprom.h
 	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
+    Compiler	: 	XC16 Compiler V1.31  
+	Author		:	EM003
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -51,10 +51,10 @@ extern void Initialise_EEPROM_State(void);
 extern void	Start_EEPROM_Sch(void);         
 extern void Update_EEPROM_State(void);      
 extern void Decrement_EEPROM_msTmr(void);   
-extern void Save_Event_Register_on_EEPROM(BYTE uchCPU, event_register_t *Event_Reg);
+extern void Save_Event_Register_on_EEPROM(BYTE uchCPU, event_register_t Event_Reg);
 extern BOOL Is_CPU1_EEPROM_Record_Valid(void);  
 extern BOOL Is_CPU2_EEPROM_Record_Valid(void);  
-extern BYTE *Get_CPU1_EEPROM_Record(void);      
-extern BYTE *Get_CPU2_EEPROM_Record(void);      
+    
 
+extern eeprom_sch_info_t EEPROM_Sch_Info;				/* Structure holds eeprom scheduler information */
 #endif

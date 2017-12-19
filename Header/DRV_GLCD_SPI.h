@@ -40,11 +40,12 @@
 #define OFFSET_SMCPU_CRC        (OFFSET_PRESENT_TIME+ 4)
 #define OFFSET_UNUSED           (OFFSET_SMCPU_CRC + 4)
 #define OFFSET_CRC              (OFFSET_UNUSED + 6)
-#define MAX_COMM_TIMEOUT        100                      /*updated for every 250ms*/
-#define SS_TIMEOUT              50                     /*updated for every 5ms*/
-#define TX_TIMEOUT              20                     /*updated for every 2ms*/
+#define MAX_COMM_TIMEOUT        200                      /*updated for every 250ms*/
+#define SS_TIMEOUT              100                     /*updated for every 5ms*/
+#define TX_TIMEOUT              2                    /*updated for every 2ms*/
 #define REDUNDANT_NW_INDEX      1
 #define FIRST_NW_INDEX          0
+#define NO_SMCPU_THRESHOLD      10
 /* LCD Driver States*/
 typedef enum
 			{
@@ -58,6 +59,7 @@ typedef enum
                                 GLCD_IDLE,
                                 GLCD_BUSY,
                                         GLCD_CM_WAIT,
+                            GLCD_TX_WAIT
 			}GLCD_Driver_State;
 
                         typedef enum
@@ -113,7 +115,10 @@ typedef struct {
 
 extern void Initialise_GLCD_Driver(void);
 extern void Update_GLCD_State(void);
-extern void Decrement_GLCD_msTmr(void);
+void Initialise_GLCD_Display(void);
+BOOL Compare_Data_Sent_prev(void);
+void Build_packet_GLCD(void);
+void Decrement_GLCD_msTmr(void);
 void Update_SMPU_data(void);
 void Process_CPU_Data(void);
 #endif
