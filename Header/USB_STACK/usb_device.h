@@ -1419,9 +1419,9 @@ void USBSoftDetach(void);
   Remarks:
     None                                                                  
   *************************************************************************/
-BOOL USBHandleBusy(USB_HANDLE handle);
+//BOOL USBHandleBusy(USB_HANDLE handle);
 /*DOM-IGNORE-BEGIN*/
-#define USBHandleBusy(handle) (handle==0?0:((volatile BDT_ENTRY*)handle)->STAT.UOWN)
+//#define USBHandleBusy(handle) (handle==0?0:((volatile BDT_ENTRY*)handle)->STAT.UOWN)
 /*DOM-IGNORE-END*/
 
 /********************************************************************
@@ -1453,9 +1453,9 @@ BOOL USBHandleBusy(USB_HANDLE handle);
         None
  
  *******************************************************************/
-WORD USBHandleGetLength(USB_HANDLE handle);
+//WORD USBHandleGetLength(USB_HANDLE handle);
 /*DOM-IGNORE-BEGIN*/
-#define USBHandleGetLength(handle) (((volatile BDT_ENTRY*)handle)->CNT)
+//#define USBHandleGetLength(handle) (((volatile BDT_ENTRY*)handle)->CNT)
 /*DOM-IGNORE-END*/
 
 /********************************************************************
@@ -1485,9 +1485,9 @@ WORD USBHandleGetLength(USB_HANDLE handle);
         None
  
  *******************************************************************/
-WORD USBHandleGetAddr(USB_HANDLE);
+//WORD USBHandleGetAddr(USB_HANDLE);
 /*DOM-IGNORE-BEGIN*/
-#define USBHandleGetAddr(handle) ConvertToVirtualAddress((((volatile BDT_ENTRY*)handle)->ADR))
+//#define USBHandleGetAddr(handle) ConvertToVirtualAddress((((volatile BDT_ENTRY*)handle)->ADR))
 /*DOM-IGNORE-END*/
 
 
@@ -1642,13 +1642,7 @@ void USBEP0Transmit(BYTE options);
   Remarks:
     None                                                                  
   *************************************************************************/
-void USBEP0SendRAMPtr(BYTE* src, WORD size, BYTE Options);
-/*DOM-IGNORE-BEGIN*/
-#define USBEP0SendRAMPtr(src,size,options)  {\
-            inPipes[0].pSrc.bRam = src;\
-            inPipes[0].wCount.Val = size;\
-            inPipes[0].info.Val = options | USB_EP0_BUSY | USB_EP0_RAM;\
-            }
+
 /*DOM-IGNORE-END*/
 
 /**************************************************************************
@@ -1674,13 +1668,7 @@ void USBEP0SendRAMPtr(BYTE* src, WORD size, BYTE Options);
   Remarks:
     None                                                                   
   **************************************************************************/
-void USBEP0SendROMPtr(BYTE* src, WORD size, BYTE Options);
-/*DOM-IGNORE-BEGIN*/
-#define USBEP0SendROMPtr(src,size,options)  {\
-            inPipes[0].pSrc.bRom = src;\
-            inPipes[0].wCount.Val = size;\
-            inPipes[0].info.Val = options | USB_EP0_BUSY | USB_EP0_ROM;\
-            }
+
 /*DOM-IGNORE-END*/
 
 /***************************************************************************
@@ -1702,9 +1690,6 @@ void USBEP0SendROMPtr(BYTE* src, WORD size, BYTE Options);
   Remarks:
     None                                                                    
   ***************************************************************************/
-void USBEP0Receive(BYTE* dest, WORD size, void (*function));
-/*DOM-IGNORE-BEGIN*/
-#define USBEP0Receive(dest,size,function)  {outPipes[0].pDst.bRam = dest;outPipes[0].wCount.Val = size;outPipes[0].pFunc = function;outPipes[0].info.bits.busy = 1; }
 /*DOM-IGNORE-END*/
 
 /********************************************************************
@@ -1800,7 +1785,7 @@ void USBTransferOnePacket(BYTE ep,BYTE dir,BYTE data,BYTE len);
   Remarks:
     None                                                                                                          
   *****************************************************************************/
-BOOL USB_APPLICATION_EVENT_HANDLER(BYTE address, USB_EVENT event, void *pdata, WORD size);
+//BOOL USB_APPLICATION_EVENT_HANDLER(BYTE address, USB_EVENT event, void *pdata, WORD size);
 
 /*******************************************************************************
   Function:
@@ -1832,9 +1817,7 @@ BOOL USB_APPLICATION_EVENT_HANDLER(BYTE address, USB_EVENT event, void *pdata, W
   Remarks:
     None                                                                                                          
   *****************************************************************************/
-void *USBDeviceCBGetDescriptor (    UINT16 *length, 
-                                    UINT8 *ptr_type,
-                                    DESCRIPTOR_ID *id);
+
 
 
 
@@ -1906,17 +1889,26 @@ void *USBDeviceCBGetDescriptor (    UINT16 *length,
 // Defintion of the PIPE structure
 //  This structure is used to keep track of data that is sent out
 //  of the stack automatically.
+typedef enum{
+	SRC_DEVICE =0,
+	SRC_CONFIG,
+	SRC_SD0000,
+	SRC_SD0001,
+	SRC_SD0002,
+} ROM_src;
+
+typedef enum{
+	SRC_CNTRL = 0,
+	SRC_USB_ACTIVE,
+	SRC_USB_ALTERNATIVE,
+	SRC_DUMMY,
+    SRC_LINE,        
+} RAM_Src;
+
+
 typedef struct __attribute__ ((packed))
 {
-    union __attribute__ ((packed))
-    {
-        //Various options of pointers that are available to
-        // get the data from
-        BYTE *bRam;
-        ROM BYTE *bRom;
-        WORD *wRam;
-        ROM WORD *wRom;
-    }pSrc;
+
     union __attribute__ ((packed))
     {
         struct __attribute__ ((packed))
@@ -1939,13 +1931,7 @@ extern USB_VOLATILE IN_PIPE inPipes[];
 
 typedef struct __attribute__ ((packed))
 {
-    union __attribute__ ((packed))
-    {
-        //Various options of pointers that are available to
-        // get the data from
-        BYTE *bRam;
-        WORD *wRam;
-    }pDst;
+
     union __attribute__ ((packed))
     {
         struct __attribute__ ((packed))
@@ -1957,7 +1943,7 @@ typedef struct __attribute__ ((packed))
         BYTE Val;
     }info;
     WORD_VAL wCount;
-    CTRL_TRF_RETURN (*pFunc)(CTRL_TRF_PARAMS);
+
 }OUT_PIPE;
 
 /************* DWF - SHOULD BE REIMPLEMENTED AS AN EVENT *******************/

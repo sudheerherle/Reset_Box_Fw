@@ -2,7 +2,7 @@
 #include "usb_function_cdc.h"
 
 ROM USB_DEVICE_DESCRIPTOR device_dsc=
-{
+{   {
     0x12,                   // Size of this descriptor in bytes
     USB_DESCRIPTOR_DEVICE,  // DEVICE descriptor type
     0x0200,                 // USB Spec Release Number in BCD format
@@ -17,6 +17,7 @@ ROM USB_DEVICE_DESCRIPTOR device_dsc=
     0x02,                   // Product string index
     0x00,                   // Device serial number string index
     0x01                    // Number of possible configurations
+    }
 };
 
 ROM BYTE configDescriptor1[]={
@@ -105,19 +106,28 @@ ROM BYTE configDescriptor1[]={
 
 
 //Language code string descriptor
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[1];}sd000={
-sizeof(sd000),USB_DESCRIPTOR_STRING,{0x0409}};
+
+sd000_union sd000={
+    {
+        sizeof(sd000),
+        USB_DESCRIPTOR_STRING,
+        {0x0409}
+    }
+};
 
 //Manufacturer string descriptor
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[25];}sd001={
-sizeof(sd001),USB_DESCRIPTOR_STRING,
+
+sd001_union sd001={
+    {
+        sizeof(sd001),USB_DESCRIPTOR_STRING,
 {'M','i','c','r','o','c','h','i','p',' ',
-'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'
-}};
+'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'}
+}
+};
 
 //Product string descriptor
-ROM struct{BYTE bLength;BYTE bDscType;WORD string[25];}sd002={
-sizeof(sd002),USB_DESCRIPTOR_STRING,
+sd002_union sd002={
+    {sizeof(sd002),USB_DESCRIPTOR_STRING,
 {'C','D','C',' ','R','S','-','2','3','2',' ',
-'E','m','u','l','a','t','i','o','n',' ','D','e','m','o'}
+'E','m','u','l','a','t','i','o','n',' ','D','e','m','o'}}
 };

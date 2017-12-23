@@ -525,7 +525,7 @@ BOOL USBSleepOnSuspend(void);
         None
  
  *******************************************************************/
-#define DisableNonZeroEndpoints(last_ep_num) memset((void*)&U1EP1,0x00,(last_ep_num * 2));                                          
+#define DisableNonZeroEndpoints(last_ep_num) memset((void *)&U1EP1,0x00,(last_ep_num * 2));                                          
 
 
 /*****************************************************************************/

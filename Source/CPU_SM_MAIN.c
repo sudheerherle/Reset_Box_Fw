@@ -359,7 +359,7 @@ BYTE flash_read_c (UINT32 temp)
 
 void Check_Flash(void)
 {
-	const unsigned char *pOnChipFlash = 0;
+//	const unsigned char *pOnChipFlash = 0;
 	longtype_t CalculatedSum;
 	longtype_t SavedSum;
 	BYTE uchHiNibble, uchLoNibble;
@@ -386,7 +386,7 @@ void Check_Flash(void)
 	 * addresses below the upper limit of RAM will access the RAM and above upper limit
 	 * of RAM will access FLASH, which means entire FLASH is not accessible.
 	 */
-	CalculatedSum.LWord = Crc32((const unsigned char *) pOnChipFlash, (INT32) ROMSIZE );
+	CalculatedSum.LWord = crc32(CalculatedSum.LWord);
 	sprintf((char *)uchCheckSum, "%04x%04x", CalculatedSum.DWord.HiWord.Word, CalculatedSum.DWord.LoWord.Word);
 	sprintf((char *)uchIDInfo, " DAC SM CPU ");
 	if (CalculatedSum.LWord == SavedSum.LWord)
@@ -641,7 +641,7 @@ void Update_Reset_Seq_State(void)
 				 * Reset Push Button has been depressed, but we do not know
 				 * whether SYSTEM is in RESET MODE or section is occupied.
 				 */
-                    if(LATAbits.LATA6 == 0){
+                    if(Pilot_mode_config == 1){
 
 //                            }
 //				if (PORTAbits.RA6 == PILOT_MODE)
@@ -726,26 +726,29 @@ void Update_Auto_Reset_Seq_State(void)
 		case AUTO_RESET_SYS_NOT_ON:
 			break;
 		case AUTO_RESET_CHK_CONDITION:
-			if (RB_Status.Flags.VR1_Contact_Status !=
+			if(HA_config == 0){
+                break;
+            }
+            if (RB_Status.Flags.VR1_Contact_Status !=
 				RB_Status.Flags.VR2_Contact_Status)
 				{
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
 				}
-            else if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
-				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
-				{
-				/* Both VR and PR are down, Hence auto reset is required */
-				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
-                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
-				}
+//            else if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+//				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+//				{
+//				/* Both VR and PR are down, Hence auto reset is required */
+//				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
+//                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
+//				}
 			break;
 		case AUTO_RELAY_STATES_DIFFERENT:			
             if (RB_Status.Flags.VR1_Contact_Status ==
 				RB_Status.Flags.VR2_Contact_Status)
 				{
-                if (RB_Status.Flags.VR1_Contact_Status == SET_LOW
-                    && RB_Status.Flags.VR2_Contact_Status == SET_LOW)
+//                if (RB_Status.Flags.VR1_Contact_Status == SET_LOW
+//                    && RB_Status.Flags.VR2_Contact_Status == SET_LOW)
                     Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
                 }
             

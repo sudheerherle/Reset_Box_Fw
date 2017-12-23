@@ -38,7 +38,8 @@
 extern dac_sysinfo_t DAC_sysinfo;
 extern time_t SystemClock,SystemDate;						/* from cpu_sm.c */
 extern sm_status_t Status;						/* from cpu_sm.c */
-extern event_register_t Shadow[MAXIMUM_NO_OF_CPU];	/* comm_dac.c	 */
+extern BYTE Network_config;
+extern event_register_t Shadow[MAX_SMCPU][MAXIMUM_NO_OF_CPU];	/* comm_dac.c	 */
 extern BYTE CPU1_Address;						/* from cpu_sm.c */
 extern BYTE CPU2_Address;						/* from cpu_sm.c */
 extern host_sch_info_t   Host_Sch_Info;				/* from comm_host.c */			
@@ -611,20 +612,20 @@ void Build_Reply_To_Status_Command(void)
 	Xmit_Queue.Record[0].Msg_Buffer[0]  = CPU1_Address;		/* Source Id   */
 	Xmit_Queue.Record[0].Msg_Buffer[1]  = DAC_STATUS_REPLY;					/* Command  */
     Xmit_Queue.Record[0].Msg_Buffer[2]  = DAC_sysinfo.Unit_Type;
-    Xmit_Queue.Record[0].Msg_Buffer[3]  = 0;        //TODO should add network ID set in the DIP switch
+    Xmit_Queue.Record[0].Msg_Buffer[3]  = Network_config;        //TODO should add network ID set in the DIP switch
 	if(Command_Info[HOST_ADDR_OFFSET] == CPU1_Address)
 	{	
-		Xmit_Queue.Record[0].Msg_Buffer[4]  = (BYTE) Shadow[0].Id.US_DAC;		/* US unit status */
-		Xmit_Queue.Record[0].Msg_Buffer[5]  = (BYTE) Shadow[0].Id.DS_DAC;		/* DS unit status */
-		Xmit_Queue.Record[0].Msg_Buffer[6]  = (BYTE) Shadow[0].Id.US_Block;   /* US Track_status */
-		Xmit_Queue.Record[0].Msg_Buffer[7]  = (BYTE) Shadow[0].Id.DS_Block;	/* DS Track_status */
+		Xmit_Queue.Record[0].Msg_Buffer[4]  = (BYTE) Shadow[0][0].Id.US_DAC;		/* US unit status */
+		Xmit_Queue.Record[0].Msg_Buffer[5]  = (BYTE) Shadow[0][0].Id.DS_DAC;		/* DS unit status */
+		Xmit_Queue.Record[0].Msg_Buffer[6]  = (BYTE) Shadow[0][0].Id.US_Block;   /* US Track_status */
+		Xmit_Queue.Record[0].Msg_Buffer[7]  = (BYTE) Shadow[0][0].Id.DS_Block;	/* DS Track_status */
 	}
 	else
 	{
-		Xmit_Queue.Record[0].Msg_Buffer[4]  = (BYTE) Shadow[1].Id.US_DAC;		/* US unit status */
-		Xmit_Queue.Record[0].Msg_Buffer[5]  = (BYTE) Shadow[1].Id.DS_DAC;		/* DS unit status */
-		Xmit_Queue.Record[0].Msg_Buffer[6]  = (BYTE) Shadow[1].Id.US_Block;	/* US Track_status */
-		Xmit_Queue.Record[0].Msg_Buffer[7]  = (BYTE) Shadow[1].Id.DS_Block;	/* DS Track_status */
+		Xmit_Queue.Record[0].Msg_Buffer[4]  = (BYTE) Shadow[1][1].Id.US_DAC;		/* US unit status */
+		Xmit_Queue.Record[0].Msg_Buffer[5]  = (BYTE) Shadow[1][1].Id.DS_DAC;		/* DS unit status */
+		Xmit_Queue.Record[0].Msg_Buffer[6]  = (BYTE) Shadow[1][1].Id.US_Block;	/* US Track_status */
+		Xmit_Queue.Record[0].Msg_Buffer[7]  = (BYTE) Shadow[1][1].Id.DS_Block;	/* DS Track_status */
 	}				
 	CheckSum.Word = Crc16(XMIT_QUEUE, 8);					/* Calculate CRC 16 for Xmit Buffer */
 	Xmit_Queue.Record[0].Msg_Buffer[8] = CheckSum.Byte.Lo;					/* CRC low Byte */

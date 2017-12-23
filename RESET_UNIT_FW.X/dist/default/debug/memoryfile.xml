@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/RESET_UNIT_FW.X.production.elf">
+  <executable name="dist/default/debug/RESET_UNIT_FW.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>98304</length>
-      <used>21616</used>
-      <free>76688</free>
+      <used>21694</used>
+      <free>76610</free>
     </memory>
     <memory name="program">
       <units>bytes</units>

@@ -1,32 +1,22 @@
-
 #include "usb.h"
 #include "usb_function_cdc.h"
 #include <xc.h>
-#include "HardwareProfile.h"
 
 
-#include "GenericTypeDefs.h"
-#include "Compiler.h"
-#include "usb_config.h"
-#include "usb_device.h"
 #include "comm_host.h"
-extern char USB_In_Buffer_dummy[64];
+
 char USB_In_Buffer[64];
 char USB_Out_Buffer[64];
 
-BOOL stringPrinted;
-volatile BOOL buttonPressed;
-volatile BYTE buttonCount;
-extern host_sch_info_t      		Host_Sch_Info;			/* Structure holds host comm scheduler information */
 
-void InitializeSystem(void);
+
+
+extern host_sch_info_t      		Host_Sch_Info;			/* Structure holds host comm scheduler information */
+extern BOOL USB_Status;/*lint -e552 */
 void ProcessIO(void);
-void USBDeviceTasks(void);
-void YourHighPriorityISRCode();
-void YourLowPriorityISRCode();
 void USBCBSendResume(void);
-void BlinkUSBStatus(void);
-void UserInit(void);
+
+
 void USB_Process(void);
 
 volatile long int Debug_flag = 0;
@@ -53,7 +43,7 @@ void Update_USB_Sch_State(void)
                 Host_Sch_Info.USB_Timeout_ms = USB_DELAY_TIME;
         }
 }//end main
-    BYTE numBytesRead = 0,char_cnt;
+    BYTE numBytesRead = 0;
 void ProcessIO(void)
 {   
 
@@ -89,7 +79,6 @@ void ProcessIO(void)
     CDCTxService();
 }		//end ProcessIO
 extern BYTE Bytes_read;
-void Update_Host_Sch_State(void);
 void USB_Process(void)
 {
     numBytesRead = 0;
@@ -128,14 +117,14 @@ void USB_Process(void)
 
 void USBCB_SOF_Handler(void)
 {
-
+    Nop();
 }
 
 
-static WORD delay_count;
-void USBCBSendResume(void)
-{
 
+void USBCBSendResume(void)
+{   
+    static WORD delay_count;
     if(USBGetRemoteWakeupStatus() == TRUE) 
     {
         if(USBIsBusSuspended() == TRUE)
@@ -177,7 +166,7 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(int event)
             USBCB_SOF_Handler();
             break;
         case EVENT_SUSPEND:
-            USBSleepOnSuspend();
+            USB_Status = USBSleepOnSuspend();
             break;
         case EVENT_RESUME:
             

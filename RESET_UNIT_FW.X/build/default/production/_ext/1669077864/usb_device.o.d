@@ -12,4 +12,6 @@ build/default/production/_ext/1669077864/usb_device.o:  \
  ../Header/USB_STACK/HardwareProfile.h  \
  ../Header/USB_STACK/HardwareProfile\ -\ PIC24FJ256GB210\ PIM.h  \
  ../Header/USB_STACK/usb_device_local.h  \
-../Header/comm_host.h 
+../Header/comm_host.h  \
+ ../Header/USB_STACK/usb_function_cdc.h  \
+../Header/USB_STACK/usb.h 

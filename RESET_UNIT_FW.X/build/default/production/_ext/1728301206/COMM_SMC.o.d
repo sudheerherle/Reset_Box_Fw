@@ -6,4 +6,5 @@ build/default/production/_ext/1728301206/COMM_SMC.o:  \
  ../Header/DRV_MEM.H  \
 ../Header/EVENTS.H  \
 ../Header/CRC16.H  \
- ../Header/DRV_LED.H 
+ ../Header/DRV_LED.H  \
+../Header/DRV_GLCD_SPI.h 

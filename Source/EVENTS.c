@@ -45,13 +45,13 @@
 extern BYTE log_event,System_error_code;
 
 extern dac_sysinfo_t DAC_sysinfo;	
-
+extern BYTE Network_ID;
 extern sm_status_t Status;							/* from cpu_sm.c */
 extern time_t SystemClock;							/* from cpu_sm.c */
 extern BYTE CPU1_Address;							/* from cpu_sm.c */
 extern BYTE CPU2_Address;							/* from cpu_sm.c */
-extern BYTE CPU1_data[SPI_MESSAGE_LENGTH];			/* from comm_dac.c */
-extern BYTE CPU2_data[SPI_MESSAGE_LENGTH];			/* from comm_dac.c */
+extern BYTE CPU1_data[MAX_SMCPU][SPI_MESSAGE_LENGTH];			/* from comm_dac.c */
+extern BYTE CPU2_data[MAX_SMCPU][SPI_MESSAGE_LENGTH];			/* from comm_dac.c */
 extern EEPROM_Erase_State Block_erase_status;
 
 extern host_sch_info_t   Host_Sch_Info;				/* from comm_host.c */
@@ -110,7 +110,7 @@ events_queue_t    Events_Queue;
    whenever previous event Token is modified with "OLD_EVENT_TOKEN" Head is Incremented.*/
 ring_buffer_t     Events_Ring_Buffer;
 
-event_register_t  Events[MAXIMUM_NO_OF_CPU]; /* it holds the Previous Status of Both Cpu's */
+event_register_t  Events[MAX_SMCPU][MAXIMUM_NO_OF_CPU]; /* it holds the Previous Status of Both Cpu's */
 
 BOOL E_status;
 
@@ -251,21 +251,21 @@ BOOL Setup_Events_Erasure(void)
 	/*
 	 * Initialise Event registers to default values
 	 */
-	Events[0].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
-	Events[0].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
-	Events[0].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
-	Events[0].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
-	Events[0].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
-	Events[0].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
-	Events[1].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
-	Events[1].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
-	Events[1].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
-	Events[1].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
-	Events[1].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
-	Events[1].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
+	Events[Network_ID][0].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
+	Events[Network_ID][0].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
+	Events[Network_ID][0].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
+	Events[Network_ID][0].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
+	Events[Network_ID][0].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
+	Events[Network_ID][0].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
+	Events[Network_ID][1].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
+	Events[Network_ID][1].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
+	Events[Network_ID][1].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
+	Events[Network_ID][1].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
+	Events[Network_ID][1].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
+	Events[Network_ID][1].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
 	/* Save the Event Registers of Both Cpu on EEPROM */  
-	Save_Event_Register_on_EEPROM(CPU1_ID, Events[0]);
-	Save_Event_Register_on_EEPROM(CPU2_ID, Events[1]);
+	Save_Event_Register_on_EEPROM(CPU1_ID, Events[Network_ID][0]);
+	Save_Event_Register_on_EEPROM(CPU2_ID, Events[Network_ID][1]);
 
 	return (bReturnValue);
 }
@@ -788,40 +788,40 @@ void Build_Event_Queue_Record(BYTE uchCPU, event_id_t uchEventId)
 
 	if (uchCPU == CPU1_ID)
 		{
-		if (CPU1_data[MESSAGE_TYPE_OFFSET] == READ_AXLE_COUNT)
+		if (CPU1_data[Network_ID][MESSAGE_TYPE_OFFSET] == READ_AXLE_COUNT)
 			{
 			/* Collect Cpu1 All counts to Store into Event Record */
-			US_Fwd_Count.Byte.Lo = CPU1_data[US_FWD_COUNT_OFFSET];
-			US_Fwd_Count.Byte.Hi = CPU1_data[US_FWD_COUNT_OFFSET + 1];
-			US_Rev_Count.Byte.Lo = CPU1_data[US_REV_COUNT_OFFSET];
-			US_Rev_Count.Byte.Hi = CPU1_data[US_REV_COUNT_OFFSET + 1];
-			DS_Fwd_Count.Byte.Lo = CPU1_data[DS_FWD_COUNT_OFFSET];
-			DS_Fwd_Count.Byte.Hi = CPU1_data[DS_FWD_COUNT_OFFSET + 1];
-			DS_Rev_Count.Byte.Lo = CPU1_data[DS_REV_COUNT_OFFSET];
-			DS_Rev_Count.Byte.Hi = CPU1_data[DS_REV_COUNT_OFFSET + 1];
+			US_Fwd_Count.Byte.Lo = CPU1_data[Network_ID][US_FWD_COUNT_OFFSET];
+			US_Fwd_Count.Byte.Hi = CPU1_data[Network_ID][US_FWD_COUNT_OFFSET + 1];
+			US_Rev_Count.Byte.Lo = CPU1_data[Network_ID][US_REV_COUNT_OFFSET];
+			US_Rev_Count.Byte.Hi = CPU1_data[Network_ID][US_REV_COUNT_OFFSET + 1];
+			DS_Fwd_Count.Byte.Lo = CPU1_data[Network_ID][DS_FWD_COUNT_OFFSET];
+			DS_Fwd_Count.Byte.Hi = CPU1_data[Network_ID][DS_FWD_COUNT_OFFSET + 1];
+			DS_Rev_Count.Byte.Lo = CPU1_data[Network_ID][DS_REV_COUNT_OFFSET];
+			DS_Rev_Count.Byte.Hi = CPU1_data[Network_ID][DS_REV_COUNT_OFFSET + 1];
 			Cpu_Address = CPU1_Address;
 			}
-		if (CPU1_data[MESSAGE_TYPE_OFFSET] == READ_RESET_INFO)
+		if (CPU1_data[Network_ID][MESSAGE_TYPE_OFFSET] == READ_RESET_INFO)
 			{
 			 Cpu_Address = CPU1_Address;
 			}
 		}
 	else
 		{
-		if (CPU2_data[MESSAGE_TYPE_OFFSET] == READ_AXLE_COUNT)
+		if (CPU2_data[Network_ID][MESSAGE_TYPE_OFFSET] == READ_AXLE_COUNT)
 			{
 			/* Collect Cpu1 All counts to Store into Event Record */
-			US_Fwd_Count.Byte.Lo = CPU2_data[US_FWD_COUNT_OFFSET];
-			US_Fwd_Count.Byte.Hi = CPU2_data[US_FWD_COUNT_OFFSET + 1];
-			US_Rev_Count.Byte.Lo = CPU2_data[US_REV_COUNT_OFFSET];
-			US_Rev_Count.Byte.Hi = CPU2_data[US_REV_COUNT_OFFSET + 1];
-			DS_Fwd_Count.Byte.Lo = CPU2_data[DS_FWD_COUNT_OFFSET];
-			DS_Fwd_Count.Byte.Hi = CPU2_data[DS_FWD_COUNT_OFFSET + 1];
-			DS_Rev_Count.Byte.Lo = CPU2_data[DS_REV_COUNT_OFFSET];
-			DS_Rev_Count.Byte.Hi = CPU2_data[DS_REV_COUNT_OFFSET + 1];
+			US_Fwd_Count.Byte.Lo = CPU2_data[Network_ID][US_FWD_COUNT_OFFSET];
+			US_Fwd_Count.Byte.Hi = CPU2_data[Network_ID][US_FWD_COUNT_OFFSET + 1];
+			US_Rev_Count.Byte.Lo = CPU2_data[Network_ID][US_REV_COUNT_OFFSET];
+			US_Rev_Count.Byte.Hi = CPU2_data[Network_ID][US_REV_COUNT_OFFSET + 1];
+			DS_Fwd_Count.Byte.Lo = CPU2_data[Network_ID][DS_FWD_COUNT_OFFSET];
+			DS_Fwd_Count.Byte.Hi = CPU2_data[Network_ID][DS_FWD_COUNT_OFFSET + 1];
+			DS_Rev_Count.Byte.Lo = CPU2_data[Network_ID][DS_REV_COUNT_OFFSET];
+			DS_Rev_Count.Byte.Hi = CPU2_data[Network_ID][DS_REV_COUNT_OFFSET + 1];
 			Cpu_Address = CPU2_Address;
 			}
-		if (CPU2_data[MESSAGE_TYPE_OFFSET] == READ_RESET_INFO)
+		if (CPU2_data[Network_ID][MESSAGE_TYPE_OFFSET] == READ_RESET_INFO)
 			{
 			 Cpu_Address = CPU2_Address;
 			}
@@ -868,51 +868,51 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
             switch(DAC_sysinfo.Unit_Type)
             {
                 case DAC_UNIT_TYPE_DE:
-                    Count1.Byte.Lo = CPU1_data[53];
-                    Count1.Byte.Hi = CPU1_data[53 + 1];                    
+                    Count1.Byte.Lo = CPU1_data[Network_ID][53];
+                    Count1.Byte.Hi = CPU1_data[Network_ID][53 + 1];                    
                     break;
                 case DAC_UNIT_TYPE_SF:
-                    Count1.Byte.Lo = CPU1_data[53];
-                    Count1.Byte.Hi = CPU1_data[53 + 1];                    
-                    Count2.Byte.Lo = CPU1_data[55];
-                    Count2.Byte.Hi = CPU1_data[55 + 1];                                        
-                    Count3.Byte.Lo = CPU1_data[61];
-                    Count3.Byte.Hi = CPU1_data[61 + 1];                    
-                    Count4.Byte.Lo = CPU1_data[63];
-                    Count4.Byte.Hi = CPU1_data[63 + 1];  
+                    Count1.Byte.Lo = CPU1_data[Network_ID][53];
+                    Count1.Byte.Hi = CPU1_data[Network_ID][53 + 1];                    
+                    Count2.Byte.Lo = CPU1_data[Network_ID][55];
+                    Count2.Byte.Hi = CPU1_data[Network_ID][55 + 1];                                        
+                    Count3.Byte.Lo = CPU1_data[Network_ID][61];
+                    Count3.Byte.Hi = CPU1_data[Network_ID][61 + 1];                    
+                    Count4.Byte.Lo = CPU1_data[Network_ID][63];
+                    Count4.Byte.Hi = CPU1_data[Network_ID][63 + 1];  
                     break;
                 case DAC_UNIT_TYPE_EF:
-                    Count1.Byte.Lo = CPU1_data[45];
-                    Count1.Byte.Hi = CPU1_data[45 + 1];                    
-                    Count2.Byte.Lo = CPU1_data[47];
-                    Count2.Byte.Hi = CPU1_data[47+ 1];                                        
-                    Count3.Byte.Lo = CPU1_data[37];
-                    Count3.Byte.Hi = CPU1_data[37 + 1];                    
-                    Count4.Byte.Lo = CPU1_data[39];
-                    Count4.Byte.Hi = CPU1_data[39 + 1];  
+                    Count1.Byte.Lo = CPU1_data[Network_ID][45];
+                    Count1.Byte.Hi = CPU1_data[Network_ID][45 + 1];                    
+                    Count2.Byte.Lo = CPU1_data[Network_ID][47];
+                    Count2.Byte.Hi = CPU1_data[Network_ID][47+ 1];                                        
+                    Count3.Byte.Lo = CPU1_data[Network_ID][37];
+                    Count3.Byte.Hi = CPU1_data[Network_ID][37 + 1];                    
+                    Count4.Byte.Lo = CPU1_data[Network_ID][39];
+                    Count4.Byte.Hi = CPU1_data[Network_ID][39 + 1];  
                     break;
                 case DAC_UNIT_TYPE_CF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[39];
-                        Count1.Byte.Hi = CPU1_data[39 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[37];
-                        Count2.Byte.Hi = CPU1_data[37+ 1];                                        
-                        Count3.Byte.Lo = CPU1_data[53];
-                        Count3.Byte.Hi = CPU1_data[53 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[55];
-                        Count4.Byte.Hi = CPU1_data[55+ 1];                          
+                        Count1.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][39 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][37+ 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][53];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][53 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][55];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][55+ 1];                          
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[47];
-                        Count1.Byte.Hi = CPU1_data[47 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[45];
-                        Count2.Byte.Hi = CPU1_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[61];
-                        Count3.Byte.Hi = CPU1_data[61 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[63];
-                        Count4.Byte.Hi = CPU1_data[63 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][47 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][61];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][61 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][63];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][63 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_D3_A:
@@ -920,70 +920,70 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_D3_C:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[37];
-                        Count1.Byte.Hi = CPU1_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[39];
-                        Count2.Byte.Hi = CPU1_data[39 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[41];
-                        Count3.Byte.Hi = CPU1_data[41 + 1];                    
+                        Count1.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][39 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][41];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][41 + 1];                    
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[43];
-                        Count1.Byte.Hi = CPU1_data[43 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[45];
-                        Count2.Byte.Hi = CPU1_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[47];
-                        Count3.Byte.Hi = CPU1_data[47 + 1];                    
+                        Count1.Byte.Lo = CPU1_data[Network_ID][43];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][43 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][47 + 1];                    
                     }
                     uchEventId = (event_id_t)((BYTE)uchEventId + 8);
                     break;
                 case DAC_UNIT_TYPE_3D_SF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[37];
-                        Count1.Byte.Hi = CPU1_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[55];
-                        Count2.Byte.Hi = CPU1_data[55 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[53];
-                        Count3.Byte.Hi = CPU1_data[53 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[47];
-                        Count4.Byte.Hi = CPU1_data[47 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][55];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][55 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][53];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][53 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][47 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[45];
-                        Count1.Byte.Hi = CPU1_data[45 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[63];
-                        Count2.Byte.Hi = CPU1_data[63 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[61];
-                        Count3.Byte.Hi = CPU1_data[61 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[39];
-                        Count4.Byte.Hi = CPU1_data[39 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][45 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][63];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][63 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][61];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][61 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][39 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_3D_EF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[63];
-                        Count1.Byte.Hi = CPU1_data[63 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[53];
-                        Count2.Byte.Hi = CPU1_data[53 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[39];
-                        Count3.Byte.Hi = CPU1_data[39 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[37];
-                        Count4.Byte.Hi = CPU1_data[37 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][63];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][63 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][53];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][53 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][39 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][37 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[55];
-                        Count1.Byte.Hi = CPU1_data[55 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[61];
-                        Count2.Byte.Hi = CPU1_data[61 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[47];
-                        Count3.Byte.Hi = CPU1_data[47 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[45];
-                        Count4.Byte.Hi = CPU1_data[45 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][55];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][55 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][61];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][61 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][47 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][45 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_D4_A:
@@ -992,25 +992,25 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_D4_D:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[37];
-                        Count1.Byte.Hi = CPU1_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[39];
-                        Count2.Byte.Hi = CPU1_data[39 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[41];
-                        Count3.Byte.Hi = CPU1_data[41 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[43];
-                        Count4.Byte.Hi = CPU1_data[43 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][39 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][41];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][41 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][43];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][43 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[45];
-                        Count1.Byte.Hi = CPU1_data[45 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[47];
-                        Count2.Byte.Hi = CPU1_data[47 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[49];
-                        Count3.Byte.Hi = CPU1_data[49 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[51];
-                        Count4.Byte.Hi = CPU1_data[51 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][45 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][47 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][49];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][49 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][51];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][51 + 1];                                                  
                     }
                     uchEventId = (event_id_t)((BYTE)uchEventId + 8);
                     break;
@@ -1018,25 +1018,25 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_LCWS_DL:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU1_data[53];
-                        Count1.Byte.Hi = CPU1_data[53 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[37];
-                        Count2.Byte.Hi = CPU1_data[37 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[39];
-                        Count3.Byte.Hi = CPU1_data[39 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[55];
-                        Count4.Byte.Hi = CPU1_data[55 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][53];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][53 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][37];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][37 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][39];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][39 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][55];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][55 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU1_data[61];
-                        Count1.Byte.Hi = CPU1_data[61 + 1];                    
-                        Count2.Byte.Lo = CPU1_data[45];
-                        Count2.Byte.Hi = CPU1_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU1_data[47];
-                        Count3.Byte.Hi = CPU1_data[47 + 1];                    
-                        Count4.Byte.Lo = CPU1_data[63];
-                        Count4.Byte.Hi = CPU1_data[63 + 1];                                                  
+                        Count1.Byte.Lo = CPU1_data[Network_ID][61];
+                        Count1.Byte.Hi = CPU1_data[Network_ID][61 + 1];                    
+                        Count2.Byte.Lo = CPU1_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU1_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU1_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU1_data[Network_ID][47 + 1];                    
+                        Count4.Byte.Lo = CPU1_data[Network_ID][63];
+                        Count4.Byte.Hi = CPU1_data[Network_ID][63 + 1];                                                  
                     }
                     break;
                 default:
@@ -1050,51 +1050,51 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
             switch(DAC_sysinfo.Unit_Type)
             {
                 case DAC_UNIT_TYPE_DE:
-                    Count1.Byte.Lo = CPU2_data[53];
-                    Count1.Byte.Hi = CPU2_data[53 + 1];                    
+                    Count1.Byte.Lo = CPU2_data[Network_ID][53];
+                    Count1.Byte.Hi = CPU2_data[Network_ID][53 + 1];                    
                     break;
                 case DAC_UNIT_TYPE_SF:
-                    Count1.Byte.Lo = CPU2_data[53];
-                    Count1.Byte.Hi = CPU2_data[53 + 1];                    
-                    Count2.Byte.Lo = CPU2_data[55];
-                    Count2.Byte.Hi = CPU2_data[55 + 1];                                        
-                    Count3.Byte.Lo = CPU2_data[61];
-                    Count3.Byte.Hi = CPU2_data[61 + 1];                    
-                    Count4.Byte.Lo = CPU2_data[63];
-                    Count4.Byte.Hi = CPU2_data[63 + 1];  
+                    Count1.Byte.Lo = CPU2_data[Network_ID][53];
+                    Count1.Byte.Hi = CPU2_data[Network_ID][53 + 1];                    
+                    Count2.Byte.Lo = CPU2_data[Network_ID][55];
+                    Count2.Byte.Hi = CPU2_data[Network_ID][55 + 1];                                        
+                    Count3.Byte.Lo = CPU2_data[Network_ID][61];
+                    Count3.Byte.Hi = CPU2_data[Network_ID][61 + 1];                    
+                    Count4.Byte.Lo = CPU2_data[Network_ID][63];
+                    Count4.Byte.Hi = CPU2_data[Network_ID][63 + 1];  
                     break;
                 case DAC_UNIT_TYPE_EF:
-                    Count1.Byte.Lo = CPU2_data[45];
-                    Count1.Byte.Hi = CPU2_data[45 + 1];                    
-                    Count2.Byte.Lo = CPU2_data[47];
-                    Count2.Byte.Hi = CPU2_data[47+ 1];                                        
-                    Count3.Byte.Lo = CPU2_data[37];
-                    Count3.Byte.Hi = CPU2_data[37 + 1];                    
-                    Count4.Byte.Lo = CPU2_data[39];
-                    Count4.Byte.Hi = CPU2_data[39 + 1];  
+                    Count1.Byte.Lo = CPU2_data[Network_ID][45];
+                    Count1.Byte.Hi = CPU2_data[Network_ID][45 + 1];                    
+                    Count2.Byte.Lo = CPU2_data[Network_ID][47];
+                    Count2.Byte.Hi = CPU2_data[Network_ID][47+ 1];                                        
+                    Count3.Byte.Lo = CPU2_data[Network_ID][37];
+                    Count3.Byte.Hi = CPU2_data[Network_ID][37 + 1];                    
+                    Count4.Byte.Lo = CPU2_data[Network_ID][39];
+                    Count4.Byte.Hi = CPU2_data[Network_ID][39 + 1];  
                     break;
                 case DAC_UNIT_TYPE_CF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[39];
-                        Count1.Byte.Hi = CPU2_data[39 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[37];
-                        Count2.Byte.Hi = CPU2_data[37+ 1];                                        
-                        Count3.Byte.Lo = CPU2_data[53];
-                        Count3.Byte.Hi = CPU2_data[53 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[55];
-                        Count4.Byte.Hi = CPU2_data[55+ 1];                          
+                        Count1.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][39 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][37+ 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][53];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][53 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][55];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][55+ 1];                          
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[47];
-                        Count1.Byte.Hi = CPU2_data[47 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[45];
-                        Count2.Byte.Hi = CPU2_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[61];
-                        Count3.Byte.Hi = CPU2_data[61 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[63];
-                        Count4.Byte.Hi = CPU2_data[63 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][47 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][61];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][61 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][63];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][63 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_D3_A:
@@ -1102,70 +1102,70 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_D3_C:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[37];
-                        Count1.Byte.Hi = CPU2_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[39];
-                        Count2.Byte.Hi = CPU2_data[39 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[41];
-                        Count3.Byte.Hi = CPU2_data[41 + 1];                    
+                        Count1.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][39 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][41];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][41 + 1];                    
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[43];
-                        Count1.Byte.Hi = CPU2_data[43 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[45];
-                        Count2.Byte.Hi = CPU2_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[47];
-                        Count3.Byte.Hi = CPU2_data[47 + 1];                    
+                        Count1.Byte.Lo = CPU2_data[Network_ID][43];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][43 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][47 + 1];                    
                     }
                     uchEventId = (event_id_t)((BYTE)uchEventId + 8);
                     break;
                 case DAC_UNIT_TYPE_3D_SF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[37];
-                        Count1.Byte.Hi = CPU2_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[55];
-                        Count2.Byte.Hi = CPU2_data[55 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[53];
-                        Count3.Byte.Hi = CPU2_data[53 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[47];
-                        Count4.Byte.Hi = CPU2_data[47 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][55];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][55 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][53];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][53 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][47 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[45];
-                        Count1.Byte.Hi = CPU2_data[45 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[63];
-                        Count2.Byte.Hi = CPU2_data[63 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[61];
-                        Count3.Byte.Hi = CPU2_data[61 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[39];
-                        Count4.Byte.Hi = CPU2_data[39 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][45 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][63];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][63 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][61];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][61 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][39 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_3D_EF:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[63];
-                        Count1.Byte.Hi = CPU2_data[63 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[53];
-                        Count2.Byte.Hi = CPU2_data[53 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[39];
-                        Count3.Byte.Hi = CPU2_data[39 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[37];
-                        Count4.Byte.Hi = CPU2_data[37 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][63];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][63 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][53];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][53 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][39 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][37 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[55];
-                        Count1.Byte.Hi = CPU2_data[55 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[61];
-                        Count2.Byte.Hi = CPU2_data[61 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[47];
-                        Count3.Byte.Hi = CPU2_data[47 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[45];
-                        Count4.Byte.Hi = CPU2_data[45 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][55];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][55 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][61];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][61 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][47 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][45 + 1];                                                  
                     }
                     break;
                 case DAC_UNIT_TYPE_D4_A:
@@ -1174,25 +1174,25 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_D4_D:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[37];
-                        Count1.Byte.Hi = CPU2_data[37 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[39];
-                        Count2.Byte.Hi = CPU2_data[39 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[41];
-                        Count3.Byte.Hi = CPU2_data[41 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[43];
-                        Count4.Byte.Hi = CPU2_data[43 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][37 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][39 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][41];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][41 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][43];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][43 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[45];
-                        Count1.Byte.Hi = CPU2_data[45 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[47];
-                        Count2.Byte.Hi = CPU2_data[47 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[49];
-                        Count3.Byte.Hi = CPU2_data[49 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[51];
-                        Count4.Byte.Hi = CPU2_data[51 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][45 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][47 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][49];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][49 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][51];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][51 + 1];                                                  
                     }
                     uchEventId = (event_id_t)((BYTE)uchEventId + 8);
                     break;
@@ -1200,25 +1200,25 @@ void Build_Event_Queue_Record_Count(BYTE uchCPU, event_id_t uchEventId)
                 case DAC_UNIT_TYPE_LCWS_DL:
                     if(uchEventId == EVENT_DS_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_US_BLOCK_CLEAR_FWD_CNT || uchEventId == EVENT_DS_BLOCK_OCCUPIED_FWD_CNT || uchEventId == EVENT_US_BLOCK_OCCUPIED_FWD_CNT)
                     {
-                        Count1.Byte.Lo = CPU2_data[53];
-                        Count1.Byte.Hi = CPU2_data[53 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[37];
-                        Count2.Byte.Hi = CPU2_data[37 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[39];
-                        Count3.Byte.Hi = CPU2_data[39 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[55];
-                        Count4.Byte.Hi = CPU2_data[55 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][53];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][53 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][37];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][37 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][39];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][39 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][55];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][55 + 1];                                                  
                     }
                     else
                     {
-                        Count1.Byte.Lo = CPU2_data[61];
-                        Count1.Byte.Hi = CPU2_data[61 + 1];                    
-                        Count2.Byte.Lo = CPU2_data[45];
-                        Count2.Byte.Hi = CPU2_data[45 + 1];                                        
-                        Count3.Byte.Lo = CPU2_data[47];
-                        Count3.Byte.Hi = CPU2_data[47 + 1];                    
-                        Count4.Byte.Lo = CPU2_data[63];
-                        Count4.Byte.Hi = CPU2_data[63 + 1];                                                  
+                        Count1.Byte.Lo = CPU2_data[Network_ID][61];
+                        Count1.Byte.Hi = CPU2_data[Network_ID][61 + 1];                    
+                        Count2.Byte.Lo = CPU2_data[Network_ID][45];
+                        Count2.Byte.Hi = CPU2_data[Network_ID][45 + 1];                                        
+                        Count3.Byte.Lo = CPU2_data[Network_ID][47];
+                        Count3.Byte.Hi = CPU2_data[Network_ID][47 + 1];                    
+                        Count4.Byte.Lo = CPU2_data[Network_ID][63];
+                        Count4.Byte.Hi = CPU2_data[Network_ID][63 + 1];                                                  
                     }
                     break;
                 default:
@@ -1396,7 +1396,7 @@ void Detect_DAC_Events(BYTE uchCPU, event_register_t New_Event)
     
     if(DE_log_start_rev[0] == 1)
     {
-        DE_R_count0 = ((unsigned int)(CPU1_data[61 + 1])<<8) + CPU1_data[61];
+        DE_R_count0 = ((unsigned int)(CPU1_data[Network_ID][61 + 1])<<8) + CPU1_data[Network_ID][61];
         if(DE_R_count0 > DE_R_count_track0)
         {
             //log event
@@ -1407,7 +1407,7 @@ void Detect_DAC_Events(BYTE uchCPU, event_register_t New_Event)
     }
     if(DE_log_start_rev[1] == 1)
     {
-        DE_R_count1 = ((unsigned int)(CPU2_data[61 + 1])<<8) + CPU2_data[61];
+        DE_R_count1 = ((unsigned int)(CPU2_data[Network_ID][61 + 1])<<8) + CPU2_data[Network_ID][61];
         if(DE_R_count1 > DE_R_count_track1)
         {
             //log event
@@ -1430,7 +1430,7 @@ void Detect_DAC_Events(BYTE uchCPU, event_register_t New_Event)
 	/* Event detection */
 	for (uchByte1 = 0; uchByte1 < 6; uchByte1++)
 	{
-		OldData.Byte = Events[uchCpuId].Byte[uchByte1];	/* Read one Byte From Events Register */
+		OldData.Byte = Events[Network_ID][uchCpuId].Byte[uchByte1];	/* Read one Byte From Events Register */
 		NewData.Byte = New_Event.Byte[uchByte1];			/* Read one Byte From New Events Register */
 		for (uchByte2 = 0; uchByte2 < 8; uchByte2++)
 		{
@@ -1544,12 +1544,12 @@ void Detect_DAC_Events(BYTE uchCPU, event_register_t New_Event)
 			NewData.Byte = (NewData.Byte >> 1);
 			}
 		/* Update Event register with Shadow register */
-		Events[uchCpuId].Byte[uchByte1] = New_Event.Byte[uchByte1];
+		Events[Network_ID][uchCpuId].Byte[uchByte1] = New_Event.Byte[uchByte1];
 	}
 	if (uchCnt > 0)
 	{
 		/* Save the Event register to on chip EEPROM */
-		Save_Event_Register_on_EEPROM(uchCPU, Events[uchCpuId]);
+		Save_Event_Register_on_EEPROM(uchCPU, Events[Network_ID][uchCpuId]);
 	}
 }
 
@@ -1791,19 +1791,19 @@ void Synchronise_Events_Register(void)
 		for (i = 0; i < NO_OF_EVENT_REGISTERS; i++)
 		{
 			/* Copies the values read from on chip EEPROM to Event Register  */
-			Events[0].Byte[i] = EEPROM_Sch_Info.CPU1_Data[i];
+			Events[Network_ID][0].Byte[i] = EEPROM_Sch_Info.CPU1_Data[i];
 		}
 	}
 	else
 	{
 		/*CPU1 Event Register Stored on On-chip EEPROM is Not Vaild,
 		  So copy the Default values to Event Register */
-		Events[0].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
-		Events[0].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
-		Events[0].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
-		Events[0].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
-		Events[0].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
-		Events[0].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
+		Events[Network_ID][0].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
+		Events[Network_ID][0].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
+		Events[Network_ID][0].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
+		Events[Network_ID][0].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
+		Events[Network_ID][0].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
+		Events[Network_ID][0].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
 	}
 	if (Is_CPU2_EEPROM_Record_Valid())/* Check whether CPU2 Event Register Stored is Vaild or Not */
 	{
@@ -1811,18 +1811,18 @@ void Synchronise_Events_Register(void)
 		for (i = 0; i < NO_OF_EVENT_REGISTERS; i++)
 		{
 			/* Copies the values read from on chip EEPROM to Event Register  */
-			Events[1].Byte[i] = EEPROM_Sch_Info.CPU2_Data[i];
+			Events[Network_ID][1].Byte[i] = EEPROM_Sch_Info.CPU2_Data[i];
 		}
 	}
 	else
 	{   
 		/*CPU2 Event Register Stored on On-chip EEPROM is Not Vaild,
 		  So copy the Default values to Event Register */
-		Events[1].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
-		Events[1].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
-		Events[1].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
-		Events[1].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
-		Events[1].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
-		Events[1].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
+		Events[Network_ID][1].Byte[0] = (BYTE) EVENT_REGISTER1_DEFAULT;
+		Events[Network_ID][1].Byte[1] = (BYTE) EVENT_REGISTER2_DEFAULT;
+		Events[Network_ID][1].Byte[2] = (BYTE) EVENT_REGISTER3_DEFAULT;
+		Events[Network_ID][1].Byte[3] = (BYTE) EVENT_REGISTER4_DEFAULT;
+		Events[Network_ID][1].Byte[4] = (BYTE) EVENT_REGISTER5_DEFAULT;
+		Events[Network_ID][1].Byte[5] = (BYTE) EVENT_REGISTER6_DEFAULT;
 	}
 }

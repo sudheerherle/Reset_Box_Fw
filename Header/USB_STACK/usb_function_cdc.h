@@ -223,7 +223,8 @@
 
 /******************************************************************************
     Function:
-        void CDCSetBaudRate(DWORD baudRate)
+        void 
+ * (DWORD baudRate)
         
     Summary:
         This macro is used set the baud rate reported back to the host during
@@ -440,13 +441,7 @@
         This macro is used to check if the CDC class handler firmware is 
         ready to send more data to the host over the CDC bulk IN endpoint.
 
-        Typical Usage:
-        <code>
-            if(USBUSARTIsTxTrfReady())
-            {
-                putrsUSBUSART("Hello World");
-            }
-        </code>
+        
         
     PreCondition:
         The return value of this function is only valid if the device is in a
@@ -819,12 +814,7 @@ void putUSBUSART( BYTE Length);
     data located in program memory.
     
     Typical Usage:
-    <code>
-        if(USBUSARTIsTxTrfReady())
-        {
-            putrsUSBUSART("Hello World");
-        }
-    </code>
+    
     
     The transfer mechanism for device-to-host(put) is more flexible than
     host-to-device(get). It can handle a string of data larger than the
@@ -844,7 +834,7 @@ void putUSBUSART( BYTE Length);
                             will be transferred to the host.
                                                                            
   **************************************************************************/
-void putrsUSBUSART(const ROM char *data);
+
 
 /************************************************************************
   Function:
@@ -975,7 +965,7 @@ typedef union __attribute__((packed)) _CDC_NOTICE
     LINE_CODING GetLineCoding;
     LINE_CODING SetLineCoding;
     unsigned char packet[CDC_COMM_IN_EP_SIZE];
-} CDC_NOTICE, *PCDC_NOTICE;
+} CDC_NOTICE;
 
 /* Bit structure definition for the SerialState notification byte */
 typedef union
@@ -1009,7 +999,7 @@ typedef struct
 
 /** E X T E R N S ************************************************************/
 extern BYTE cdc_rx_len;
-extern USB_HANDLE lastTransmission;
+
 
 extern BYTE cdc_trf_state;
 
@@ -1034,11 +1024,36 @@ extern ROM BYTE configDescriptor1[];
 //BYTE getsUSBUSART(char *buffer, BYTE len);
 //void putUSBUSART(char *data, BYTE Length);
 //void putsUSBUSART(char *data);
-//void putrsUSBUSART(const ROM char *data);
+
 //void CDCTxService(void);
 //void CDCNotificationHandler(void);
 //------------------------------------------------------------------------------
 
+typedef ROM union __attribute__ ((packed))
+{
+    struct __attribute__ ((packed)) 
+    {
+    BYTE bLength;BYTE bDscType;WORD string[1];
+    };
+    BYTE sd000_array[4];
+} sd000_union;
 
+typedef ROM union __attribute__ ((packed))
+{
+    struct __attribute__ ((packed))
+    {
+    BYTE bLength;BYTE bDscType;WORD string[25];
+    };
+    BYTE sd001_array[52];
+}sd001_union;
+
+typedef ROM union __attribute__ ((packed))
+{
+    struct __attribute__ ((packed))
+    {
+    BYTE bLength;BYTE bDscType;WORD string[25];
+    };
+    BYTE sd002_array[52];
+}sd002_union;
 
 #endif //CDC_H

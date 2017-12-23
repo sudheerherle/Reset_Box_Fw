@@ -262,6 +262,7 @@ typedef union
         #define USB_NEXT_EP0_OUT_PING_PONG 0x0004
         #define USB_NEXT_EP0_IN_PING_PONG 0x0004
         #define USB_NEXT_PING_PONG 0x0004
+        #define USB_NEXT_PING_PONG_I 0x0001
         #endif
     #elif defined(__C32__)
         #define USB_NEXT_EP0_OUT_PING_PONG 0x0008

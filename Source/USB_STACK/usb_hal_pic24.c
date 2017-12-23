@@ -36,7 +36,7 @@ BOOL USBSleepOnSuspend(void)
     USBClearInterruptFlag(USBActivityIFReg,USBActivityIFBitNum);
     IEC5bits.USB1IE = 1;
 
-    Sleep();
+    Sleep();/*lint -e526 -e628*/
 
     #if defined(USB_POLLING)
         //Disable the interrupt

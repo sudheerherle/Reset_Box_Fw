@@ -34,8 +34,9 @@
 
 extern unsigned char No_smcpu;
 extern ring_buffer_t Events_Ring_Buffer;
-
+extern BOOL E_status;/*lint -e552 */
 unsigned char NID;
+BYTE Network_status[MAX_SMCPU];
 glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds lcd Information */
 extern BYTE HA_config;
 wordtype_t Glcd_csum;
@@ -150,15 +151,15 @@ void Update_GLCD_State(void)
          && inspect_DAC_info_done != 1)
         return;
         //if(0)
-        if(G_ACTIVE == 0)
-        GLCD_Info.GLCD1_On_state = 0;
-    if(G_ACTIVE2 == 0)
-	    GLCD_Info.GLCD2_On_state = 0;
-	if((G_ACTIVE == 0) && (G_ACTIVE2 == 0))
-        {
-        GLCD_Info.State = GLCD_IDLE;
-		return;
-	}
+//        if(G_ACTIVE == 0)
+        GLCD_Info.GLCD1_On_state = 1;
+//    if(G_ACTIVE2 == 0)
+	    GLCD_Info.GLCD2_On_state = 1;
+//	if((G_ACTIVE == 0) && (G_ACTIVE2 == 0))
+//        {
+//        GLCD_Info.State = GLCD_IDLE;
+//		return;
+//	}
     
 //    if(G_ACTIVE == 0)
 //    {
@@ -166,15 +167,15 @@ void Update_GLCD_State(void)
 //        return;
 //    }
 //    
-    GLCD_Info.GLCD1_On_state = G_ACTIVE;
-	GLCD_Info.GLCD2_On_state = G_ACTIVE2;
-    if(HA_config==0){
-        GLCD_Info.GLCD2_On_state = 0;
-    }
+//    GLCD_Info.GLCD1_On_state = G_ACTIVE;
+//	GLCD_Info.GLCD2_On_state = G_ACTIVE2;
+//    if(HA_config==0){
+//        GLCD_Info.GLCD2_On_state = 0;
+//    }
 	switch (GLCD_Info.State)
 	{
 		case GLCD_MODULE_NOT_ACTIVE:
-            if (G_ACTIVE == 1 || G_ACTIVE2 == 1)
+//            if (G_ACTIVE == 1 || G_ACTIVE2 == 1)
 			{
                 count_rx = 0;
                 GLCD_Info.Comm_Timeout_ms = SS_TIMEOUT; //wait for 5 ms for SS to stabilize
@@ -186,13 +187,13 @@ void Update_GLCD_State(void)
             {
                 count_rx = 0;
                 GLCD_Info.State = GLCD_COMPARE_DATA;
-				if(GLCD_Info.GLCD1_On_state == 1)
+				if(GLCD_Info.GLCD_Disp == DISPLAY1 && HA_config == 1)
 				{
-					GLCD_Info.GLCD_Disp = DISPLAY1;
+					GLCD_Info.GLCD_Disp = DISPLAY2;
 				}
 				else
 				{
-					GLCD_Info.GLCD_Disp = DISPLAY2;
+					GLCD_Info.GLCD_Disp = DISPLAY1;
 				}
             }
             break;
@@ -232,11 +233,11 @@ void Update_GLCD_State(void)
                 break;
             while((SPI1STATbits.SPITBF == 0) && (GLCD_Info.Packet_index < GLCD_Info.Packet_Max_length))//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
             {
-                if(PORTGbits.RG13 == 0){
+                if(GLCD_Info.GLCD_Disp == DISPLAY2 /*&& GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][0]!=0*/){
 //                    /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
                     SPI1BUF = GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
                        
-                }else if(PORTDbits.RD13 == 0) {
+                }else if(GLCD_Info.GLCD_Disp == DISPLAY1/* && GLCD_Info.Message_Buffer[Interested_Nw_Index][0]!=0*/) {
 //                    PORTe can Put the Next Byte */
                     SPI1BUF = GLCD_Info.Message_Buffer[Interested_Nw_Index][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
                 }    
@@ -265,6 +266,7 @@ void Update_GLCD_State(void)
                         GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
                         GLCD_Info.State = GLCD_IDLE;
                         G_SPI_SS = SET_HIGH;
+                        G_SPI_SS2 = SET_HIGH;
                     }
                     else
                     {
@@ -276,26 +278,26 @@ void Update_GLCD_State(void)
 if(GLCD_Info.Comm_Timeout_ms == 0)
             {
 				//end of transmission
-				if((GLCD_Info.GLCD_Disp == DISPLAY1) && (GLCD_Info.GLCD2_On_state==1) && (HA_config==1))
-				{
-					G_SPI_SS = SET_HIGH;
-                    G_SPI_SS2 = SET_LOW;
-					GLCD_Info.GLCD_Disp = DISPLAY2;
-					GLCD_Info.State = GLCD_COMPARE_DATA;
-				}
-				else if(GLCD_Info.GLCD_Disp == DISPLAY2)
-				{
-					G_SPI_SS2 = SET_HIGH;
-                    G_SPI_SS = SET_LOW;
-					GLCD_Info.GLCD_Disp = NO_LCD_DISP;
-					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
-					GLCD_Info.State = GLCD_IDLE;
-				}
-                else
-                {
+//				if((GLCD_Info.GLCD_Disp == DISPLAY1) && (GLCD_Info.GLCD2_On_state==1) && (HA_config==1))
+//				{
+//					G_SPI_SS = SET_HIGH;
+//                    G_SPI_SS2 = SET_LOW;
+//					GLCD_Info.GLCD_Disp = DISPLAY2;
+//					GLCD_Info.State = GLCD_COMPARE_DATA;
+//				}
+//				else if(GLCD_Info.GLCD_Disp == DISPLAY2)
+//				{
+//					G_SPI_SS2 = SET_HIGH;
+//                    G_SPI_SS = SET_LOW;
+//					GLCD_Info.GLCD_Disp = NO_LCD_DISP;
+//					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
+//					GLCD_Info.State = GLCD_IDLE;
+//				}
+//                else
+//                {
 					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
 					GLCD_Info.State = GLCD_IDLE;                    
-                }
+//                }
 			}
             
             break;
@@ -404,10 +406,14 @@ void Build_packet_GLCD(void)
     if(GLCD_Info.Build_network_index >= Network_config){
         GLCD_Info.Build_network_index = 0;
     }
-    if(No_smcpu > NO_SMCPU_THRESHOLD){
+    if(Network_status[NID] == 0){
         GLCD_Info.Message_Buffer[NID][21] = 0x3C;
     }
-    
+//    GLCD_Info.Message_Buffer[NID][136] = 0;
+//    GLCD_Info.Message_Buffer[NID][137] = 0;
+    GLCD_Info.Message_Buffer[NID][138]= 0;
+    GLCD_Info.Message_Buffer[NID][139]= 0;
+            
     Glcd_csum.Word = Crc16(GLCD_INFO, GLCD_Info.Packet_Max_length-2);
     GLCD_Info.Message_Buffer[NID][142]   = Glcd_csum.Byte.Lo;
     GLCD_Info.Message_Buffer[NID][142 + 1]   = Glcd_csum.Byte.Hi;            
@@ -416,39 +422,64 @@ void Build_packet_GLCD(void)
 
 void Update_SMPU_data(void)
 {
-        event_record_t count_record;
-    	long_t S_Time, E_Time, Event_count, P_Time, SMCPU_CRC;
-
-        Read_Event_from_Serial_EEProm(Events_Ring_Buffer.Head);
-        if(count_record.Field.Token == LATEST_EVENT_TOKEN)
+        
+    BYTE uchBuf;
+    event_record_t count_record;
+    long_t S_Time, E_Time, Event_count, P_Time, SMCPU_CRC;
+    for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
+    {
+        Event_Record_R.Byte[uchBuf] = 0;
+    }
+    E_status = Read_Event_from_Serial_EEProm(Events_Ring_Buffer.Head);
+    for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
+    {
+        count_record.Byte[uchBuf] = Event_Record_R.Byte[uchBuf];
+    }
+    if(count_record.Field.Token == LATEST_EVENT_TOKEN)
+    {
+        // This is the latest recorded event
+        E_Time.LWord = count_record.Field.Date_Time;
+    }
+    else
+    {   // 0 if there is any error
+        E_Time.LWord = 0x0000;
+    }
+    for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
+    {
+        Event_Record_R.Byte[uchBuf] = 0;
+    }
+    E_status = Read_Event_from_Serial_EEProm(Events_Ring_Buffer.Head + 1);
+    for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
+    {
+        count_record.Byte[uchBuf] = Event_Record_R.Byte[uchBuf];
+    }
+    if(count_record.Field.Token != LATEST_EVENT_TOKEN || count_record.Field.Token != OLD_EVENT_TOKEN)
+    {
+        // record 0 is the 1st event.
+        for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
         {
-            // This is the latest recorded event
-            E_Time.LWord = count_record.Field.Date_Time;
+            Event_Record_R.Byte[uchBuf] = 0;
         }
-        else
-        {   // 0 if there is any error
-            E_Time.LWord = 0x0000;
-        }
-        Read_Event_from_Serial_EEProm(Events_Ring_Buffer.Head + 1);
-        if(count_record.Field.Token != LATEST_EVENT_TOKEN || count_record.Field.Token != OLD_EVENT_TOKEN)
+        E_status = Read_Event_from_Serial_EEProm(0);
+        for (uchBuf = 0; uchBuf <	EVENT_RECORD_SIZE; uchBuf++)
         {
-            // record 0 is the 1st event.
-            Read_Event_from_Serial_EEProm(0);
-            S_Time.LWord = count_record.Field.Date_Time;
-            Event_count.LWord = Events_Ring_Buffer.Tail;
+            count_record.Byte[uchBuf] = Event_Record_R.Byte[uchBuf];
         }
-        else if(count_record.Field.Token == OLD_EVENT_TOKEN)
-        {
-            // Tail record or next of head record is the 1st event. Memory has been rouded to use from the starting.
-            S_Time.LWord = count_record.Field.Date_Time;
-            Event_count.LWord = MAXIMUM_EVENTS;
-        }
-        else
-        {
-            // 0 if there is any error
-            S_Time.LWord = 0x0000;
-            Event_count.LWord = 0;
-        }
+        S_Time.LWord = count_record.Field.Date_Time;
+        Event_count.LWord = Events_Ring_Buffer.Tail;
+    }
+    else if(count_record.Field.Token == OLD_EVENT_TOKEN)
+    {
+        // Tail record or next of head record is the 1st event. Memory has been rouded to use from the starting.
+        S_Time.LWord = count_record.Field.Date_Time;
+        Event_count.LWord = MAXIMUM_EVENTS;
+    }
+    else
+    {
+        // 0 if there is any error
+        S_Time.LWord = 0x0000;
+        Event_count.LWord = 0;
+    }
         GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT]     = Event_count.Byte.Byte1; 			   /* Send nuber of events */
 	GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT + 1] = Event_count.Byte.Byte2;
 	GLCD_Info.Message_Buffer[NID][OFFSET_EVENT_COUNT + 2] = Event_count.Byte.Byte3;

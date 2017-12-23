@@ -4,8 +4,8 @@
 	Revision	:	1	
 	Filename	: 	crc32.h
 	Target MCU	: 	PIC24FJ256GB210   
-    Compiler	: 	XC16 Compiler V1.21  
-	Author		:	Sudheer Herle
+    Compiler	: 	XC16 Compiler V1.31  
+	Author		:	EM003
 	Date		:	
 	Company Name: 	Insys Digital Systems
 	Modification History:
@@ -17,7 +17,12 @@
 /*
  *      CRC-32 routines header file
  */
+#define CHECKSUM_LOCATION	0x2ABF0     /* System ID Location  0x200000L  to 0x200007L  */
 
-extern UINT32 Crc32(const BYTE *, INT32);
 
+typedef unsigned long int resultType;
+#define POLYNOMIAL 0x04C11DB7
+#define WIDTH (8 * sizeof(resultType))
+#define MSb ((resultType)1 << (WIDTH - 1))
+resultType crc32(resultType remainder);
 #endif

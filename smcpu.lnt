@@ -1,0 +1,7 @@
+au-misra3.lnt 
+"D:\Microchip\PC_Lint\lint\lnt\co-xc16.lnt"
+-t4 -e438 -e525 -e539 
+-e9018 -e9029 -e9058
+-e793 -e419 -e835
+-e970 -e9027
+-summary

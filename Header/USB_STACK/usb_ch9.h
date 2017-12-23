@@ -111,8 +111,10 @@ This struct defines the structure of a USB Device Descriptor.  Note that this
 structure may need to be packed, or even accessed as bytes, to properly access
 the correct fields when used on some device architectures.
 */
-typedef struct __attribute__ ((packed)) _USB_DEVICE_DESCRIPTOR
+typedef union __attribute__ ((packed)) _USB_DEVICE_DESCRIPTOR
 {
+    struct __attribute__ ((packed))
+    {
     BYTE bLength;               // Length of this descriptor.
     BYTE bDescriptorType;       // DEVICE descriptor type (USB_DESCRIPTOR_DEVICE).
     WORD bcdUSB;                // USB Spec Release Number (BCD).
@@ -127,6 +129,8 @@ typedef struct __attribute__ ((packed)) _USB_DEVICE_DESCRIPTOR
     BYTE iProduct;              // Index of String Descriptor describing the product.
     BYTE iSerialNumber;         // Index of String Descriptor with the device's serial number.
     BYTE bNumConfigurations;    // Number of possible configurations.
+    };
+    BYTE Desc_Arr[18];
 } USB_DEVICE_DESCRIPTOR;
 
 
@@ -429,7 +433,7 @@ typedef union __attribute__ ((packed))
 
     /** End: Standard Device Requests ******************************/
 
-} CTRL_TRF_SETUP, SETUP_PKT, *PSETUP_PKT;
+} CTRL_TRF_SETUP, SETUP_PKT;
 
 
 // ******************************************************************
@@ -510,7 +514,7 @@ typedef union __attribute__ ((packed))
 
 #define USB_SETUP_HOST_TO_DEVICE_BITFIELD       (USB_SETUP_HOST_TO_DEVICE>>7)       // Device Request bmRequestType transfer direction - host to device transfer - bit definition
 #define USB_SETUP_DEVICE_TO_HOST_BITFIELD       (USB_SETUP_DEVICE_TO_HOST>>7)       // Device Request bmRequestType transfer direction - device to host transfer - bit definition
-#define USB_SETUP_TYPE_STANDARD_BITFIELD        (USB_SETUP_TYPE_STANDARD>>5)        // Device Request bmRequestType type - standard
+#define USB_SETUP_TYPE_STANDARD_BITFIELD        (USB_SETUP_TYPE_STANDARD)        // Device Request bmRequestType type - standard
 #define USB_SETUP_TYPE_CLASS_BITFIELD           (USB_SETUP_TYPE_CLASS>>5)           // Device Request bmRequestType type - class
 #define USB_SETUP_TYPE_VENDOR_BITFIELD          (USB_SETUP_TYPE_VENDOR>>5)          // Device Request bmRequestType type - vendor
 #define USB_SETUP_RECIPIENT_DEVICE_BITFIELD     (USB_SETUP_RECIPIENT_DEVICE)        // Device Request bmRequestType recipient - device

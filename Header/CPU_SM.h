@@ -21,7 +21,7 @@
 
 
 /* ID Locations from where CRC-32 CheckSum will be read */
-#define CHECKSUM_LOCATION	0x200000L     /* System ID Location  0x200000L  to 0x200007L  */
+//#define CHECKSUM_LOCATION	0x200000L     /* System ID Location  0x200000L  to 0x200007L  */
 
 
 /* Port Allocation Table and it's Default Values and Directions 

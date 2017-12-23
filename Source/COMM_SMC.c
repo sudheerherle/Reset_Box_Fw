@@ -31,6 +31,7 @@
 #include "EVENTS.H"
 #include "CRC16.H"
 #include "DRV_LED.H"
+#include "DRV_GLCD_SPI.h"
 
 extern  sm_status_t Status;					/* From cpu_sm.c */
 const longtype_t cpu_crc;
@@ -45,11 +46,12 @@ smc_sch_info_t             Smc_Sch_Info;			/* structure holds station master int
 smc_info_t					Smc1XmitObject;
 query_info_t QueryInfObject;
 extern system_t SystemObject;
+extern glcd_info_t GLCD_Info;
 extern rb_info_t RB_Info;					/* from ACC_RB.C */
 extern dac_comm_error Dac_Comm_Err;				/* Dac external communication CRC error count information */
-unsigned char System_error_code;
+//unsigned char System_error_code;
 unsigned char temp8 = 0, temp18=0;
-event_register_t Shadow[MAXIMUM_NO_OF_CPU]; /* shadow will have present status of Both Cpus */
+event_register_t Shadow[MAX_SMCPU][MAXIMUM_NO_OF_CPU]; /* shadow will have present status of Both Cpus */
 const unsigned char uchStatusLookup[13][2] =
 	{{ 0, 0}, { 1, 1}, { 1, 2}, { 2, 1}, { 2, 2},
 	 { 3, 3}, { 4, 4}, { 5, 5}, { 6, 6}, { 6, 2},
@@ -67,6 +69,7 @@ extern  BYTE CPU1_Address;				/* from cpu_sm.c */
 extern  BYTE CPU2_Address;				/* from cpu_sm.c */
 extern BYTE Network_config;
 BYTE Network_ID;
+extern BYTE Network_status[MAX_SMCPU];
 BYTE var_count, SF_Error,EF_Error;
 disp_info_t Disp_Info;
 BYTE CPU1_data_GLCD[MAX_SMCPU][GCPU_SPI_MESSAGE_LENGTH];			/* Buffer to store data recived from Cpu1 */
@@ -688,9 +691,9 @@ void Update_Smc_Sch_State(void)
                                 if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79]
                                 && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]
                                 && Smc1XmitObject.Msg_Buffer[0]!=0){ //have to compare the first byte which is CPU address to 0 because SMCPU sends 80 bytes with 0 in it and it will match checksum too.
-                                    
-                                Process_SM_Message(uchSelectedCPU);
-                                
+                                    BYTE f = QueryInfObject.query_buf[2];
+                                Process_SM_Message(f);
+                                Network_status[QueryInfObject.query_buf[1]-1] = 1;
                                 if(Smc1XmitObject.Msg_Buffer[76] != 0x8 )
                                 {
                                     if(Smc1XmitObject.Msg_Buffer[76]==0x18){
@@ -750,7 +753,7 @@ void Update_Smc_Sch_State(void)
 			{
                 BI_COLOR_RED_LED_PORT = 1;
                 BI_COLOR_GREEN_LED_PORT = 0;
-                No_smcpu++;
+                Network_status[QueryInfObject.query_buf[1]-1] = 0;
 				Smc_Sch_Info.State =  SMC_SCHEDULER_NOT_STARTED;
 			}
 			Set_Smc_Sch_Idle();
@@ -1072,7 +1075,7 @@ void Process_SM_Message(BYTE uchCPU_ID)
     inspect_DAC_info_done = 1;
 	Update_Comm_Err_Counter(uchCPU_ID);	/* update Count for the Crc error Occured in External Communication */
 	Update_Shadow_Register(uchCPU_ID);	/* Update our copy of event register */
-	Detect_DAC_Events(uchCPU_ID,Shadow[(uchCPU_ID - 1)]);	/* Event detection */
+	Detect_DAC_Events(uchCPU_ID,Shadow[Network_ID][(uchCPU_ID - 1)]);	/* Event detection */
 }
 
 
@@ -1233,48 +1236,48 @@ void Update_Shadow_Register(BYTE uchCPU)
 	}
 
 	/* MAP Status data to Shadow event register */
-	Shadow[uchbyte1].Id.US_Block  = DAC_Status.Flags.US_Track_Status;
-	Shadow[uchbyte1].Id.DS_Block  = DAC_Status.Flags.DS_Track_Status;
-	Shadow[uchbyte1].Id.DAC_DS_Reset = DAC_Status.Flags.Local_Reset_Done;
-	Shadow[uchbyte1].Id.DAC_US_Reset = DAC_Status.Flags.Local_Reset_Done2;
-	Shadow[uchbyte1].Id.System    = DAC_Status.Flags.System_Status;
-	Shadow[uchbyte1].Id.Direct_Out_Count = DAC_Status.Flags.Direct_Out_Count;
-	Shadow[uchbyte1].Id.Board     = DAC_Status.Flags.Unit_Board_Status;
-	Shadow[uchbyte1].Id.PD1_Board = DAC_Status.Flags.PD1_Board_Present;
-	Shadow[uchbyte1].Id.PD2_Board = DAC_Status.Flags.PD2_Board_Present;
-	Shadow[uchbyte1].Id.Modem_Board_A = DAC_Status.Flags.Modem_Card_A_Present;
-	Shadow[uchbyte1].Id.Modem_Board_B = DAC_Status.Flags.Modem_Card_B_Present;
-	Shadow[uchbyte1].Id.Relay_Board_A = DAC_Status.Flags.Relay_Drive_A_Present;
-	Shadow[uchbyte1].Id.Relay_Board_B = DAC_Status.Flags.Relay_Drive_B_Present;
-	Shadow[uchbyte1].Id.Peer_CPU_Board = DAC_Status.Flags.Peer_Cpu_Present;
-	Shadow[uchbyte1].Id.LU1_US1_Comm = DAC_Status.Flags.LU1_to_US1_Link;
-	Shadow[uchbyte1].Id.LU1_US2_Comm = DAC_Status.Flags.LU1_to_US2_Link;
-	Shadow[uchbyte1].Id.LU1_DS1_Comm = DAC_Status.Flags.LU1_to_DS1_Link;
-	Shadow[uchbyte1].Id.LU1_DS2_Comm = DAC_Status.Flags.LU1_to_DS2_Link;
-	Shadow[uchbyte1].Id.LU2_US1_Comm = DAC_Status.Flags.LU2_to_US1_Link;
-	Shadow[uchbyte1].Id.LU2_US2_Comm = DAC_Status.Flags.LU2_to_US2_Link;
-	Shadow[uchbyte1].Id.LU2_DS1_Comm = DAC_Status.Flags.LU2_to_DS1_Link;
-	Shadow[uchbyte1].Id.LU2_DS2_Comm = DAC_Status.Flags.LU2_to_DS2_Link;
-	Shadow[uchbyte1].Id.US1_LU1_Comm = DAC_Status.Flags.US1_to_LU1_Link;
-	Shadow[uchbyte1].Id.US2_LU1_Comm = DAC_Status.Flags.US2_to_LU1_Link;
-	Shadow[uchbyte1].Id.DS1_LU1_Comm = DAC_Status.Flags.DS1_to_LU1_Link;
-	Shadow[uchbyte1].Id.DS2_LU1_Comm = DAC_Status.Flags.DS2_to_LU1_Link;
-	Shadow[uchbyte1].Id.US1_LU2_Comm = DAC_Status.Flags.US1_to_LU2_Link;
-	Shadow[uchbyte1].Id.US2_LU2_Comm = DAC_Status.Flags.US2_to_LU2_Link;
-	Shadow[uchbyte1].Id.DS1_LU2_Comm = DAC_Status.Flags.DS1_to_LU2_Link;
-	Shadow[uchbyte1].Id.DS2_LU2_Comm = DAC_Status.Flags.DS2_to_LU2_Link;
-	Shadow[uchbyte1].Id.PD1 = DAC_Status.Flags.PD1_Status;
-	Shadow[uchbyte1].Id.PD2 = DAC_Status.Flags.PD2_Status;
-	Shadow[uchbyte1].Id.Peer_CPU = DAC_Status.Flags.Peer_System_Status;
-	Shadow[uchbyte1].Id.Peer_CPU_Comm = DAC_Status.Flags.Peer_CPU_Link;
-	Shadow[uchbyte1].Id.Modem_A = DAC_Status.Flags.Modem_A;
-	Shadow[uchbyte1].Id.Modem_B = DAC_Status.Flags.Modem_B;
-	Shadow[uchbyte1].Id.US_DAC  = DAC_Status.Flags.US_System_Status;
-	Shadow[uchbyte1].Id.DS_DAC  = DAC_Status.Flags.DS_System_Status;
-	Shadow[uchbyte1].Id.US1_Power = DAC_Status.Flags.Power_Fail_at_US1;
-	Shadow[uchbyte1].Id.US2_Power = DAC_Status.Flags.Power_Fail_at_US2;
-	Shadow[uchbyte1].Id.DS1_Power = DAC_Status.Flags.Power_Fail_at_DS1;
-	Shadow[uchbyte1].Id.DS2_Power = DAC_Status.Flags.Power_Fail_at_DS2;
+	Shadow[Network_ID][uchbyte1].Id.US_Block  = DAC_Status.Flags.US_Track_Status;
+	Shadow[Network_ID][uchbyte1].Id.DS_Block  = DAC_Status.Flags.DS_Track_Status;
+	Shadow[Network_ID][uchbyte1].Id.DAC_DS_Reset = DAC_Status.Flags.Local_Reset_Done;
+	Shadow[Network_ID][uchbyte1].Id.DAC_US_Reset = DAC_Status.Flags.Local_Reset_Done2;
+	Shadow[Network_ID][uchbyte1].Id.System    = DAC_Status.Flags.System_Status;
+	Shadow[Network_ID][uchbyte1].Id.Direct_Out_Count = DAC_Status.Flags.Direct_Out_Count;
+	Shadow[Network_ID][uchbyte1].Id.Board     = DAC_Status.Flags.Unit_Board_Status;
+	Shadow[Network_ID][uchbyte1].Id.PD1_Board = DAC_Status.Flags.PD1_Board_Present;
+	Shadow[Network_ID][uchbyte1].Id.PD2_Board = DAC_Status.Flags.PD2_Board_Present;
+	Shadow[Network_ID][uchbyte1].Id.Modem_Board_A = DAC_Status.Flags.Modem_Card_A_Present;
+	Shadow[Network_ID][uchbyte1].Id.Modem_Board_B = DAC_Status.Flags.Modem_Card_B_Present;
+	Shadow[Network_ID][uchbyte1].Id.Relay_Board_A = DAC_Status.Flags.Relay_Drive_A_Present;
+	Shadow[Network_ID][uchbyte1].Id.Relay_Board_B = DAC_Status.Flags.Relay_Drive_B_Present;
+	Shadow[Network_ID][uchbyte1].Id.Peer_CPU_Board = DAC_Status.Flags.Peer_Cpu_Present;
+	Shadow[Network_ID][uchbyte1].Id.LU1_US1_Comm = DAC_Status.Flags.LU1_to_US1_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU1_US2_Comm = DAC_Status.Flags.LU1_to_US2_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU1_DS1_Comm = DAC_Status.Flags.LU1_to_DS1_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU1_DS2_Comm = DAC_Status.Flags.LU1_to_DS2_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU2_US1_Comm = DAC_Status.Flags.LU2_to_US1_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU2_US2_Comm = DAC_Status.Flags.LU2_to_US2_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU2_DS1_Comm = DAC_Status.Flags.LU2_to_DS1_Link;
+	Shadow[Network_ID][uchbyte1].Id.LU2_DS2_Comm = DAC_Status.Flags.LU2_to_DS2_Link;
+	Shadow[Network_ID][uchbyte1].Id.US1_LU1_Comm = DAC_Status.Flags.US1_to_LU1_Link;
+	Shadow[Network_ID][uchbyte1].Id.US2_LU1_Comm = DAC_Status.Flags.US2_to_LU1_Link;
+	Shadow[Network_ID][uchbyte1].Id.DS1_LU1_Comm = DAC_Status.Flags.DS1_to_LU1_Link;
+	Shadow[Network_ID][uchbyte1].Id.DS2_LU1_Comm = DAC_Status.Flags.DS2_to_LU1_Link;
+	Shadow[Network_ID][uchbyte1].Id.US1_LU2_Comm = DAC_Status.Flags.US1_to_LU2_Link;
+	Shadow[Network_ID][uchbyte1].Id.US2_LU2_Comm = DAC_Status.Flags.US2_to_LU2_Link;
+	Shadow[Network_ID][uchbyte1].Id.DS1_LU2_Comm = DAC_Status.Flags.DS1_to_LU2_Link;
+	Shadow[Network_ID][uchbyte1].Id.DS2_LU2_Comm = DAC_Status.Flags.DS2_to_LU2_Link;
+	Shadow[Network_ID][uchbyte1].Id.PD1 = DAC_Status.Flags.PD1_Status;
+	Shadow[Network_ID][uchbyte1].Id.PD2 = DAC_Status.Flags.PD2_Status;
+	Shadow[Network_ID][uchbyte1].Id.Peer_CPU = DAC_Status.Flags.Peer_System_Status;
+	Shadow[Network_ID][uchbyte1].Id.Peer_CPU_Comm = DAC_Status.Flags.Peer_CPU_Link;
+	Shadow[Network_ID][uchbyte1].Id.Modem_A = DAC_Status.Flags.Modem_A;
+	Shadow[Network_ID][uchbyte1].Id.Modem_B = DAC_Status.Flags.Modem_B;
+	Shadow[Network_ID][uchbyte1].Id.US_DAC  = DAC_Status.Flags.US_System_Status;
+	Shadow[Network_ID][uchbyte1].Id.DS_DAC  = DAC_Status.Flags.DS_System_Status;
+	Shadow[Network_ID][uchbyte1].Id.US1_Power = DAC_Status.Flags.Power_Fail_at_US1;
+	Shadow[Network_ID][uchbyte1].Id.US2_Power = DAC_Status.Flags.Power_Fail_at_US2;
+	Shadow[Network_ID][uchbyte1].Id.DS1_Power = DAC_Status.Flags.Power_Fail_at_DS1;
+	Shadow[Network_ID][uchbyte1].Id.DS2_Power = DAC_Status.Flags.Power_Fail_at_DS2;
 	if (DAC_Status.Flags.System_Status == SET_HIGH && DAC_Status.Flags.US_System_Status == SET_HIGH)
 	{
 		bUS_Healthy = TRUE;			/* UP Stream section healthy */
@@ -1288,11 +1291,11 @@ void Update_Shadow_Register(BYTE uchCPU)
 		/* Failure in UP Stream section */
 		if (DAC_Status.Flags.Vital_Relay_A != SET_HIGH)
 		{
-			Shadow[uchbyte1].Id.Vital_Relay_A = DAC_Status.Flags.Vital_Relay_A;
+			Shadow[Network_ID][uchbyte1].Id.Vital_Relay_A = DAC_Status.Flags.Vital_Relay_A;
 		}
 		if (DAC_Status.Flags.Preparatory_Relay1 != SET_HIGH)
 		{
-			Shadow[uchbyte1].Id.Prep_Relay_A = DAC_Status.Flags.Preparatory_Relay1;
+			Shadow[Network_ID][uchbyte1].Id.Prep_Relay_A = DAC_Status.Flags.Preparatory_Relay1;
 		}
 	}
 	else
@@ -1300,11 +1303,11 @@ void Update_Shadow_Register(BYTE uchCPU)
 		/* UP Stream section healthy */
 		if (DAC_Status.Flags.Vital_Relay_A != SET_LOW)
 		{
-			Shadow[uchbyte1].Id.Vital_Relay_A = DAC_Status.Flags.Vital_Relay_A;
+			Shadow[Network_ID][uchbyte1].Id.Vital_Relay_A = DAC_Status.Flags.Vital_Relay_A;
 		}
 		if (DAC_Status.Flags.Preparatory_Relay1 != SET_LOW)
 		{
-			Shadow[uchbyte1].Id.Prep_Relay_A = DAC_Status.Flags.Preparatory_Relay1;
+			Shadow[Network_ID][uchbyte1].Id.Prep_Relay_A = DAC_Status.Flags.Preparatory_Relay1;
 		}
 	}
 
@@ -1313,11 +1316,11 @@ void Update_Shadow_Register(BYTE uchCPU)
 		/* Failure in DOWN Stream section */
 		if (DAC_Status.Flags.Vital_Relay_B != SET_HIGH)
 		{
-			Shadow[uchbyte1].Id.Vital_Relay_B = DAC_Status.Flags.Vital_Relay_B;
+			Shadow[Network_ID][uchbyte1].Id.Vital_Relay_B = DAC_Status.Flags.Vital_Relay_B;
 		}
 		if (DAC_Status.Flags.Preparatory_Relay != SET_HIGH)
 		{
-			Shadow[uchbyte1].Id.Prep_Relay_B = DAC_Status.Flags.Preparatory_Relay;
+			Shadow[Network_ID][uchbyte1].Id.Prep_Relay_B = DAC_Status.Flags.Preparatory_Relay;
 		}
 	}
 	else
@@ -1325,11 +1328,11 @@ void Update_Shadow_Register(BYTE uchCPU)
 		/* DOWN Stream section healthy */
 		if (DAC_Status.Flags.Vital_Relay_B != SET_LOW)
 		{
-			Shadow[uchbyte1].Id.Vital_Relay_B = DAC_Status.Flags.Vital_Relay_B;
+			Shadow[Network_ID][uchbyte1].Id.Vital_Relay_B = DAC_Status.Flags.Vital_Relay_B;
 		}
 		if (DAC_Status.Flags.Preparatory_Relay != SET_LOW)
 		{
-			Shadow[uchbyte1].Id.Prep_Relay_B = DAC_Status.Flags.Preparatory_Relay;
+			Shadow[Network_ID][uchbyte1].Id.Prep_Relay_B = DAC_Status.Flags.Preparatory_Relay;
 		}
 	}
 }

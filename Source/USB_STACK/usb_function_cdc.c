@@ -1,6 +1,6 @@
 #include "usb.h"
 #include "usb_function_cdc.h"
-#include "HardwareProfile.h"
+
 
 volatile FAR unsigned char cdc_data_tx[CDC_DATA_IN_EP_SIZE] ;
 volatile FAR unsigned char cdc_data_rx[CDC_DATA_OUT_EP_SIZE] ;
@@ -9,7 +9,9 @@ LINE_CODING line_coding ;    // Buffer to store line coding information
 volatile FAR CDC_NOTICE cdc_notice ;
 extern char USB_In_Buffer[64];
 extern char USB_Out_Buffer[64];
-
+#define BDT_NUM_ENTRIES      ((USB_MAX_EP_NUMBER + 1) * 4)
+extern volatile BDT_ENTRY BDT[BDT_NUM_ENTRIES];
+extern BYTE Track_pipe;
 BYTE cdc_rx_len;            // total rx length
 
 BYTE cdc_trf_state;         // States are defined cdc.h
@@ -18,19 +20,24 @@ BYTE Buf_len;
 BYTE cdc_tx_len;            // total tx length
 BYTE cdc_mem_type;          // _ROM, _RAM
 
-USB_HANDLE CDCDataOutHandle;
-USB_HANDLE CDCDataInHandle;
+//USB_HANDLE CDCDataOutHandle;
+//USB_HANDLE CDCDataInHandle;
 
+BYTE CDCOutHandle;
+BYTE CDCInHandle;
 
-CONTROL_SIGNAL_BITMAP control_signal_bitmap;
-DWORD BaudRateGen;			// BRG value calculated from baudrate
+//CONTROL_SIGNAL_BITMAP control_signal_bitmap;
+
 
 #define dummy_length    0x08
 BYTE_VAL dummy_encapsulated_cmd_response[dummy_length];
 
+extern RAM_Src IN_RAM_src;
 
-void USBCDCSetLineCoding(void);
+extern BYTE IN_RAM_src_offset;
 
+
+extern BYTE Track_OUT_pipe;
 void USBCheckCDCRequest(void)
 {
     if(SetupPkt.Recipient != USB_SETUP_RECIPIENT_INTERFACE_BITFIELD) return;
@@ -45,14 +52,20 @@ void USBCheckCDCRequest(void)
         //****** These commands are required ******//
         case SEND_ENCAPSULATED_COMMAND:
          //send the packet
-            inPipes[0].pSrc.bRam = (BYTE*)&dummy_encapsulated_cmd_response;
+            //inPipes[0].pSrc.bRam = (BYTE*)&dummy_encapsulated_cmd_response;
+            Track_pipe = 0;
+            IN_RAM_src = SRC_DUMMY;
+            IN_RAM_src_offset = 0;
             inPipes[0].wCount.Val = dummy_length;
             inPipes[0].info.bits.ctrl_trf_mem = USB_EP0_RAM;
             inPipes[0].info.bits.busy = 1;
             break;
         case GET_ENCAPSULATED_RESPONSE:
             // Populate dummy_encapsulated_cmd_response first.
-            inPipes[0].pSrc.bRam = (BYTE*)&dummy_encapsulated_cmd_response;
+            //inPipes[0].pSrc.bRam = (BYTE*)&dummy_encapsulated_cmd_response;
+            Track_pipe = 0;
+            IN_RAM_src = SRC_DUMMY;
+            IN_RAM_src_offset = 0;            
             inPipes[0].info.bits.busy = 1;
             break;
         //****** End of required commands ******//
@@ -60,20 +73,22 @@ void USBCheckCDCRequest(void)
         #if defined(USB_CDC_SUPPORT_ABSTRACT_CONTROL_MANAGEMENT_CAPABILITIES_D1)
         case SET_LINE_CODING:
             outPipes[0].wCount.Val = SetupPkt.wLength;
-            outPipes[0].pDst.bRam = (BYTE*)LINE_CODING_TARGET;
-            outPipes[0].pFunc = LINE_CODING_PFUNC;
+            //outPipes[0].pDst.bRam = (BYTE*)LINE_CODING_TARGET;
+            Track_OUT_pipe = 0;
             outPipes[0].info.bits.busy = 1;
             break;
             
         case GET_LINE_CODING:
-            USBEP0SendRAMPtr(
-                (BYTE*)&line_coding,
-                LINE_CODING_LENGTH,
-                USB_EP0_INCLUDE_ZERO);
+            //inPipes[0].pSrc.bRam = (BYTE *)&line_coding;
+            Track_pipe = 0;
+            IN_RAM_src = SRC_LINE;
+            IN_RAM_src_offset = 0;
+            inPipes[0].wCount.Val = LINE_CODING_LENGTH;
+            inPipes[0].info.Val = USB_EP0_INCLUDE_ZERO | USB_EP0_BUSY | USB_EP0_RAM;
             break;
 
         case SET_CONTROL_LINE_STATE:
-            control_signal_bitmap._byte = (BYTE)SetupPkt.W_Value.v[0];
+            //control_signal_bitmap._byte = (BYTE)SetupPkt.W_Value.v[0];
             
             inPipes[0].info.bits.busy = 1;
             break;
@@ -100,22 +115,23 @@ void CDCInitEP(void)
 
 //    USBRxOnePacket(CDC_DATA_EP,(BYTE*)&cdc_data_rx,sizeof(cdc_data_rx));
     USBTransferOnePacket(CDC_DATA_EP,OUT_FROM_HOST,2,sizeof(cdc_data_rx));
-    CDCDataInHandle = NULL;
-    
+    //CDCDataInHandle = NULL;
+    CDCInHandle = NULL;
     cdc_trf_state = CDC_TX_READY;
 }//end CDCInitEP
 
 
-    #define CDCNotificationHandler() {}
-
 BYTE getsUSBUSART(BYTE len)
 {
     cdc_rx_len = 0;
-    
-    if(!USBHandleBusy(CDCDataOutHandle))
+    if(!BDT[CDCOutHandle].STAT.UOWN)
+    //if(!USBHandleBusy(CDCDataOutHandle))
     {
-        if(len > USBHandleGetLength(CDCDataOutHandle))
-            len = USBHandleGetLength(CDCDataOutHandle);
+//        if(len > USBHandleGetLength(CDCDataOutHandle))
+//            len = USBHandleGetLength(CDCDataOutHandle);
+        
+        if(len > BDT[CDCOutHandle].CNT)
+            len = BDT[CDCOutHandle].CNT;
         
         for(cdc_rx_len = 0; cdc_rx_len < len; cdc_rx_len++)
             USB_Out_Buffer[cdc_rx_len] = cdc_data_rx[cdc_rx_len];
@@ -130,7 +146,7 @@ BYTE getsUSBUSART(BYTE len)
 }//end getsUSBUSART
 
 extern char CDCSrc[64];
-volatile BYTE temp_len;
+BYTE temp_len;
 void putUSBUSART(BYTE length)
 {
     USBMaskInterrupts();
@@ -154,9 +170,8 @@ void CDCTxService(void)
     
     USBMaskInterrupts();
     
-    CDCNotificationHandler();
-    
-    if(USBHandleBusy(CDCDataInHandle)) 
+    if(BDT[CDCInHandle].STAT.UOWN)
+    //if(USBHandleBusy(CDCDataInHandle)) 
     {
         USBUnmaskInterrupts();
         return;
