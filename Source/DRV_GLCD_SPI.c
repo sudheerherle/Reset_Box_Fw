@@ -140,6 +140,7 @@ extern char  inspect_CPU1_data_done;
 extern char inspect_CPU2_data_done;
 extern char inspect_DAC_info_done;
 unsigned char Interested_Nw_Index = 0;
+extern UINT32 SMCPU_CRC_checksum;
 
 void Update_GLCD_State(void)
 {
@@ -411,8 +412,8 @@ void Build_packet_GLCD(void)
     }
 //    GLCD_Info.Message_Buffer[NID][136] = 0;
 //    GLCD_Info.Message_Buffer[NID][137] = 0;
-    GLCD_Info.Message_Buffer[NID][138]= 0;
-    GLCD_Info.Message_Buffer[NID][139]= 0;
+//    GLCD_Info.Message_Buffer[NID][138]= 0;
+//    GLCD_Info.Message_Buffer[NID][139]= 0;
             
     Glcd_csum.Word = Crc16(GLCD_INFO, GLCD_Info.Packet_Max_length-2);
     GLCD_Info.Message_Buffer[NID][142]   = Glcd_csum.Byte.Lo;
@@ -499,23 +500,30 @@ void Update_SMPU_data(void)
         GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME + 2 ]  = P_Time.Byte.Byte3;
         GLCD_Info.Message_Buffer[NID][OFFSET_PRESENT_TIME + 3 ]  = P_Time.Byte.Byte4;
 
-        SMCPU_CRC.LWord = 0x87654321;//substitute with code crc
+//        SMCPU_CRC.LWord = 0x87654321;//substitute with code crc
+        SMCPU_CRC.LWord = (long)SMCPU_CRC_checksum;
         GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC     ]  = SMCPU_CRC.Byte.Byte1;
         GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 1 ]  = SMCPU_CRC.Byte.Byte2;
         GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 2 ]  = SMCPU_CRC.Byte.Byte3;
         GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 3 ]  = SMCPU_CRC.Byte.Byte4;
-        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 4 ]  = NID + 1;
-        GLCD_Info.Message_Buffer[NID][OFFSET_SMCPU_CRC + 5 ]  = 0x3c;       //Source ID that means it is from reset box
+        GLCD_Info.Message_Buffer[NID][132]  = NID + 1;
+        GLCD_Info.Message_Buffer[NID][133]  = 0x3c;       //Source ID that means it is from reset box
 
+        GLCD_Info.Message_Buffer[NID][134] = CPU1_data_GLCD[NID][70];
+        GLCD_Info.Message_Buffer[NID][135] = CPU1_data_GLCD[NID][71];
+        GLCD_Info.Message_Buffer[NID][136] = CPU1_data_GLCD[NID][72];
+        GLCD_Info.Message_Buffer[NID][137] = CPU1_data_GLCD[NID][73];
+        
+        
 //        CheckSum.Word = Crc16(puchMsg,14);				/* Calculate CRC 16 for Xmit Buffer */
 
 }
 
-BOOL Compare_Data_Sent_prev()
-{
-    if(1)       // get in if there is change in packet sent previously and now.
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
+//BOOL Compare_Data_Sent_prev()
+//{
+//    if(1)       // get in if there is change in packet sent previously and now.
+//    {
+//        return TRUE;
+//    }
+//    return FALSE;
+//}

@@ -88,7 +88,7 @@ BYTE temp_E = 0;
 **********************************************************************************/
 BOOL Erase_Serial_EEProm_Block(UINT16 uiBlockNo)
 {
-    LATDbits.LATD12 = 0;
+    
 	long int uchOffset=0;
 	wordtype_t	Address;
     UINT16  PG_count;

@@ -92,10 +92,10 @@ void Update_switch_config(void);
 #include "PRINT.H"
 #include "DRV_CNT.H"
 #include "AUTO_DRV_CNT.h"
+#include <libpic30.h>
 
 sm_status_t Status;					/* sm status information */
 rb_status_t RB_Status;
-time_t SystemClock;					/* holds system clock time   */
 time_t SystemClock;					/* holds system clock time   */
 time_t SystemDate; 
 BYTE YLED_FB_ERROR = 0, RLED_FB_ERROR = 0, SPK_FB_ERROR = 0, THFT_FB_ERROR = 0, DOOR_FB_ERROR = 0, feedback_error = 0, FB_error_ID =0;
@@ -113,8 +113,11 @@ BYTE HA_config;
 BYTE Pilot_mode_config;
 reset_seq_t Reset_Seq;						/* Reset Sequence information */
 auto_reset_seq_t Auto_Reset_Seq;
-rb_info_t RB_Info;
-extern longtype_t cpu_crc;
+//rb_info_t RB_Info;
+BYTE inspect_event_done;
+unsigned int init_delay_count = 0;
+UINT32 SMCPU_CRC_checksum = 0;
+//extern longtype_t cpu_crc;
 dac_comm_error Dac_Comm_Err;				/* Dac external communication CRC error count information */
 char inspect_CPU1_data_done;
 char inspect_CPU2_data_done;
@@ -290,10 +293,10 @@ void Initialise_System(void)
     GS_LED_PORT = 0;
 	Initialise_Smc_CommSch();	/* from comm_sm.c */
     delay();
-    cpu_crc.DWord.HiWord.Byte.Hi = 0x9a;
-    cpu_crc.DWord.HiWord.Byte.Lo = 0xfa;
-    cpu_crc.DWord.LoWord.Byte.Hi = 0x0f;
-    cpu_crc.DWord.LoWord.Byte.Lo = 0x4b;
+//    cpu_crc.DWord.HiWord.Byte.Hi = 0x9a;
+//    cpu_crc.DWord.HiWord.Byte.Lo = 0xfa;
+//    cpu_crc.DWord.LoWord.Byte.Hi = 0x0f;
+//    cpu_crc.DWord.LoWord.Byte.Lo = 0x4b;
     Initialise_Printer();		/* from print.c */
 	Initialise_LED_Driver();	/* from drv_led.c */
 	Initialise_Cnt_Driver();	/* from drv_cnt.c */
@@ -304,8 +307,8 @@ void Initialise_System(void)
 	Initialise_Reset_Seq();
     Initialise_Auto_Reset_Seq();
 //	Initialise_RB_Mode();
-	Initialise_RB_Info();
-	Initialise_TrainMon();	
+//	Initialise_RB_Info();
+//	Initialise_TrainMon();	
     Initialise_A2D_Driver();	/* from drv_a2d.c */
 	Initialise_I2C_Driver();	/* from drv_i2c.c */
 	Initialise_RTC_Sch();		/* from drv_rtc.c */
@@ -359,40 +362,23 @@ BYTE flash_read_c (UINT32 temp)
 
 void Check_Flash(void)
 {
-//	const unsigned char *pOnChipFlash = 0;
 	longtype_t CalculatedSum;
 	longtype_t SavedSum;
-	BYTE uchHiNibble, uchLoNibble;
+    _prog_addressT CK_addr;
 
-	//uchTBLPTRU = TBLPTRU;	/* Save TBLPTRU register */
-	/* Read ID Locations to retrieve Checksum */
-	uchLoNibble = flash_read_c((UINT32) CHECKSUM_LOCATION);
-	uchHiNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 1);
-	SavedSum.DWord.LoWord.Byte.Lo = ((BYTE)(uchHiNibble << 4)) | uchLoNibble;
-	uchLoNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 2);
-	uchHiNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 3);
-	SavedSum.DWord.LoWord.Byte.Hi = ((BYTE)(uchHiNibble << 4)) | uchLoNibble;
-	uchLoNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 4);
-	uchHiNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 5);
-	SavedSum.DWord.HiWord.Byte.Lo = ((BYTE)(uchHiNibble << 4)) | uchLoNibble;
-	uchLoNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 6);
-	uchHiNibble = flash_read_c((UINT32) CHECKSUM_LOCATION + 7);
-	SavedSum.DWord.HiWord.Byte.Hi = ((BYTE)(uchHiNibble << 4)) | uchLoNibble;
-	//TBLPTRU = uchTBLPTRU;	/* Restore TBLPTRU register */
+    CK_addr = CHECKSUM_LOCATION;
+    CK_addr = _memcpy_p2d16(&SavedSum.DWord.HiWord.Byte.Hi,CK_addr,1);
+    CK_addr = _memcpy_p2d16(&SavedSum.DWord.HiWord.Byte.Lo,CK_addr,1);
+    CK_addr = _memcpy_p2d16(&SavedSum.DWord.LoWord.Byte.Hi,CK_addr,1);
+    CK_addr = _memcpy_p2d16(&SavedSum.DWord.LoWord.Byte.Lo,CK_addr,1);;
 
-	 /* Please ensure that source files are compiled with
-	 * -CP24 to generate 24-bits wide pointers. This will ensure that entire program
-	 * space will be dereferenced by pointer correctly. In case of 16-bit pointers, 
-	 * addresses below the upper limit of RAM will access the RAM and above upper limit
-	 * of RAM will access FLASH, which means entire FLASH is not accessible.
-	 */
+    CalculatedSum.LWord = 0;
 	CalculatedSum.LWord = crc32(CalculatedSum.LWord);
-	sprintf((char *)uchCheckSum, "%04x%04x", CalculatedSum.DWord.HiWord.Word, CalculatedSum.DWord.LoWord.Word);
-	sprintf((char *)uchIDInfo, " DAC SM CPU ");
 	if (CalculatedSum.LWord == SavedSum.LWord)
 	{
 		/* CRC-32 Check sum computed matches with the one stored in ID LOCATION */
 		Status.Flags.Flash_CheckSum = CRC32_CHECKSUM_OK;
+        SMCPU_CRC_checksum = SavedSum.LWord;
 	}
 	else	
 	{
@@ -425,7 +411,7 @@ void Start_Sub_Systems(void)
 	Start_DI_Scan();			/* from drv_di.c */
 	Start_Reset_Seq();
     Start_Auto_Reset_Seq();
-	Start_TrainMon();			/* from trainmon.c */
+//	Start_TrainMon();			/* from trainmon.c */
 	Start_Printer();			/* from print.c */
 }
 
@@ -448,7 +434,7 @@ Input Element		:None
 Output Element		:void
 
 **********************************************************************************/
-volatile char inspect_event_done;
+
 int USB_Check(void);
 //
 //extern glcd_info_t GLCD_Info;		/* structure that handles Lcd scheduler and holds lcd Information */
@@ -456,11 +442,12 @@ int USB_Check(void);
 //#define GS_LED          LATFbits.LATF4 //SS2
 #define AUTO_RESET_PORT_PIN  LATDbits.LATD9;
 #define AUTO_RESET_FB_PORT_PIN LATDbits.LATD11;
-#include "COMMON.h"
+
 //extern smc_info_t					Smc1XmitObject;
 int main(void)
 {
     inspect_event_done = 0;
+    BYTE Always = 1;
     inspect_CPU1_data_done = 0;
     inspect_CPU2_data_done = 0;
     inspect_DAC_info_done = 0;
@@ -487,6 +474,10 @@ int main(void)
 			Decrement_RTC_10msTmr();		/* from drv_rtc.c */
 			Decrement_A2D_10msTmr();		/* from drv_a2d.c */
 			Decrement_Events_Sch_10msTmr();	/* from events.c */
+            if(inspect_event_done == 0)
+                init_delay_count++;
+            if(init_delay_count == 200)
+                inspect_event_done = 1;
 //          Decrement_Smc_Sch_msTmr();		/* from comm_smc.c */
             Decrement_LED_10msTmr();
             Decrement_Cnt_10msTmr();			/* from Drv_Cnt.c */
@@ -527,7 +518,8 @@ int main(void)
         Update_GLCD_State();
         Update_Printer_State();
 		} 
-        while (1);
+        while (Always == 1);
+    return 0;
         
 }
 
@@ -537,59 +529,59 @@ void delay(){
         Nop();
     }
 }
-void Initialise_RB_Info(void)
-{
-
-	RB_Info.RB_Type = RESET_BOX_TYPE_UNKNOWN;
-
-	if (PORTGbits.RG1 == 0)
-        {
-	if (PORTGbits.RG0 == 0)
-            {
-            /* 00 is 2DP1S */
-                RB_Info.RB_Type = RESET_BOX_TYPE_DS;
-            }
-        else
-            {
-            /* 01 is DS */
-                RB_Info.RB_Type = RESET_BOX_TYPE_2DP1S;
-            }
-        }
-	else
-		{
-		if (PORTGbits.RG0 == 0)
-			{
-			/* 10 is US */
-            RB_Info.RB_Type = RESET_BOX_TYPE_3DP1S;
-			}
-		else
-			{
-			/* 11 is 3DP1S */
-            RB_Info.RB_Type = RESET_BOX_TYPE_US;
-			}
-		}
-
-		RB_Info.DAC_Type = DAC_TYPE_UNKNOWN;
-		RB_Info.Local_DP_Status = RB_MODE_NOT_STARTED;
-		RB_Info.Remote_DP_Status = RB_MODE_NOT_STARTED;
-		RB_Info.Local_DP_Count.Word = 0;
-		RB_Info.Remote_DP_Count.Word = 0;
-		RB_Info.DP_A_Count.Word = 0;
-		RB_Info.DP_B_Count.Word = 0;
-		RB_Info.DP_C_Count.Word = 0;
-		RB_Info.Local_DP_Error = 0;
-		RB_Info.Remote_DP_Error = 0;
-		RB_Info.Prev_Local_DP_Count.Word = 0;
-		RB_Info.Prev_Remote_DP_Count.Word = 0;
-		RB_Info.Prev_DP_A_Count.Word = 0;
-		RB_Info.Prev_DP_B_Count.Word = 0;
-		RB_Info.Prev_DP_C_Count.Word = 0;
-//		Itoac( RB_Info.Local_DP_Count.Word, RB_Info.Local_DP_Count_Str);
-//		Itoac( RB_Info.Remote_DP_Count.Word, RB_Info.Remote_DP_Count_Str);
-//		Itoac( RB_Info.DP_A_Count.Word, RB_Info.DP_A_Count_Str);
-//		Itoac( RB_Info.DP_B_Count.Word, RB_Info.DP_B_Count_Str);
-//		Itoac( RB_Info.DP_C_Count.Word, RB_Info.DP_C_Count_Str);
-}
+//void Initialise_RB_Info(void)
+//{
+//
+//	RB_Info.RB_Type = RESET_BOX_TYPE_UNKNOWN;
+//
+//	if (PORTGbits.RG1 == 0)
+//        {
+//	if (PORTGbits.RG0 == 0)
+//            {
+//            /* 00 is 2DP1S */
+//                RB_Info.RB_Type = RESET_BOX_TYPE_DS;
+//            }
+//        else
+//            {
+//            /* 01 is DS */
+//                RB_Info.RB_Type = RESET_BOX_TYPE_2DP1S;
+//            }
+//        }
+//	else
+//		{
+//		if (PORTGbits.RG0 == 0)
+//			{
+//			/* 10 is US */
+//            RB_Info.RB_Type = RESET_BOX_TYPE_3DP1S;
+//			}
+//		else
+//			{
+//			/* 11 is 3DP1S */
+//            RB_Info.RB_Type = RESET_BOX_TYPE_US;
+//			}
+//		}
+//
+//		RB_Info.DAC_Type = DAC_TYPE_UNKNOWN;
+//		RB_Info.Local_DP_Status = RB_MODE_NOT_STARTED;
+//		RB_Info.Remote_DP_Status = RB_MODE_NOT_STARTED;
+//		RB_Info.Local_DP_Count.Word = 0;
+//		RB_Info.Remote_DP_Count.Word = 0;
+//		RB_Info.DP_A_Count.Word = 0;
+//		RB_Info.DP_B_Count.Word = 0;
+//		RB_Info.DP_C_Count.Word = 0;
+//		RB_Info.Local_DP_Error = 0;
+//		RB_Info.Remote_DP_Error = 0;
+//		RB_Info.Prev_Local_DP_Count.Word = 0;
+//		RB_Info.Prev_Remote_DP_Count.Word = 0;
+//		RB_Info.Prev_DP_A_Count.Word = 0;
+//		RB_Info.Prev_DP_B_Count.Word = 0;
+//		RB_Info.Prev_DP_C_Count.Word = 0;
+////		Itoac( RB_Info.Local_DP_Count.Word, RB_Info.Local_DP_Count_Str);
+////		Itoac( RB_Info.Remote_DP_Count.Word, RB_Info.Remote_DP_Count_Str);
+////		Itoac( RB_Info.DP_A_Count.Word, RB_Info.DP_A_Count_Str);
+////		Itoac( RB_Info.DP_B_Count.Word, RB_Info.DP_B_Count_Str);
+////		Itoac( RB_Info.DP_C_Count.Word, RB_Info.DP_C_Count_Str);
+//}
 
 void Initialise_Reset_Seq(void)
 {
@@ -634,7 +626,6 @@ void Update_Reset_Seq_State(void)
 			if (RB_Status.Flags.Reset_PB_Status == SET_LOW) {
                     if(LATDbits.LATD11 == 1){
                         Reset_Seq.State = WAIT_FOR_RESET_INPUT;
-                        break;
                         break;
                     }
 				/*
@@ -805,7 +796,7 @@ void Decrement_Auto_Reset_Seq_10msTmr(void)
 }
 void Update_Network_Configuration(void)
 {
-    unsigned char DIP_val, uchTemp;
+    BYTE DIP_val, uchTemp;
     TRISDbits.TRISD6 = 1;
     TRISDbits.TRISD7 = 1;    
     TRISFbits.TRISF0 = 1;
@@ -821,15 +812,16 @@ void Update_Network_Configuration(void)
     
     DIP_val = 0;
     for(uchTemp=0;uchTemp<100;uchTemp++);
-    DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0F;
-    
-    LATAbits.LATA6 = 1;
-    LATGbits.LATG0 = 0;
-    LATGbits.LATG1 = 1;
-    
-    for(uchTemp=0;uchTemp<100;uchTemp++);
-    DIP_val |= ((~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & 0X0f) <<4;
-    
+        DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
+            (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F;
+//        
+//    LATAbits.LATA6 = 1;
+//    LATGbits.LATG0 = 0;
+//    LATGbits.LATG1 = 1;
+//    
+//    for(uchTemp=0;uchTemp<100;uchTemp++);
+//       DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
+//            (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F; 
     Network_config = DIP_val;
 }
 
@@ -846,8 +838,8 @@ void Update_switch_config(void)
     LATAbits.LATA6 = 0;
     
     for(uchTemp=0;uchTemp<100;uchTemp++);
-    DIP_val = (~((PORTDbits.RD6) | ((((BYTE)PORTDbits.RD7))<<1) | ((((BYTE)PORTFbits.RF0))<<2) | ((((BYTE)PORTFbits.RF1))<<3))) & (0X0F);
-    
+        DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
+            (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F;
     
     if(((DIP_val) & (0x1)) == 1){
         HA_config = 1;

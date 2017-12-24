@@ -838,6 +838,6 @@ void Clear_Com3_Error(void)
         U3MODEbits.UARTEN = SET_HIGH;
 	}
     U3STAbits.UTXEN = 1;
-    uchCnt++;
+    uchCnt = uchCnt;
 }
 

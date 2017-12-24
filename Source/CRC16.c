@@ -31,7 +31,7 @@ extern host_recv_msg_info_t 		Com2RecvObject;
 extern xmit_queue_info_t 		 Xmit_Queue;
 extern query_info_t             QueryInfObject;
 extern glcd_info_t GLCD_Info;
-extern BYTE NID;
+extern unsigned char NID;
 
 extern smc_sch_info_t             Smc_Sch_Info;			/* structure holds station master interface communication scheduler */
 /* Table of CRC values for high-order byte */

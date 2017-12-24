@@ -77,7 +77,7 @@
 #define EVENTS_PER_REGISTER			(8)			/* Number of events per event register */
 #define EEPROM_BLOCK_SIZE			(65536)		/* Serial EEPROM one block size */
 #define BLOCKS_PER_CHIP				(1)			/* No of blocks per chip */
-#define MAXIMUM_BLOCKS				(4)			/* BLOCKS_PER_CHIP (1) * (4) NO_OF_SERIAL_EEPROMS */
+#define MAXIMUM_BLOCKS				(3)			/* BLOCKS_PER_CHIP (1) * (4) NO_OF_SERIAL_EEPROMS */
 #define MAX_TYPE_OF_MODES			(6)
 /* Maximum number of errors 64 */
 #define  TOTAL_NO_ERRORS			(64)
@@ -145,8 +145,8 @@ typedef unsigned long UINT32;
 #define CRC32_CHECKSUM_BAD			0
 #define CRC32_CHECKSUM_OK			1
 #define FALSE						0				/* logical zero indicates FALSE */
-#define TRUE						!FALSE			/* logical non zero indicates TRUE */
-
+#define TRUE						1			/* logical non zero indicates TRUE */
+#define FALSE                       0
 #define PILOT_MODE					(0)
 /* Serial Communication related definitions -Different baudrate states(for 20MHz) */
 typedef enum
@@ -769,5 +769,5 @@ extern BYTE Get_Events_Counter_Value(void);
 extern void Clear_Events_Counter(void);
 extern BOOL Modify_Token_of_old_Events(void);
 extern BYTE Compute_LRC(event_record_t,BYTE);
-extern void Initialise_RB_Info(void);
+//extern void Initialise_RB_Info(void);
 #endif

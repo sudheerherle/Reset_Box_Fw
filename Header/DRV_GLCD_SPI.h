@@ -116,7 +116,7 @@ typedef struct {
 extern void Initialise_GLCD_Driver(void);
 extern void Update_GLCD_State(void);
 void Initialise_GLCD_Display(void);
-BOOL Compare_Data_Sent_prev(void);
+//BOOL Compare_Data_Sent_prev(void);
 void Build_packet_GLCD(void);
 void Decrement_GLCD_msTmr(void);
 void Update_SMPU_data(void);

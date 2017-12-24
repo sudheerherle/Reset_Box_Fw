@@ -36,7 +36,7 @@
 extern  sm_status_t Status;					/* From cpu_sm.c */
 const longtype_t cpu_crc;
 extern time_t SystemClock;
-extern const BYTE uchCommand_Length_Table[8][2];	/* From command_proc.c */
+extern const BYTE uchCommand_Length_Table[7][2];	/* From command_proc.c */
 extern const BYTE BitMask_List[8];					/* From cpu_sm.c */
 unsigned char No_smcpu = 0;
 BYTE Selected_CPU_Addr = 1;
@@ -45,9 +45,10 @@ extern dac_sysinfo_t DAC_sysinfo;					/* from cpu_sm.c */
 smc_sch_info_t             Smc_Sch_Info;			/* structure holds station master interface communication scheduler */
 smc_info_t					Smc1XmitObject;
 query_info_t QueryInfObject;
+UINT16 temp_crc_SPI;
 extern system_t SystemObject;
 extern glcd_info_t GLCD_Info;
-extern rb_info_t RB_Info;					/* from ACC_RB.C */
+//extern rb_info_t RB_Info;					/* from ACC_RB.C */
 extern dac_comm_error Dac_Comm_Err;				/* Dac external communication CRC error count information */
 //unsigned char System_error_code;
 unsigned char temp8 = 0, temp18=0;
@@ -123,7 +124,7 @@ void Initialise_Smc_CommSch(void)
     Smc_Sch_Info.Timeout_ms = 5000;
 	Smc_Sch_Info.ScanPeriod = SMC_COMM_SCHEDULER_SCAN_RATE;
 	Smc_Sch_Info.BytePeriod = BYTE_PERIOD_9MS;				     /* set byte PERIOD to 1ms for 1200 Baud Rate* */
-	SetupCOM1BaudRate(BAUDRATE_1200);						     /*  set smc comm baudrate to 1200bps */	
+	SetupCOM1BaudRate((BYTE)BAUDRATE_1200);						     /*  set smc comm baudrate to 1200bps */	
 	Smc_Sch_Info.Setup_Timeout_ms = MODEM_TRC_ON_TIMEOUT;
 	Status.Flags.MDM_TX_Mode = SET_LOW;
 }
@@ -528,7 +529,7 @@ void Update_Smc_Sch_State(void)
 void Update_Smc_Sch_State(void)
 {
         BYTE uchData=0;
-        wordtype_t checksum,query_crc;
+        wordtype_t query_crc;
         
                
 	switch (Smc_Sch_Info.State)
@@ -548,7 +549,7 @@ void Update_Smc_Sch_State(void)
 				//No CD be master
                 Clear_Com1_Error(); 
                 Set_Modem_TX_Mode();
-                SetupCOM1BaudRate(BAUDRATE_1200);
+                SetupCOM1BaudRate((BYTE)BAUDRATE_1200);
                 Smc_Sch_Info.Timeout_ms = 100;
 				Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
 			}
@@ -561,7 +562,7 @@ void Update_Smc_Sch_State(void)
             }
             LATGbits.LATG14 = 0;
             Set_Modem_TX_Mode();
-            SetupCOM1BaudRate(BAUDRATE_1200);
+            SetupCOM1BaudRate((BYTE)BAUDRATE_1200);
             Clear_Com1_Error(); 
             Smc_Sch_Info.Timeout_ms = DELAY_20MS;
             Smc_Sch_Info.State = WAIT_FOR_TX_MODE;
@@ -613,6 +614,8 @@ void Update_Smc_Sch_State(void)
                     if(Smc_Sch_Info.Query.Network_Index > Network_config){
                     Smc_Sch_Info.Query.Network_Index = 1;
                     }
+            }else{
+                
             }
             Set_Modem_RX_Mode();
             Smc_Sch_Info.Timeout_ms = DELAY_20MS;
@@ -627,19 +630,19 @@ void Update_Smc_Sch_State(void)
             }
         case  CHECK_FOR_CD_STATUS:
             if(MODEM_CD == 1){
-                Smc_Sch_Info.State =  SM_NO_DATA_RECEIVED;
+                Smc_Sch_Info.State =  SMC_NO_DATA_RECEIVED;
                 Smc_Sch_Info.Timeout_ms = 1000;
                 Smc1XmitObject.Index = 0;
                 Smc1XmitObject.Msg_Length = SM_MESSAGE_LENGTH;
                 Clear_Com1_Error();
             }else{
-                SetupCOM1BaudRate(BAUDRATE_1200);
+                SetupCOM1BaudRate((BYTE)BAUDRATE_1200);
                 Clear_Com1_Error();
             }
             if(Smc_Sch_Info.Timeout_ms ==  TIMEOUT_EVENT)
                 Smc_Sch_Info.State =  SMCPU_DEAD;
             break;
-        case SM_NO_DATA_RECEIVED:
+        case SMC_NO_DATA_RECEIVED:
 //			if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
 //                return;            
 //            Clear_Com1_Error();
@@ -659,12 +662,12 @@ void Update_Smc_Sch_State(void)
 				}
             if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
 				{
-				Smc_Sch_Info.State = SM_DATA_RECEPTION_COMPLETE;
+				Smc_Sch_Info.State = SMC_DATA_RECEPTION_COMPLETE;
 				Smc_Sch_Info.Timeout_ms = 0;
 				break;
 				}
 		break;
-		case SM_DATA_RECEPTION_STARTED:
+		case SMC_DATA_RECEPTION_STARTED:
 			if (U1STAbits.URXDA)
 				{
 				uchData = U1RXREG;
@@ -675,7 +678,7 @@ void Update_Smc_Sch_State(void)
 				}
 			if (Smc1XmitObject.Index >= SM_MESSAGE_LENGTH)
 				{
-				Smc_Sch_Info.State = SM_DATA_RECEPTION_COMPLETE;
+				Smc_Sch_Info.State = SMC_DATA_RECEPTION_COMPLETE;
 				Smc_Sch_Info.Timeout_ms = 0;
 				break;
 				}
@@ -685,12 +688,11 @@ void Update_Smc_Sch_State(void)
                 Smc1XmitObject.Index = 0;
 				}
 			break;
-		case SM_DATA_RECEPTION_COMPLETE:
-                        
-                        checksum.Word = Crc16(SMC_OBJ,Smc1XmitObject.Msg_Length-2);
-                                if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79]
-                                && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]
-                                && Smc1XmitObject.Msg_Buffer[0]!=0){ //have to compare the first byte which is CPU address to 0 because SMCPU sends 80 bytes with 0 in it and it will match checksum too.
+		case SMC_DATA_RECEPTION_COMPLETE:
+                        temp_crc_SPI = Crc16(SMC_OBJ, SPI_MESSAGE_LENGTH-2);
+		if (temp_crc_SPI == ((UINT16)((UINT16)Smc1XmitObject.Msg_Buffer[SPI_MESSAGE_LENGTH-1]<<8)+(Smc1XmitObject.Msg_Buffer[SPI_MESSAGE_LENGTH-2])))
+		{
+                         //have to compare the first byte which is CPU address to 0 because SMCPU sends 80 bytes with 0 in it and it will match checksum too.
                                     BYTE f = QueryInfObject.query_buf[2];
                                 Process_SM_Message(f);
                                 Network_status[QueryInfObject.query_buf[1]-1] = 1;
@@ -806,11 +808,9 @@ void Update_Smc_Sch_State(void)
 			}	
 			break;
 		case SM_LISTEN_DATA_RECEPTION_COMPLETE:
-            checksum.Word = Crc16(SMC_OBJ,Smc1XmitObject.Msg_Length-2);
-            if(checksum.Byte.Hi == Smc1XmitObject.Msg_Buffer[79] 
-                    && checksum.Byte.Lo == Smc1XmitObject.Msg_Buffer[78]
-                    && Smc1XmitObject.Msg_Buffer[0]!=0)
-			{
+             temp_crc_SPI = Crc16(SMC_OBJ, SPI_MESSAGE_LENGTH-2);
+		if (temp_crc_SPI == ((UINT16)((UINT16)Smc1XmitObject.Msg_Buffer[SPI_MESSAGE_LENGTH-1]<<8)+(Smc1XmitObject.Msg_Buffer[SPI_MESSAGE_LENGTH-2])))
+		{
                 Process_SM_Message(uchSelectedCPU);
                 if(Smc1XmitObject.Msg_Buffer[76] != 0x8 )
                 {
@@ -953,7 +953,8 @@ void Clear_Com1_Error(void)
 	if (U1STAbits.FERR)
 	{
 		/* Framing Error! Clear the error */
-		uchCnt= U1RXREG;
+		uchCnt = (BYTE) U1RXREG;
+        uchCnt = uchCnt;
         IFS0bits.U1RXIF = 0;
         U1MODEbits.UARTEN = SET_LOW;
         U1MODEbits.UARTEN = SET_HIGH;
@@ -981,7 +982,7 @@ void Set_Modem_TX_Mode(void)
  M1 = SET_LOW;
 }
 
-unsigned char log_event,System_error, System_error_code;
+BYTE log_event, System_error, System_error_code;
 void Process_SM_Message(BYTE uchCPU_ID)
 {
         int i;
@@ -1337,95 +1338,95 @@ void Update_Shadow_Register(BYTE uchCPU)
 	}
 }
 
-void Save_DS_Data()
-{
-	BYTE uchBuf;
-
-	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
-	if (uchBuf <= MAX_TYPE_OF_STATUS)
-		{
-		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
-		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
-		}
-	RB_Info.Local_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
-	RB_Info.Local_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
-	RB_Info.Remote_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.Remote_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
-}
-
-void Save_US_Data()
-{
-	BYTE uchBuf;
-
-	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0xF0;
-	uchBuf = (uchBuf >> 4);
-	if (uchBuf <= MAX_TYPE_OF_STATUS)
-		{
-		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
-		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
-		}
-	RB_Info.Local_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_LOCAL_AXLE_COUNT_OFFSET];
-	RB_Info.Local_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_LOCAL_AXLE_COUNT_OFFSET+1];
-	RB_Info.Remote_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.Remote_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[US_ERR_CODE_OFFSET];
-}
-
-void Save_3DP1S_A_Data()
-{
-	BYTE uchBuf;
-
-	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
-	if (uchBuf <= MAX_TYPE_OF_STATUS)
-		{
-		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
-		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
-		}
-	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
-	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
-}
-
-void Save_3DP1S_B_Data()
-{
-	BYTE uchBuf;
-
-	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
-	if (uchBuf <= MAX_TYPE_OF_STATUS)
-		{
-		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
-		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
-		}
-	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
-	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
-}
-
-void Save_3DP1S_C_Data()
-{
-	BYTE uchBuf;
-
-	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
-	if (uchBuf <= MAX_TYPE_OF_STATUS)
-		{
-		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
-		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
-		}
-	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
-	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
-	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
-	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
-	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
-}
-
+//void Save_DS_Data()
+//{
+//	BYTE uchBuf;
+//
+//	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
+//	if (uchBuf <= MAX_TYPE_OF_STATUS)
+//		{
+//		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
+//		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
+//		}
+//	RB_Info.Local_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
+//	RB_Info.Local_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Remote_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.Remote_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
+//}
+//
+//void Save_US_Data()
+//{
+//	BYTE uchBuf;
+//
+//	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0xF0;
+//	uchBuf = (uchBuf >> 4);
+//	if (uchBuf <= MAX_TYPE_OF_STATUS)
+//		{
+//		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
+//		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
+//		}
+//	RB_Info.Local_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_LOCAL_AXLE_COUNT_OFFSET];
+//	RB_Info.Local_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_LOCAL_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Remote_DP_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.Remote_DP_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[US_ERR_CODE_OFFSET];
+//}
+//
+//void Save_3DP1S_A_Data()
+//{
+//	BYTE uchBuf;
+//
+//	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
+//	if (uchBuf <= MAX_TYPE_OF_STATUS)
+//		{
+//		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
+//		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
+//		}
+//	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
+//}
+//
+//void Save_3DP1S_B_Data()
+//{
+//	BYTE uchBuf;
+//
+//	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
+//	if (uchBuf <= MAX_TYPE_OF_STATUS)
+//		{
+//		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
+//		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
+//		}
+//	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
+//}
+//
+//void Save_3DP1S_C_Data()
+//{
+//	BYTE uchBuf;
+//
+//	uchBuf = Smc1XmitObject.Msg_Buffer[MODE_OFFSET] & 0x0F;
+//	if (uchBuf <= MAX_TYPE_OF_STATUS)
+//		{
+//		RB_Info.Local_DP_Status = uchStatusLookup[uchBuf][1];
+//		RB_Info.Remote_DP_Status = uchStatusLookup[uchBuf][0];
+//		}
+//	RB_Info.DP_A_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_A_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_B_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_B_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[US_REMOTE_AXLE_COUNT_OFFSET+1];
+//	RB_Info.DP_C_Count.Byte.Lo = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET];
+//	RB_Info.DP_C_Count.Byte.Hi = Smc1XmitObject.Msg_Buffer[DS_LOCAL_AXLE_COUNT_OFFSET+1];
+//	RB_Info.Local_DP_Error = Smc1XmitObject.Msg_Buffer[DS_ERR_CODE_OFFSET];
+//}
+//

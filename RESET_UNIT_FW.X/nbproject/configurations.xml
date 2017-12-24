@@ -74,7 +74,6 @@
       <itemPath>../Source/PRINT.c</itemPath>
       <itemPath>../Source/DRV_GLCD_SPI.c</itemPath>
       <itemPath>../Source/AUTO_DRV_CNT.c</itemPath>
-      <itemPath>../Source/TRAINMON.c</itemPath>
       <itemPath>../Source/COMM_GSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -117,7 +116,7 @@
       <makeCustomizationType>
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
         <makeCustomizationPreStep></makeCustomizationPreStep>
-        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
         <makeCustomizationPostStep>"C:\Program Files (x86)\Microchip\MPLABX\v4.05\mplab_ide\bin\hexmate.exe" --edf="C:\Program Files (x86)\Microchip\MPLABX\v4.05\mplab_ide\dat\en_msgs.txt" ${ImagePath} -ADDRESSING=2 +-CK=0x0000-0x2ABEF@0x2ABF0w4g5p0x04C11DB7t000000 -O${ImagePath}</makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>

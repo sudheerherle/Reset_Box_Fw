@@ -34,7 +34,7 @@
 extern char USB_Out_Buffer[64];
 extern char USB_In_Buffer[64];
 extern sm_status_t Status;					/* From cpu_sm.c */
-extern const BYTE uchCommand_Length_Table[8][2];	/* From command_proc.c */
+extern const BYTE uchCommand_Length_Table[7][2];	/* From command_proc.c */
 extern const BYTE BitMask_List[8];					/* From cpu_sm.c */
 
 extern query_param_t        Query_Param;			/* From command_proc.c */
@@ -74,7 +74,7 @@ void Initialise_Host_CommSch(void)
 	Com2RecvObject.Index = 0;								/*  intialise receiving scheduler index value to zero */ 
 	Com2RecvObject.Timeout_ms = 0;							/*  intialise receiving scheduler timeout value to zero */ 
 	Clear_COM2_Receive_Buffer();							/*  clear receiving buffer */ 
-	SetupCOM2BaudRate(BAUDRATE_9600);						/*  set host comm baudrate to 9600bps */ 
+	SetupCOM2BaudRate((BYTE)BAUDRATE_9600);						/*  set host comm baudrate to 9600bps */ 
 }
 /*********************************************************************************
 File name 			:comm_host.c
@@ -458,7 +458,7 @@ Output Element		:void
 BYTE Bytes_read;
 void Receive_COM2_Message(void)
 {
-	BYTE uchData=0, count = 0;
+	BYTE uchData=0, com2_count = 0;
     if (U2STAbits.OERR)
 	Clear_Com2_Error();
 //        if(0)
@@ -467,7 +467,7 @@ void Receive_COM2_Message(void)
         Host_Sch_Info.Rx_USB_Data_available = 0;
         while (Bytes_read!=0)
 	{
-		uchData = USB_Out_Buffer[count++];
+		uchData = USB_Out_Buffer[com2_count++];
                 Bytes_read--;
 		Com2RecvObject.Timeout_ms = HOST_COMMAND_RECEIVE_TIMEOUT;    /* maximum time allowed between data bytes */
 		switch (Com2RecvObject.State)
@@ -537,10 +537,8 @@ void Receive_COM2_Message(void)
     }
 	if(Com2RecvObject.State == CHECK_CRC16)
 	{
-            UINT16 temp_crc;
-            temp_crc = Crc16(COM2_RECV_OBJ,Com2RecvObject.Msg_Length-2);
-	   if (Crc16(COM2_RECV_OBJ,Com2RecvObject.Msg_Length-2) == (UINT16)(Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-2]<<8)+Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-1])
-           {
+       if (Crc16(COM2_RECV_OBJ,Com2RecvObject.Msg_Length-2) == (UINT16)((UINT16)Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-2]<<8)+Com2RecvObject.Msg_Buffer[Com2RecvObject.Msg_Length-1])
+       {
 	      /* Command received from Host Computer */
 		  Process_Host_Command();
 	   }
@@ -612,6 +610,7 @@ void Clear_Com2_Error(void)
 	{
 		/* Framing Error! Clear the error */
 		uchCnt= U2RXREG;
+        uchCnt = uchCnt;
                 U2MODEbits.UARTEN = SET_LOW;
                 U2MODEbits.UARTEN = SET_HIGH;
 	}

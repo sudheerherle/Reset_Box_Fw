@@ -87,7 +87,7 @@ typedef enum {
 /* Smc Scheduler */
 typedef struct {	
 			smc_sch_state_t	State;			/* Smc scheduler present state */	
-			smc_sch_state_t	Next_State;		/* Smc scheduler Next state */
+//			smc_sch_state_t	Next_State;		/* Smc scheduler Next state */
 			UINT16			Timeout_ms;		/* One milliSecond Variable for Smc scheduler*/
             UINT16          CD_timeout_ms;
 			UINT16			ScanPeriod;	
@@ -117,21 +117,21 @@ typedef struct {
 			BYTE	Index;
 }system_t;
             
-typedef enum {
-			SM_SCHEDULER_NOT_STARTED = 0,		/* Default State */
-			SM_NO_DATA_RECEIVED,			/* when there is no commands to service scheduler will be in this State */
-			SM_DATA_RECEPTION_STARTED,
-			SM_DATA_RECEPTION_COMPLETE,
-            SM_TRANSMIT_SMC_DATA,
-            HOLD_SMC_MODEM_RS_LOW,
-			SM_CLEAR_FRAME_ERROR,
-			SM_CLEAR_OVERRUN_ERROR,
-            
-} sm_sch_state_t;
+//typedef enum {
+//			SM_SCHEDULER_NOT_STARTED = 0,		/* Default State */
+//			SM_NO_DATA_RECEIVED,			/* when there is no commands to service scheduler will be in this State */
+//			SM_DATA_RECEPTION_STARTED,
+//			SM_DATA_RECEPTION_COMPLETE,
+//            SM_TRANSMIT_SMC_DATA,
+//            HOLD_SMC_MODEM_RS_LOW,
+//			SM_CLEAR_FRAME_ERROR,
+//			SM_CLEAR_OVERRUN_ERROR,
+//            
+//} sm_sch_state_t;
 
 
 typedef struct {
-			sm_sch_state_t	State;			/* Sm scheduler present state */
+			smc_sch_state_t	State;			/* Sm scheduler present state */
 			UINT16			Timeout_ms;		/* One milliSecond Variable for Sm scheduler*/
 			BYTE			BytePeriod;		/* Transmission Time of One Byte deponds on Baud Rate */
 } sm_sch_info_t;

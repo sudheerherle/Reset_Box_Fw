@@ -1574,7 +1574,7 @@ void Detect_DAC_Events(BYTE uchCPU, event_register_t New_Event)
 BOOL Save_DAC_Event(void)
 {
 
-	static int count = 0;	
+//	static int count = 0;	
 
 	if (Events_Queue.FrontIndex == Events_Queue.RearIndex)
 	{
@@ -1603,7 +1603,7 @@ BOOL Save_DAC_Event(void)
 		 */	
 		if(Event_Record_W.Field.Event_Id == 0x43)
 		{
-            count++;
+//            count++;
 		}			
 		Events_Ring_Buffer.Tail = (Events_Ring_Buffer.Tail + 1) % MAXIMUM_EVENTS;
 		Events_Ring_Buffer.Count = Events_Ring_Buffer.Count + 1;
