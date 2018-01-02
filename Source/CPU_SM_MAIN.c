@@ -621,11 +621,18 @@ void Update_Reset_Seq_State(void)
 				Reset_Seq.State = WAIT_FOR_RESET_INPUT;
 				Reset_Seq.Timeout_10ms = 0;
 				}
+            if(RB_Status.Flags.PR1_Contact_Status == SET_LOW && 
+               RB_Status.Flags.VR1_Contact_Status == SET_HIGH)
+                {
+                Set_Preparatory_LED_On();
+				Reset_Seq.State = CHK_POST_RESET_CONDITION;
+                }
 			break;
 		case WAIT_FOR_RESET_INPUT:
-			if (RB_Status.Flags.Reset_PB_Status == SET_LOW) {
+			if (RB_Status.Flags.Reset_PB_Status == SET_LOW &&
+                   RB_Status.Flags.VR1_Contact_Status != SET_LOW ) {
                     if(LATDbits.LATD11 == 1){
-                        Reset_Seq.State = WAIT_FOR_RESET_INPUT;
+                        Reset_Seq.State = RESET_CHK_INITIAL_CONDITION;
                         break;
                     }
 				/*

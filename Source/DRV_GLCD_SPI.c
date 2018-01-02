@@ -64,13 +64,10 @@ Output Element		:void
 unsigned char temp;
 void Initialise_GLCD_Driver(void)
 {   
-    if(SPI1STATbits.SPIRBF)
-    {
+    UINT16 temp;
+    if(SPI1STATbits.SPIRBF==1)
         while(!SPI1STATbits.SRXMPT)
-        {
             temp = SPI1BUF;
-        }
-    }
     SPI1CON1 = 0;
     SPI1CON2 = 0;
     SPI1STAT = 0;
@@ -188,13 +185,13 @@ void Update_GLCD_State(void)
             {
                 count_rx = 0;
                 GLCD_Info.State = GLCD_COMPARE_DATA;
-				if(GLCD_Info.GLCD_Disp == DISPLAY1 && HA_config == 1)
+				if(GLCD_Info.GLCD_Disp == DISPLAY2 && HA_config == 1)
 				{
-					GLCD_Info.GLCD_Disp = DISPLAY2;
+					GLCD_Info.GLCD_Disp = DISPLAY1;
 				}
 				else
 				{
-					GLCD_Info.GLCD_Disp = DISPLAY1;
+					GLCD_Info.GLCD_Disp = DISPLAY2;
 				}
             }
             break;
@@ -232,27 +229,46 @@ void Update_GLCD_State(void)
             //SPI1BUF = data;
             if(GLCD_Info.Comm_Timeout_ms != 0)
                 break;
-            while((SPI1STATbits.SPITBF == 0) && (GLCD_Info.Packet_index < GLCD_Info.Packet_Max_length))//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
+//            if(SPI1STATbits.SPIRBF==1)
+//            {   
+//                while(SPI1STATbits.SRXMPT==0)
+//                {
+//                    GLCD_Info.Rx_Message_Buffer[count_rx] = (BYTE)SPI1BUF;
+//                    count_rx++;
+//                }
+//            }
+            if(GLCD_Info.Rx_Message_Buffer[0] == 0xc3
+                                        || GLCD_Info.Rx_Message_Buffer[50] == 0xc3){
+                                    Interested_Nw_Index++;
+                                    if(Interested_Nw_Index >= Network_config){
+                                        Interested_Nw_Index = 0;
+                    }
+                                    int h  =0 ;
+                                    for(h = 0; h< GLCD_Info.Packet_Max_length; h++){
+                                        GLCD_Info.Rx_Message_Buffer[h] = 0;
+                                    }
+                    }
+            while((SPI1STATbits.SPITBF == 0) &&  (GLCD_Info.Packet_index < GLCD_Info.Packet_Max_length))//if (BF == 0)					   /* Still all Bytes are not completely transmitted */
             {
-                if(GLCD_Info.GLCD_Disp == DISPLAY2 /*&& GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][0]!=0*/){
+                if(GLCD_Info.GLCD_Disp == DISPLAY1 /*&& GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][0]!=0*/){
 //                    /* SSPBUF empty - Transmit Status, So we can Put the Next Byte */
                     SPI1BUF = GLCD_Info.Message_Buffer[REDUNDANT_NW_INDEX][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
-                       
-                }else if(GLCD_Info.GLCD_Disp == DISPLAY1/* && GLCD_Info.Message_Buffer[Interested_Nw_Index][0]!=0*/) {
+                }else if(GLCD_Info.GLCD_Disp == DISPLAY2/* && GLCD_Info.Message_Buffer[Interested_Nw_Index][0]!=0*/) {
 //                    PORTe can Put the Next Byte */
                     SPI1BUF = GLCD_Info.Message_Buffer[Interested_Nw_Index][GLCD_Info.Packet_index];//GLCD_Info.Packet_index; for testing
-                }    
-                GLCD_Info.Packet_index++;                
+                }                  
+                GLCD_Info.Packet_index++;             
             }
 			if((GLCD_Info.Packet_index >= GLCD_Info.Packet_Max_length) && (SPI1STATbits.SRMPT==1))
             {
 			    GLCD_Info.Comm_Timeout_ms = TX_TIMEOUT;
 				GLCD_Info.State = GLCD_CM_WAIT;
-			}
-			
+			}	
+              
             break;
            
         case GLCD_CM_WAIT:
+            SPI1STATbits.SPIROV = 0;
             if(SPI1STATbits.SPIRBF==1)
             {
                 while(SPI1STATbits.SRXMPT==0)
@@ -274,8 +290,8 @@ void Update_GLCD_State(void)
                         GLCD_Info.Comm_Timeout_ms = TX_TIMEOUT;
                         GLCD_Info.State = GLCD_TX_DATA;
                     }
-                }
-                }
+            }
+                }                
 if(GLCD_Info.Comm_Timeout_ms == 0)
             {
 				//end of transmission
@@ -296,6 +312,7 @@ if(GLCD_Info.Comm_Timeout_ms == 0)
 //				}
 //                else
 //                {
+                    
 					GLCD_Info.Comm_Timeout_ms = MAX_COMM_TIMEOUT;
 					GLCD_Info.State = GLCD_IDLE;                    
 //                }
