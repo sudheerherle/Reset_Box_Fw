@@ -649,7 +649,7 @@ void Update_Reset_Seq_State(void)
 					Reset_Seq.Timeout_10ms = PR_PICKUP_TIMEOUT;
 					}
 				else
-                                        {
+                    {
 					Set_Preparatory_LED_Off();
 					//Increment_Reset_Counter();
 					Reset_Seq.State = CHECK_VR1_PICKUP;
@@ -672,7 +672,8 @@ void Update_Reset_Seq_State(void)
 				Reset_Seq.Timeout_10ms = 0;
 				break;
 				}
-			if (Reset_Seq.Timeout_10ms == TIMEOUT_EVENT)
+			if (Reset_Seq.Timeout_10ms == TIMEOUT_EVENT
+                || RB_Status.Flags.VR1_Contact_Status == SET_LOW)
 				{
 				Set_Preparatory_LED_Off();
 				Reset_Seq.State = RESET_CHK_INITIAL_CONDITION;

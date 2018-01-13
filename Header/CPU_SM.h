@@ -112,7 +112,7 @@ PORT RJ7 -  Not Used  		  -    0    -     0
 #define TIMER2_SETPOINT		0 		/* 1 mSec - 60535 for 20MHz */
 #define TIMER3_SETPOINT     65			/* 9600 Baud for SPI COMMUNICATION, 65 for 20MHz */
 
-#define PR_PICKUP_TIMEOUT	(30000)
+#define PR_PICKUP_TIMEOUT	(11 * 60 * 5 * 100) //55 minutes timeout
 
 typedef enum {
 			RESET_SYS_NOT_ON = 0,

@@ -4,19 +4,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_RTC.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_MEM.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/COMM_SMC.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/comm_host.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Header/EEPROM.h</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_DI.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/command_proc.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_I2C.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/CRC16.c</file>
+            <file>file:/D:/GitHub/Reset_Box_Fw/Header/CPU_SM.h</file>
             <file>file:/D:/GitHub/Reset_Box_Fw/Source/CPU_SM_MAIN.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_GLCD_SPI.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/EVENTS.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/AUTO_DRV_CNT.c</file>
         </group>
     </open-files>
 </project-private>
