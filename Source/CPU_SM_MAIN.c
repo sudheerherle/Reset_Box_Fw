@@ -1,4 +1,4 @@
-/*********************************************************************************************************************
+/*********************************************************************************************************************90
 	Project		: 	Single Section Digital Axle Counter
 	Version		: 	2.0 
 	Revision	:	1	
@@ -631,7 +631,7 @@ void Update_Reset_Seq_State(void)
 		case WAIT_FOR_RESET_INPUT:
 			if (RB_Status.Flags.Reset_PB_Status == SET_LOW &&
                    RB_Status.Flags.VR1_Contact_Status != SET_LOW ) {
-                    if(LATDbits.LATD11 == 1){
+                    if(LATDbits.LATD11 == 1 && HA_config == 1){
                         Reset_Seq.State = RESET_CHK_INITIAL_CONDITION;
                         break;
                     }
@@ -830,7 +830,7 @@ void Update_Network_Configuration(void)
 //    for(uchTemp=0;uchTemp<100;uchTemp++);
 //       DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
 //            (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F; 
-    Network_config = DIP_val;
+    Network_config = DIP_val;                                                                                                                                                                                                                                                                                                                                                                                                               
 }
 
 void Update_switch_config(void)
@@ -844,6 +844,9 @@ void Update_switch_config(void)
     TRISAbits.TRISA6 = 0;
 
     LATAbits.LATA6 = 0;
+//    LATAbits.LATA6 = 1;
+    LATGbits.LATG0 = 1;
+    LATGbits.LATG1 = 1;
     
     for(uchTemp=0;uchTemp<100;uchTemp++);
         DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 

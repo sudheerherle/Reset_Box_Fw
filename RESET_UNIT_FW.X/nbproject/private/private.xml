@@ -6,6 +6,7 @@
         <group>
             <file>file:/D:/GitHub/Reset_Box_Fw/Header/CPU_SM.h</file>
             <file>file:/D:/GitHub/Reset_Box_Fw/Source/CPU_SM_MAIN.c</file>
+            <file>file:/D:/GitHub/Reset_Box_Fw/Source/EVENTS.c</file>
         </group>
     </open-files>
 </project-private>
