@@ -847,7 +847,7 @@ void Update_switch_config(void)
 //    LATAbits.LATA6 = 1;
     LATGbits.LATG0 = 1;
     LATGbits.LATG1 = 1;
-    
+    DIP_val = 0;
     for(uchTemp=0;uchTemp<100;uchTemp++);
         DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
             (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F;

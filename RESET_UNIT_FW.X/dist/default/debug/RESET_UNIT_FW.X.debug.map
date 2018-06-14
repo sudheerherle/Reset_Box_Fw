@@ -46,19 +46,12 @@ Command:
   build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o \
   build/default/debug/_ext/1728301206/COMM_GSM.o \
   --fill=0xFFDEAD \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.00 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.01 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.02 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.03 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.04 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.05 \
-  -TC:\\Users\\i14746\\AppData\\Local\\Temp\\tmp000036c4.06 \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
-  --defsym=__MPLAB_DEBUGGER_ICD3=1 \
-  -Tlinker_script.gld.07 \
+  --defsym=__MPLAB_DEBUGGER_SIMULATOR=1 \
+  -Tlinker_script.gld.00 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -136,8 +129,8 @@ section                    address   length (PC units)   length (bytes) (dec)
 .const                       0xbce               0xa00           0xf00  (3840)
 .text                       0x15ce              0x5c3e          0x8a5d  (35421)
 .dinit                      0x720c               0xb24          0x10b6  (4278)
-.text                       0x7d30              0x4014          0x601e  (24606)
-FILLED                      0xbd44             0x1eeb4         0x2e60e  (189966)
+.text                       0x7d30              0x4018          0x6024  (24612)
+FILLED                      0xbd48             0x1eeb0         0x2e608  (189960)
 
                  Total program memory used (bytes):        0x3fef4  (261876) 100%
 
@@ -160,32 +153,24 @@ Data Memory  [Origin = 0x800, Length = 0x18000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-reserve_data_0x800           0x800                0x1c            0x1c  (28)
-reserve_data_0x81c           0x81c                 0x2             0x2  (2)
-reserve_data_0x81e           0x81e                 0x2             0x2  (2)
-reserve_data_0x820           0x820                 0x2             0x2  (2)
-reserve_data_0x822           0x822                 0x2             0x2  (2)
-reserve_data_0x824           0x824                 0x4             0x4  (4)
-.nbss                        0x828                   0             0x2  (2)
-reserve_data_0x82a           0x82a                0x26            0x26  (38)
-.nbss                        0x850                   0            0xb8  (184)
-.ndata                       0x908                   0             0x4  (4)
-.nbss                        0x90c                   0            0x10  (16)
-.ndata                       0x91c                   0             0x2  (2)
-.bss                         0x91e                   0          0x2ed8  (11992)
-.data                       0x37f6                   0           0xeaa  (3754)
-.bss                        0x46a0                   0          0x1306  (4870)
-.data                       0x59a6                   0            0x52  (82)
-.bss                        0x59f8                   0            0x82  (130)
-.bss                        0x5a7a                   0            0x4c  (76)
-.data                       0x5ac6                   0            0x26  (38)
-.bss                        0x5aec                   0            0x52  (82)
-.data                       0x5b3e                   0            0x16  (22)
-.bss                        0x5b54                   0            0x16  (22)
-.data                       0x5b6a                   0             0x2  (2)
-_04EB0F005ac85b1b           0x5c00                   0            0x30  (48)
+.nbss                        0x800                   0            0xb8  (184)
+.ndata                       0x8b8                   0             0x4  (4)
+.nbss                        0x8bc                   0            0x12  (18)
+.ndata                       0x8ce                   0             0x2  (2)
+.bss                         0x8d0                   0          0x2ed8  (11992)
+.data                       0x37a8                   0           0xeaa  (3754)
+.bss                        0x4652                   0          0x1306  (4870)
+.data                       0x5958                   0            0x52  (82)
+.bss                        0x59aa                   0            0x82  (130)
+.bss                        0x5a2c                   0            0x4c  (76)
+.data                       0x5a78                   0            0x26  (38)
+.bss                        0x5a9e                   0            0x52  (82)
+.data                       0x5af0                   0            0x16  (22)
+.bss                        0x5b06                   0            0x16  (22)
+.data                       0x5b1c                   0             0x2  (2)
+_06DB9F005b052b3e           0x5c00                   0            0x30  (48)
 
-                 Total data memory used (bytes):         0x539c  (21404) 21%
+                 Total data memory used (bytes):         0x534e  (21326) 21%
 
 
 Dynamic Memory Usage
@@ -200,409 +185,409 @@ stack                       0x5c30                              0x23d0  (9168)
 
 External Symbols in Data Memory (by address):
 
-                    0x0828                  _ADC_TOKEN
-                    0x0850                  _USBDeviceState
-                    0x0852                  _USBActiveConfiguration
-                    0x0853                  _BDT_INDEX_EO_C_VALUE
-                    0x0854                  _BDT_INDEX_EO_N_VALUE
-                    0x0855                  _shortPacketStatus
-                    0x0856                  _controlTransferState
-                    0x0858                  _IN_ROM_src
-                    0x085a                  _IN_RAM_src
-                    0x085c                  _IN_ROM_src_offset
-                    0x085d                  _IN_RAM_src_offset
-                    0x085e                  _RemoteWakeup
-                    0x0860                  _USBBusIsSuspended
-                    0x0862                  _USTATcopy
-                    0x0863                  _endpoint_number
-                    0x0864                  _BothEP0OutUOWNsSet
-                    0x0866                  _USBStatusStageTimeoutCounter
-                    0x0868                  _USBDeferStatusStagePacket
-                    0x086a                  _USBStatusStageEnabledFlag1
-                    0x086c                  _USBStatusStageEnabledFlag2
-                    0x086e                  _USBDeferINDataStagePackets
-                    0x0870                  _USBDeferOUTDataStagePackets
-                    0x0872                  _USB_Status
-                    0x0874                  _i_count
-                    0x0875                  _i_count2
-                    0x0876                  _byteToSend_count
-                    0x0877                  _count2
-                    0x0878                  _Track_pipe
-                    0x0879                  _byteToRead
-                    0x087a                  _i_cnt
-                    0x087b                  _Track_OUT_pipe
-                    0x087c                  _i_cnt2
-                    0x087d                  _setup_cnt
-                    0x087e                  _lastDTS
-                    0x087f                  _current_ep_data
-                    0x0880                  _Status
-                    0x0882                  _RB_Status
-                    0x0884                  _SystemClock
-                    0x0888                  _SystemDate
-                    0x088c                  _YLED_FB_ERROR
-                    0x088d                  _RLED_FB_ERROR
-                    0x088e                  _SPK_FB_ERROR
-                    0x088f                  _THFT_FB_ERROR
-                    0x0890                  _DOOR_FB_ERROR
-                    0x0891                  _feedback_error
-                    0x0892                  _FB_error_ID
-                    0x0893                  _CPU1_Address
-                    0x0894                  _CPU2_Address
-                    0x0895                  _Network_config
-                    0x0896                  _HA_config
-                    0x0897                  _Pilot_mode_config
-                    0x0898                  _Reset_Seq
-                    0x089c                  _Auto_Reset_Seq
-                    0x08a0                  _inspect_event_done
-                    0x08a2                  _init_delay_count
-                    0x08a4                  _SMCPU_CRC_checksum
-                    0x08a8                  _inspect_CPU1_data_done
-                    0x08a9                  _inspect_CPU2_data_done
-                    0x08aa                  _inspect_DAC_info_done
-                    0x08ac                  _Reset_PB
-                    0x08b0                  _Vital_Relay
-                    0x08b4                  _Vital_Relay2
-                    0x08b8                  _Prep_Relay
-                    0x08bc                  _Prep_Relay2
-                    0x08c0                  _No_smcpu
-                    0x08c2                  _temp_crc_SPI
-                    0x08c4                  _temp8
-                    0x08c5                  _temp18
-                    0x08c6                  _Network_ID
-                    0x08c7                  _var_count
-                    0x08c8                  _SF_Error
-                    0x08c9                  _EF_Error
-                    0x08ca                  _CPU1_System_error
-                    0x08cb                  _CPU2_System_error
-                    0x08cc                  _log_event
-                    0x08cd                  _System_error
-                    0x08ce                  _System_error_code
-                    0x08d0                  _Erase_Start
-                    0x08d2                  _DE_R_count0
-                    0x08d4                  _DE_R_count1
-                    0x08d6                  _DE_R_count_track0
-                    0x08d8                  _DE_R_count_track1
-                    0x08da                  _E_status
-                    0x08dc                  _cdc_rx_len
-                    0x08dd                  _cdc_trf_state
-                    0x08de                  _Buf_len
-                    0x08df                  _cdc_tx_len
-                    0x08e0                  _cdc_mem_type
-                    0x08e1                  _CDCOutHandle
-                    0x08e2                  _CDCInHandle
-                    0x08e3                  _temp_len
-                    0x08e4                  _byte_to_send_cdc
-                    0x08e5                  _i_cnt_cdc
-                    0x08e6                  _Previous_Write_Addr
-                    0x08e8                  _Page
-                    0x08ea                  _Erase_address
-                    0x08ec                  _Block_erase_status
-                    0x08ee                  _temp_E
-                    0x08f0                  _NID
-                    0x08f2                  _Glcd_csum
-                    0x08f4                  _temp
-                    0x08f5                  _count_rx
-                    0x08f6                  _Interested_Nw_Index
-                    0x08f7                  _u_count
-                    0x08f8                  _s_count
-                    0x08fa                  _Debug_flag
-                    0x08fe                  _numBytesRead
-                    0x0902                  _System_GSM_on
-                    0x0903                  _Check_msg
-                    0x0904                  _Delete_message
-                    0x0905                  _send_confirmation
-                    0x0906                  _P_status
-                    0x0908                  _Selected_CPU_Addr
-                    0x090a                  _CD_check
-                    0x090c                  _count
-                    0x090e                  _Bytes_read
-                    0x0910                  _Reset_Counter
-                    0x0914                  _Preparatory_Reset_LED
-                    0x0918                  _Auto_Reset_Counter
-                    0x091c                  _GSM_end_msg
-                    0x091e                  _cpu_crc
-                    0x0922                  _Smc_Sch_Info
-                    0x0936                  _Smc1XmitObject
-                    0x0988                  _QueryInfObject
-                    0x0990                  _Shadow
-                    0x0a50                  _Disp_Info
-                    0x0a5c                  _CPU1_data_GLCD
-                    0x0f5c                  _CPU2_data_GLCD
-                    0x145c                  _Latest_DAC_data
-                    0x195c                  _CPU1_data
-                    0x1e5c                  _CPU2_data
-                    0x235c                  _Event_H
-                    0x236c                  _Event_T
-                    0x237c                  _Event_0
-                    0x238c                  _US_fail_notify
-                    0x238e                  _DS_fail_notify
-                    0x2390                  _AD_pulse_mismatch_notify
-                    0x2392                  _PD_error_report
-                    0x2394                  _DE_log_start_rev
-                    0x2396                  _Events_Sch_Info
-                    0x23a4                  _Events_Queue
-                    0x3730                  _Events_Ring_Buffer
-                    0x3736                  _Events
-                    0x37f6                  _Error_message
-                    0x4188                  _Feedback_message
-                    0x4444                  _GSM_AT_Enter
-                    0x4447                  _GSM_AT_Command
-                    0x463b                  _String_Change_Number
-                    0x4646                  _Phone_number
-                    0x46a0                  _Network_status
-                    0x46b0                  _GLCD_Info
-                    0x50be                  _Printer
-                    0x55c0                  _Print_Info
-                    0x5604                  _GSM_Sch_Info
-                    0x563c                  _Com3RecvObject
-                    0x5744                  _Com3TransObject
-                    0x584c                  _cdc_data_tx
-                    0x588c                  _cdc_data_rx
-                    0x58cc                  _line_coding
-                    0x58d4                  _cdc_notice
-                    0x58de                  _CDCSrc
-                    0x591e                  _dummy_encapsulated_cmd_response
-                    0x5926                  _USB_In_Buffer
-                    0x5966                  _USB_Out_Buffer
-                    0x59f8                  _Query_Param
-                    0x5a0a                  _Event_Record
-                    0x5a1a                  _Xmit_Queue
-                    0x5a35                  _Command_Info
-                    0x5a42                  _DAC_sysinfo
-                    0x5a48                  _uchIDInfo
-                    0x5a57                  _uchCheckSum
-                    0x5a62                  _Dac_Comm_Err
-                    0x5a7a                  _USBAlternateInterface
-                    0x5a7c                  _Track_EP_IN
-                    0x5a7f                  _Track_EP_OUT
-                    0x5a82                  _inPipes
-                    0x5a86                  _outPipes
-                    0x5a89                  _ep_data_in
-                    0x5a8c                  _ep_data_out
-                    0x5a8f                  _SetupPkt
-                    0x5a97                  _CtrlTrfData
-                    0x5aa0                  _Mem_addr_ref
-                    0x5aa6                  _Event_Record_R
-                    0x5ab6                  _Event_Record_W
-                    0x5ac6                  __iob
-                    0x5aea                  __Files
-                    0x5aec                  _Host_Sch_Info
-                    0x5afc                  _Com2RecvObject
-                    0x5b0e                  _A2D_Data
-                    0x5b1a                  _Vdd_Mon_Info
-                    0x5b20                  _Rtc_Mon_Info
-                    0x5b26                  _EEPROM_Sch_Info
-                    0x5b3e                  _uchDateTime
-                    0x5b54                  _RTC_Info
-                    0x5b60                  __outdone
-                    0x5b61                  __sibuf
-                    0x5b63                  __sobuf
-                    0x5b66                  _Prog_Val_Temp
-                    0x5b6a                  ___C30_UART
+                    0x0800                  _USBDeviceState
+                    0x0802                  _USBActiveConfiguration
+                    0x0803                  _BDT_INDEX_EO_C_VALUE
+                    0x0804                  _BDT_INDEX_EO_N_VALUE
+                    0x0805                  _shortPacketStatus
+                    0x0806                  _controlTransferState
+                    0x0808                  _IN_ROM_src
+                    0x080a                  _IN_RAM_src
+                    0x080c                  _IN_ROM_src_offset
+                    0x080d                  _IN_RAM_src_offset
+                    0x080e                  _RemoteWakeup
+                    0x0810                  _USBBusIsSuspended
+                    0x0812                  _USTATcopy
+                    0x0813                  _endpoint_number
+                    0x0814                  _BothEP0OutUOWNsSet
+                    0x0816                  _USBStatusStageTimeoutCounter
+                    0x0818                  _USBDeferStatusStagePacket
+                    0x081a                  _USBStatusStageEnabledFlag1
+                    0x081c                  _USBStatusStageEnabledFlag2
+                    0x081e                  _USBDeferINDataStagePackets
+                    0x0820                  _USBDeferOUTDataStagePackets
+                    0x0822                  _USB_Status
+                    0x0824                  _i_count
+                    0x0825                  _i_count2
+                    0x0826                  _byteToSend_count
+                    0x0827                  _count2
+                    0x0828                  _Track_pipe
+                    0x0829                  _byteToRead
+                    0x082a                  _i_cnt
+                    0x082b                  _Track_OUT_pipe
+                    0x082c                  _i_cnt2
+                    0x082d                  _setup_cnt
+                    0x082e                  _lastDTS
+                    0x082f                  _current_ep_data
+                    0x0830                  _Status
+                    0x0832                  _RB_Status
+                    0x0834                  _SystemClock
+                    0x0838                  _SystemDate
+                    0x083c                  _YLED_FB_ERROR
+                    0x083d                  _RLED_FB_ERROR
+                    0x083e                  _SPK_FB_ERROR
+                    0x083f                  _THFT_FB_ERROR
+                    0x0840                  _DOOR_FB_ERROR
+                    0x0841                  _feedback_error
+                    0x0842                  _FB_error_ID
+                    0x0843                  _CPU1_Address
+                    0x0844                  _CPU2_Address
+                    0x0845                  _Network_config
+                    0x0846                  _HA_config
+                    0x0847                  _Pilot_mode_config
+                    0x0848                  _Reset_Seq
+                    0x084c                  _Auto_Reset_Seq
+                    0x0850                  _inspect_event_done
+                    0x0852                  _init_delay_count
+                    0x0854                  _SMCPU_CRC_checksum
+                    0x0858                  _inspect_CPU1_data_done
+                    0x0859                  _inspect_CPU2_data_done
+                    0x085a                  _inspect_DAC_info_done
+                    0x085c                  _Reset_PB
+                    0x0860                  _Vital_Relay
+                    0x0864                  _Vital_Relay2
+                    0x0868                  _Prep_Relay
+                    0x086c                  _Prep_Relay2
+                    0x0870                  _No_smcpu
+                    0x0872                  _temp_crc_SPI
+                    0x0874                  _temp8
+                    0x0875                  _temp18
+                    0x0876                  _Network_ID
+                    0x0877                  _var_count
+                    0x0878                  _SF_Error
+                    0x0879                  _EF_Error
+                    0x087a                  _CPU1_System_error
+                    0x087b                  _CPU2_System_error
+                    0x087c                  _log_event
+                    0x087d                  _System_error
+                    0x087e                  _System_error_code
+                    0x0880                  _Erase_Start
+                    0x0882                  _DE_R_count0
+                    0x0884                  _DE_R_count1
+                    0x0886                  _DE_R_count_track0
+                    0x0888                  _DE_R_count_track1
+                    0x088a                  _E_status
+                    0x088c                  _cdc_rx_len
+                    0x088d                  _cdc_trf_state
+                    0x088e                  _Buf_len
+                    0x088f                  _cdc_tx_len
+                    0x0890                  _cdc_mem_type
+                    0x0891                  _CDCOutHandle
+                    0x0892                  _CDCInHandle
+                    0x0893                  _temp_len
+                    0x0894                  _byte_to_send_cdc
+                    0x0895                  _i_cnt_cdc
+                    0x0896                  _Previous_Write_Addr
+                    0x0898                  _Page
+                    0x089a                  _Erase_address
+                    0x089c                  _Block_erase_status
+                    0x089e                  _temp_E
+                    0x08a0                  _NID
+                    0x08a2                  _Glcd_csum
+                    0x08a4                  _temp
+                    0x08a5                  _count_rx
+                    0x08a6                  _Interested_Nw_Index
+                    0x08a7                  _u_count
+                    0x08a8                  _s_count
+                    0x08aa                  _Debug_flag
+                    0x08ae                  _numBytesRead
+                    0x08b2                  _System_GSM_on
+                    0x08b3                  _Check_msg
+                    0x08b4                  _Delete_message
+                    0x08b5                  _send_confirmation
+                    0x08b6                  _P_status
+                    0x08b8                  _Selected_CPU_Addr
+                    0x08ba                  _CD_check
+                    0x08bc                  _count
+                    0x08be                  _Bytes_read
+                    0x08c0                  _Reset_Counter
+                    0x08c4                  _Preparatory_Reset_LED
+                    0x08c8                  _Auto_Reset_Counter
+                    0x08cc                  _ADC_TOKEN
+                    0x08ce                  _GSM_end_msg
+                    0x08d0                  _cpu_crc
+                    0x08d4                  _Smc_Sch_Info
+                    0x08e8                  _Smc1XmitObject
+                    0x093a                  _QueryInfObject
+                    0x0942                  _Shadow
+                    0x0a02                  _Disp_Info
+                    0x0a0e                  _CPU1_data_GLCD
+                    0x0f0e                  _CPU2_data_GLCD
+                    0x140e                  _Latest_DAC_data
+                    0x190e                  _CPU1_data
+                    0x1e0e                  _CPU2_data
+                    0x230e                  _Event_H
+                    0x231e                  _Event_T
+                    0x232e                  _Event_0
+                    0x233e                  _US_fail_notify
+                    0x2340                  _DS_fail_notify
+                    0x2342                  _AD_pulse_mismatch_notify
+                    0x2344                  _PD_error_report
+                    0x2346                  _DE_log_start_rev
+                    0x2348                  _Events_Sch_Info
+                    0x2356                  _Events_Queue
+                    0x36e2                  _Events_Ring_Buffer
+                    0x36e8                  _Events
+                    0x37a8                  _Error_message
+                    0x413a                  _Feedback_message
+                    0x43f6                  _GSM_AT_Enter
+                    0x43f9                  _GSM_AT_Command
+                    0x45ed                  _String_Change_Number
+                    0x45f8                  _Phone_number
+                    0x4652                  _Network_status
+                    0x4662                  _GLCD_Info
+                    0x5070                  _Printer
+                    0x5572                  _Print_Info
+                    0x55b6                  _GSM_Sch_Info
+                    0x55ee                  _Com3RecvObject
+                    0x56f6                  _Com3TransObject
+                    0x57fe                  _cdc_data_tx
+                    0x583e                  _cdc_data_rx
+                    0x587e                  _line_coding
+                    0x5886                  _cdc_notice
+                    0x5890                  _CDCSrc
+                    0x58d0                  _dummy_encapsulated_cmd_response
+                    0x58d8                  _USB_In_Buffer
+                    0x5918                  _USB_Out_Buffer
+                    0x59aa                  _Query_Param
+                    0x59bc                  _Event_Record
+                    0x59cc                  _Xmit_Queue
+                    0x59e7                  _Command_Info
+                    0x59f4                  _DAC_sysinfo
+                    0x59fa                  _uchIDInfo
+                    0x5a09                  _uchCheckSum
+                    0x5a14                  _Dac_Comm_Err
+                    0x5a2c                  _USBAlternateInterface
+                    0x5a2e                  _Track_EP_IN
+                    0x5a31                  _Track_EP_OUT
+                    0x5a34                  _inPipes
+                    0x5a38                  _outPipes
+                    0x5a3b                  _ep_data_in
+                    0x5a3e                  _ep_data_out
+                    0x5a41                  _SetupPkt
+                    0x5a49                  _CtrlTrfData
+                    0x5a52                  _Mem_addr_ref
+                    0x5a58                  _Event_Record_R
+                    0x5a68                  _Event_Record_W
+                    0x5a78                  __iob
+                    0x5a9c                  __Files
+                    0x5a9e                  _Host_Sch_Info
+                    0x5aae                  _Com2RecvObject
+                    0x5ac0                  _A2D_Data
+                    0x5acc                  _Vdd_Mon_Info
+                    0x5ad2                  _Rtc_Mon_Info
+                    0x5ad8                  _EEPROM_Sch_Info
+                    0x5af0                  _uchDateTime
+                    0x5b06                  _RTC_Info
+                    0x5b12                  __outdone
+                    0x5b13                  __sibuf
+                    0x5b15                  __sobuf
+                    0x5b18                  _Prog_Val_Temp
+                    0x5b1c                  ___C30_UART
                     0x5c00                  _BDT
 
 External Symbols in Data Memory (by name):
 
-                    0x5b0e                  _A2D_Data
-                    0x0828                  _ADC_TOKEN
-                    0x2390                  _AD_pulse_mismatch_notify
-                    0x0918                  _Auto_Reset_Counter
-                    0x089c                  _Auto_Reset_Seq
+                    0x5ac0                  _A2D_Data
+                    0x08cc                  _ADC_TOKEN
+                    0x2342                  _AD_pulse_mismatch_notify
+                    0x08c8                  _Auto_Reset_Counter
+                    0x084c                  _Auto_Reset_Seq
                     0x5c00                  _BDT
-                    0x0853                  _BDT_INDEX_EO_C_VALUE
-                    0x0854                  _BDT_INDEX_EO_N_VALUE
-                    0x08ec                  _Block_erase_status
-                    0x0864                  _BothEP0OutUOWNsSet
-                    0x08de                  _Buf_len
-                    0x090e                  _Bytes_read
-                    0x08e2                  _CDCInHandle
-                    0x08e1                  _CDCOutHandle
-                    0x58de                  _CDCSrc
-                    0x090a                  _CD_check
-                    0x0893                  _CPU1_Address
-                    0x08ca                  _CPU1_System_error
-                    0x195c                  _CPU1_data
-                    0x0a5c                  _CPU1_data_GLCD
-                    0x0894                  _CPU2_Address
-                    0x08cb                  _CPU2_System_error
-                    0x1e5c                  _CPU2_data
-                    0x0f5c                  _CPU2_data_GLCD
-                    0x0903                  _Check_msg
-                    0x5afc                  _Com2RecvObject
-                    0x563c                  _Com3RecvObject
-                    0x5744                  _Com3TransObject
-                    0x5a35                  _Command_Info
-                    0x5a97                  _CtrlTrfData
-                    0x5a42                  _DAC_sysinfo
-                    0x08d2                  _DE_R_count0
-                    0x08d4                  _DE_R_count1
-                    0x08d6                  _DE_R_count_track0
-                    0x08d8                  _DE_R_count_track1
-                    0x2394                  _DE_log_start_rev
-                    0x0890                  _DOOR_FB_ERROR
-                    0x238e                  _DS_fail_notify
-                    0x5a62                  _Dac_Comm_Err
-                    0x08fa                  _Debug_flag
-                    0x0904                  _Delete_message
-                    0x0a50                  _Disp_Info
-                    0x5b26                  _EEPROM_Sch_Info
-                    0x08c9                  _EF_Error
-                    0x08da                  _E_status
-                    0x08d0                  _Erase_Start
-                    0x08ea                  _Erase_address
-                    0x37f6                  _Error_message
-                    0x237c                  _Event_0
-                    0x235c                  _Event_H
-                    0x5a0a                  _Event_Record
-                    0x5aa6                  _Event_Record_R
-                    0x5ab6                  _Event_Record_W
-                    0x236c                  _Event_T
-                    0x3736                  _Events
-                    0x23a4                  _Events_Queue
-                    0x3730                  _Events_Ring_Buffer
-                    0x2396                  _Events_Sch_Info
-                    0x0892                  _FB_error_ID
-                    0x4188                  _Feedback_message
-                    0x46b0                  _GLCD_Info
-                    0x4447                  _GSM_AT_Command
-                    0x4444                  _GSM_AT_Enter
-                    0x5604                  _GSM_Sch_Info
-                    0x091c                  _GSM_end_msg
-                    0x08f2                  _Glcd_csum
-                    0x0896                  _HA_config
-                    0x5aec                  _Host_Sch_Info
-                    0x085a                  _IN_RAM_src
-                    0x085d                  _IN_RAM_src_offset
-                    0x0858                  _IN_ROM_src
-                    0x085c                  _IN_ROM_src_offset
-                    0x08f6                  _Interested_Nw_Index
-                    0x145c                  _Latest_DAC_data
-                    0x5aa0                  _Mem_addr_ref
-                    0x08f0                  _NID
-                    0x08c6                  _Network_ID
-                    0x0895                  _Network_config
-                    0x46a0                  _Network_status
-                    0x08c0                  _No_smcpu
-                    0x2392                  _PD_error_report
-                    0x0906                  _P_status
-                    0x08e8                  _Page
-                    0x4646                  _Phone_number
-                    0x0897                  _Pilot_mode_config
-                    0x08b8                  _Prep_Relay
-                    0x08bc                  _Prep_Relay2
-                    0x0914                  _Preparatory_Reset_LED
-                    0x08e6                  _Previous_Write_Addr
-                    0x55c0                  _Print_Info
-                    0x50be                  _Printer
-                    0x5b66                  _Prog_Val_Temp
-                    0x0988                  _QueryInfObject
-                    0x59f8                  _Query_Param
-                    0x0882                  _RB_Status
-                    0x088d                  _RLED_FB_ERROR
-                    0x5b54                  _RTC_Info
-                    0x085e                  _RemoteWakeup
-                    0x0910                  _Reset_Counter
-                    0x08ac                  _Reset_PB
-                    0x0898                  _Reset_Seq
-                    0x5b20                  _Rtc_Mon_Info
-                    0x08c8                  _SF_Error
-                    0x08a4                  _SMCPU_CRC_checksum
-                    0x088e                  _SPK_FB_ERROR
-                    0x0908                  _Selected_CPU_Addr
-                    0x5a8f                  _SetupPkt
-                    0x0990                  _Shadow
-                    0x0936                  _Smc1XmitObject
-                    0x0922                  _Smc_Sch_Info
-                    0x0880                  _Status
-                    0x463b                  _String_Change_Number
-                    0x0884                  _SystemClock
-                    0x0888                  _SystemDate
-                    0x0902                  _System_GSM_on
-                    0x08cd                  _System_error
-                    0x08ce                  _System_error_code
-                    0x088f                  _THFT_FB_ERROR
-                    0x5a7c                  _Track_EP_IN
-                    0x5a7f                  _Track_EP_OUT
-                    0x087b                  _Track_OUT_pipe
-                    0x0878                  _Track_pipe
-                    0x0852                  _USBActiveConfiguration
-                    0x5a7a                  _USBAlternateInterface
-                    0x0860                  _USBBusIsSuspended
-                    0x086e                  _USBDeferINDataStagePackets
-                    0x0870                  _USBDeferOUTDataStagePackets
-                    0x0868                  _USBDeferStatusStagePacket
-                    0x0850                  _USBDeviceState
-                    0x086a                  _USBStatusStageEnabledFlag1
-                    0x086c                  _USBStatusStageEnabledFlag2
-                    0x0866                  _USBStatusStageTimeoutCounter
-                    0x5926                  _USB_In_Buffer
-                    0x5966                  _USB_Out_Buffer
-                    0x0872                  _USB_Status
-                    0x0862                  _USTATcopy
-                    0x238c                  _US_fail_notify
-                    0x5b1a                  _Vdd_Mon_Info
-                    0x08b0                  _Vital_Relay
-                    0x08b4                  _Vital_Relay2
-                    0x5a1a                  _Xmit_Queue
-                    0x088c                  _YLED_FB_ERROR
-                    0x5aea                  __Files
-                    0x5b6a                  ___C30_UART
-                    0x5ac6                  __iob
-                    0x5b60                  __outdone
-                    0x5b61                  __sibuf
-                    0x5b63                  __sobuf
-                    0x0879                  _byteToRead
-                    0x0876                  _byteToSend_count
-                    0x08e4                  _byte_to_send_cdc
-                    0x588c                  _cdc_data_rx
-                    0x584c                  _cdc_data_tx
-                    0x08e0                  _cdc_mem_type
-                    0x58d4                  _cdc_notice
-                    0x08dc                  _cdc_rx_len
-                    0x08dd                  _cdc_trf_state
-                    0x08df                  _cdc_tx_len
-                    0x0856                  _controlTransferState
-                    0x090c                  _count
-                    0x0877                  _count2
-                    0x08f5                  _count_rx
-                    0x091e                  _cpu_crc
-                    0x087f                  _current_ep_data
-                    0x591e                  _dummy_encapsulated_cmd_response
-                    0x0863                  _endpoint_number
-                    0x5a89                  _ep_data_in
-                    0x5a8c                  _ep_data_out
-                    0x0891                  _feedback_error
-                    0x087a                  _i_cnt
-                    0x087c                  _i_cnt2
-                    0x08e5                  _i_cnt_cdc
-                    0x0874                  _i_count
-                    0x0875                  _i_count2
-                    0x5a82                  _inPipes
-                    0x08a2                  _init_delay_count
-                    0x08a8                  _inspect_CPU1_data_done
-                    0x08a9                  _inspect_CPU2_data_done
-                    0x08aa                  _inspect_DAC_info_done
-                    0x08a0                  _inspect_event_done
-                    0x087e                  _lastDTS
-                    0x58cc                  _line_coding
-                    0x08cc                  _log_event
-                    0x08fe                  _numBytesRead
-                    0x5a86                  _outPipes
-                    0x08f8                  _s_count
-                    0x0905                  _send_confirmation
-                    0x087d                  _setup_cnt
-                    0x0855                  _shortPacketStatus
-                    0x08f4                  _temp
-                    0x08c5                  _temp18
-                    0x08c4                  _temp8
-                    0x08ee                  _temp_E
-                    0x08c2                  _temp_crc_SPI
-                    0x08e3                  _temp_len
-                    0x08f7                  _u_count
-                    0x5a57                  _uchCheckSum
-                    0x5b3e                  _uchDateTime
-                    0x5a48                  _uchIDInfo
-                    0x08c7                  _var_count
+                    0x0803                  _BDT_INDEX_EO_C_VALUE
+                    0x0804                  _BDT_INDEX_EO_N_VALUE
+                    0x089c                  _Block_erase_status
+                    0x0814                  _BothEP0OutUOWNsSet
+                    0x088e                  _Buf_len
+                    0x08be                  _Bytes_read
+                    0x0892                  _CDCInHandle
+                    0x0891                  _CDCOutHandle
+                    0x5890                  _CDCSrc
+                    0x08ba                  _CD_check
+                    0x0843                  _CPU1_Address
+                    0x087a                  _CPU1_System_error
+                    0x190e                  _CPU1_data
+                    0x0a0e                  _CPU1_data_GLCD
+                    0x0844                  _CPU2_Address
+                    0x087b                  _CPU2_System_error
+                    0x1e0e                  _CPU2_data
+                    0x0f0e                  _CPU2_data_GLCD
+                    0x08b3                  _Check_msg
+                    0x5aae                  _Com2RecvObject
+                    0x55ee                  _Com3RecvObject
+                    0x56f6                  _Com3TransObject
+                    0x59e7                  _Command_Info
+                    0x5a49                  _CtrlTrfData
+                    0x59f4                  _DAC_sysinfo
+                    0x0882                  _DE_R_count0
+                    0x0884                  _DE_R_count1
+                    0x0886                  _DE_R_count_track0
+                    0x0888                  _DE_R_count_track1
+                    0x2346                  _DE_log_start_rev
+                    0x0840                  _DOOR_FB_ERROR
+                    0x2340                  _DS_fail_notify
+                    0x5a14                  _Dac_Comm_Err
+                    0x08aa                  _Debug_flag
+                    0x08b4                  _Delete_message
+                    0x0a02                  _Disp_Info
+                    0x5ad8                  _EEPROM_Sch_Info
+                    0x0879                  _EF_Error
+                    0x088a                  _E_status
+                    0x0880                  _Erase_Start
+                    0x089a                  _Erase_address
+                    0x37a8                  _Error_message
+                    0x232e                  _Event_0
+                    0x230e                  _Event_H
+                    0x59bc                  _Event_Record
+                    0x5a58                  _Event_Record_R
+                    0x5a68                  _Event_Record_W
+                    0x231e                  _Event_T
+                    0x36e8                  _Events
+                    0x2356                  _Events_Queue
+                    0x36e2                  _Events_Ring_Buffer
+                    0x2348                  _Events_Sch_Info
+                    0x0842                  _FB_error_ID
+                    0x413a                  _Feedback_message
+                    0x4662                  _GLCD_Info
+                    0x43f9                  _GSM_AT_Command
+                    0x43f6                  _GSM_AT_Enter
+                    0x55b6                  _GSM_Sch_Info
+                    0x08ce                  _GSM_end_msg
+                    0x08a2                  _Glcd_csum
+                    0x0846                  _HA_config
+                    0x5a9e                  _Host_Sch_Info
+                    0x080a                  _IN_RAM_src
+                    0x080d                  _IN_RAM_src_offset
+                    0x0808                  _IN_ROM_src
+                    0x080c                  _IN_ROM_src_offset
+                    0x08a6                  _Interested_Nw_Index
+                    0x140e                  _Latest_DAC_data
+                    0x5a52                  _Mem_addr_ref
+                    0x08a0                  _NID
+                    0x0876                  _Network_ID
+                    0x0845                  _Network_config
+                    0x4652                  _Network_status
+                    0x0870                  _No_smcpu
+                    0x2344                  _PD_error_report
+                    0x08b6                  _P_status
+                    0x0898                  _Page
+                    0x45f8                  _Phone_number
+                    0x0847                  _Pilot_mode_config
+                    0x0868                  _Prep_Relay
+                    0x086c                  _Prep_Relay2
+                    0x08c4                  _Preparatory_Reset_LED
+                    0x0896                  _Previous_Write_Addr
+                    0x5572                  _Print_Info
+                    0x5070                  _Printer
+                    0x5b18                  _Prog_Val_Temp
+                    0x093a                  _QueryInfObject
+                    0x59aa                  _Query_Param
+                    0x0832                  _RB_Status
+                    0x083d                  _RLED_FB_ERROR
+                    0x5b06                  _RTC_Info
+                    0x080e                  _RemoteWakeup
+                    0x08c0                  _Reset_Counter
+                    0x085c                  _Reset_PB
+                    0x0848                  _Reset_Seq
+                    0x5ad2                  _Rtc_Mon_Info
+                    0x0878                  _SF_Error
+                    0x0854                  _SMCPU_CRC_checksum
+                    0x083e                  _SPK_FB_ERROR
+                    0x08b8                  _Selected_CPU_Addr
+                    0x5a41                  _SetupPkt
+                    0x0942                  _Shadow
+                    0x08e8                  _Smc1XmitObject
+                    0x08d4                  _Smc_Sch_Info
+                    0x0830                  _Status
+                    0x45ed                  _String_Change_Number
+                    0x0834                  _SystemClock
+                    0x0838                  _SystemDate
+                    0x08b2                  _System_GSM_on
+                    0x087d                  _System_error
+                    0x087e                  _System_error_code
+                    0x083f                  _THFT_FB_ERROR
+                    0x5a2e                  _Track_EP_IN
+                    0x5a31                  _Track_EP_OUT
+                    0x082b                  _Track_OUT_pipe
+                    0x0828                  _Track_pipe
+                    0x0802                  _USBActiveConfiguration
+                    0x5a2c                  _USBAlternateInterface
+                    0x0810                  _USBBusIsSuspended
+                    0x081e                  _USBDeferINDataStagePackets
+                    0x0820                  _USBDeferOUTDataStagePackets
+                    0x0818                  _USBDeferStatusStagePacket
+                    0x0800                  _USBDeviceState
+                    0x081a                  _USBStatusStageEnabledFlag1
+                    0x081c                  _USBStatusStageEnabledFlag2
+                    0x0816                  _USBStatusStageTimeoutCounter
+                    0x58d8                  _USB_In_Buffer
+                    0x5918                  _USB_Out_Buffer
+                    0x0822                  _USB_Status
+                    0x0812                  _USTATcopy
+                    0x233e                  _US_fail_notify
+                    0x5acc                  _Vdd_Mon_Info
+                    0x0860                  _Vital_Relay
+                    0x0864                  _Vital_Relay2
+                    0x59cc                  _Xmit_Queue
+                    0x083c                  _YLED_FB_ERROR
+                    0x5a9c                  __Files
+                    0x5b1c                  ___C30_UART
+                    0x5a78                  __iob
+                    0x5b12                  __outdone
+                    0x5b13                  __sibuf
+                    0x5b15                  __sobuf
+                    0x0829                  _byteToRead
+                    0x0826                  _byteToSend_count
+                    0x0894                  _byte_to_send_cdc
+                    0x583e                  _cdc_data_rx
+                    0x57fe                  _cdc_data_tx
+                    0x0890                  _cdc_mem_type
+                    0x5886                  _cdc_notice
+                    0x088c                  _cdc_rx_len
+                    0x088d                  _cdc_trf_state
+                    0x088f                  _cdc_tx_len
+                    0x0806                  _controlTransferState
+                    0x08bc                  _count
+                    0x0827                  _count2
+                    0x08a5                  _count_rx
+                    0x08d0                  _cpu_crc
+                    0x082f                  _current_ep_data
+                    0x58d0                  _dummy_encapsulated_cmd_response
+                    0x0813                  _endpoint_number
+                    0x5a3b                  _ep_data_in
+                    0x5a3e                  _ep_data_out
+                    0x0841                  _feedback_error
+                    0x082a                  _i_cnt
+                    0x082c                  _i_cnt2
+                    0x0895                  _i_cnt_cdc
+                    0x0824                  _i_count
+                    0x0825                  _i_count2
+                    0x5a34                  _inPipes
+                    0x0852                  _init_delay_count
+                    0x0858                  _inspect_CPU1_data_done
+                    0x0859                  _inspect_CPU2_data_done
+                    0x085a                  _inspect_DAC_info_done
+                    0x0850                  _inspect_event_done
+                    0x082e                  _lastDTS
+                    0x587e                  _line_coding
+                    0x087c                  _log_event
+                    0x08ae                  _numBytesRead
+                    0x5a38                  _outPipes
+                    0x08a8                  _s_count
+                    0x08b5                  _send_confirmation
+                    0x082d                  _setup_cnt
+                    0x0805                  _shortPacketStatus
+                    0x08a4                  _temp
+                    0x0875                  _temp18
+                    0x0874                  _temp8
+                    0x089e                  _temp_E
+                    0x0872                  _temp_crc_SPI
+                    0x0893                  _temp_len
+                    0x08a7                  _u_count
+                    0x5a09                  _uchCheckSum
+                    0x5af0                  _uchDateTime
+                    0x59fa                  _uchIDInfo
+                    0x0877                  _var_count
 
 External Symbols in Program Memory (by address):
 
@@ -729,90 +714,90 @@ External Symbols in Program Memory (by address):
                   0x009c46                  _Decrement_Auto_Reset_Seq_10msTmr
                   0x009c58                  _Update_Network_Configuration
                   0x009cc2                  _Update_switch_config
-                  0x009d4c                  _Erase_Serial_EEProm_Block
-                  0x009e42                  _Write_Event_on_Serial_EEProm
-                  0x009ed6                  _Read_Event_from_Serial_EEProm
-                  0x00a03c                  _Is_Serial_EEPROM_Write_Complete
-                  0x00a06e                  _Save_Phone_Number
-                  0x00a0fa                  _Read_Phone_Number
-                  0x00a1b8                  _Save_Event_Ref
-                  0x00a230                  _Read_Event_ref
-                  0x00a2c6                  _Initialise_Host_CommSch
-                  0x00a2ea                  _SetupCOM2BaudRate
-                  0x00a37e                  _Start_Host_Communication
-                  0x00a38a                  _Update_Host_Sch_State
-                  0x00a5e4                  _Decrement_Host_Sch_msTmr
-                  0x00a60e                  _Receive_COM2_Message
-                  0x00a7d0                  _Clear_COM2_Receive_Buffer
-                  0x00a7f2                  _Clear_Com2_Error
-                  0x00a818                  _Initialise_RTC_Sch
-                  0x00a828                  _Start_RTC_Sch
-                  0x00a838                  _Update_RtcSch_State
-                  0x00a8b6                  _Decrement_RTC_10msTmr
-                  0x00a8ce                  _Read_RTC_Registers
-                  0x00a92c                  _Update_System_Clock
-                  0x00aa0c                  _Set_RTC_Date
-                  0x00ab2c                  _Set_RTC_Time
-                  0x00abc2                  _Initialise_DI_Driver
-                  0x00abd4                  _Start_DI_Scan
-                  0x00ac48                  _Update_DI_State
-                  0x00ac58                  _Update_PB_State
-                  0x00acd2                  _Update_Vital_Relay_State
-                  0x00ad52                  _Update_Vital_Relay2_State
-                  0x00add2                  _Update_Prep_Relay_State
-                  0x00ae52                  _Update_Prep_Relay2_State
-                  0x00aed2                  _Decrement_DI_10msTmr
-                  0x00af14                  _Initialise_A2D_Driver
-                  0x00af72                  _Start_A2D_Driver
-                  0x00af96                  _Update_Vdd_Mon_State
-                  0x00b086                  _Update_A2D_State
-                  0x00b1dc                  _Decrement_A2D_10msTmr
-                  0x00b1f4                  _USBCheckCDCRequest
-                  0x00b2d2                  _CDCInitEP
-                  0x00b30e                  _getsUSBUSART
-                  0x00b378                  _putUSBUSART
-                  0x00b3b6                  _CDCTxService
-                  0x00b474                  _Initialise_EEPROM_State
-                  0x00b500                  _Start_EEPROM_Sch
-                  0x00b510                  _Update_EEPROM_State
-                  0x00b61e                  _Decrement_EEPROM_msTmr
-                  0x00b636                  _Save_Event_Register_on_EEPROM
-                  0x00b6dc                  _Is_CPU1_EEPROM_Record_Valid
-                  0x00b6e8                  _Is_CPU2_EEPROM_Record_Valid
-                  0x00b6f4                  _USB_Check
-                  0x00b720                  _Update_USB_Sch_State
-                  0x00b750                  _ProcessIO
-                  0x00b7cc                  _USB_Process
-                  0x00b836                  _USBCB_SOF_Handler
-                  0x00b83e                  _USBCBSendResume
-                  0x00b878                  _USER_USB_CALLBACK_EVENT_HANDLER
-                  0x00b8d4                  _Initialise_I2C_Driver
-                  0x00b8e2                  _Generate_I2C_Start
-                  0x00b8ee                  _Generate_I2C_ReStart
-                  0x00b8fa                  _Generate_I2C_Stop
-                  0x00b906                  _Give_I2C_ACK
-                  0x00b916                  _Give_I2C_NAK
-                  0x00b926                  _Read_I2C_ACK_Status
-                  0x00b952                  _Put_I2C_Byte
-                  0x00b97c                  _Get_I2C_Byte
-                  0x00b9a4                  _Has_SSPIF_gone_high
-                  0x00b9d2                  _Crc16
-                  0x00baca                  _Initialise_LED_Driver
-                  0x00bad4                  _Update_Preparatory_LED_State
-                  0x00bb3e                  _Decrement_LED_10msTmr
-                  0x00bb50                  _Set_Preparatory_LED_Off
-                  0x00bb58                  _Set_Preparatory_LED_On
-                  0x00bb62                  _Set_Preparatory_LED_Flashing
-                  0x00bb6c                  _crc32
-                  0x00bc08                  _USBSleepOnSuspend
-                  0x00bc74                  _Initialise_Cnt_Driver
-                  0x00bc7e                  _Update_Cnt_State
-                  0x00bcbe                  _Decrement_Cnt_10msTmr
-                  0x00bcd0                  _Increment_Reset_Counter
-                  0x00bcdc                  _Initialise_Auto_Cnt_Driver
-                  0x00bce6                  _Update_Auto_Cnt_State
-                  0x00bd26                  _Decrement_Auto_Cnt_10msTmr
-                  0x00bd38                  _Increment_Auto_Reset_Counter
+                  0x009d50                  _Erase_Serial_EEProm_Block
+                  0x009e46                  _Write_Event_on_Serial_EEProm
+                  0x009eda                  _Read_Event_from_Serial_EEProm
+                  0x00a040                  _Is_Serial_EEPROM_Write_Complete
+                  0x00a072                  _Save_Phone_Number
+                  0x00a0fe                  _Read_Phone_Number
+                  0x00a1bc                  _Save_Event_Ref
+                  0x00a234                  _Read_Event_ref
+                  0x00a2ca                  _Initialise_Host_CommSch
+                  0x00a2ee                  _SetupCOM2BaudRate
+                  0x00a382                  _Start_Host_Communication
+                  0x00a38e                  _Update_Host_Sch_State
+                  0x00a5e8                  _Decrement_Host_Sch_msTmr
+                  0x00a612                  _Receive_COM2_Message
+                  0x00a7d4                  _Clear_COM2_Receive_Buffer
+                  0x00a7f6                  _Clear_Com2_Error
+                  0x00a81c                  _Initialise_RTC_Sch
+                  0x00a82c                  _Start_RTC_Sch
+                  0x00a83c                  _Update_RtcSch_State
+                  0x00a8ba                  _Decrement_RTC_10msTmr
+                  0x00a8d2                  _Read_RTC_Registers
+                  0x00a930                  _Update_System_Clock
+                  0x00aa10                  _Set_RTC_Date
+                  0x00ab30                  _Set_RTC_Time
+                  0x00abc6                  _Initialise_DI_Driver
+                  0x00abd8                  _Start_DI_Scan
+                  0x00ac4c                  _Update_DI_State
+                  0x00ac5c                  _Update_PB_State
+                  0x00acd6                  _Update_Vital_Relay_State
+                  0x00ad56                  _Update_Vital_Relay2_State
+                  0x00add6                  _Update_Prep_Relay_State
+                  0x00ae56                  _Update_Prep_Relay2_State
+                  0x00aed6                  _Decrement_DI_10msTmr
+                  0x00af18                  _Initialise_A2D_Driver
+                  0x00af76                  _Start_A2D_Driver
+                  0x00af9a                  _Update_Vdd_Mon_State
+                  0x00b08a                  _Update_A2D_State
+                  0x00b1e0                  _Decrement_A2D_10msTmr
+                  0x00b1f8                  _USBCheckCDCRequest
+                  0x00b2d6                  _CDCInitEP
+                  0x00b312                  _getsUSBUSART
+                  0x00b37c                  _putUSBUSART
+                  0x00b3ba                  _CDCTxService
+                  0x00b478                  _Initialise_EEPROM_State
+                  0x00b504                  _Start_EEPROM_Sch
+                  0x00b514                  _Update_EEPROM_State
+                  0x00b622                  _Decrement_EEPROM_msTmr
+                  0x00b63a                  _Save_Event_Register_on_EEPROM
+                  0x00b6e0                  _Is_CPU1_EEPROM_Record_Valid
+                  0x00b6ec                  _Is_CPU2_EEPROM_Record_Valid
+                  0x00b6f8                  _USB_Check
+                  0x00b724                  _Update_USB_Sch_State
+                  0x00b754                  _ProcessIO
+                  0x00b7d0                  _USB_Process
+                  0x00b83a                  _USBCB_SOF_Handler
+                  0x00b842                  _USBCBSendResume
+                  0x00b87c                  _USER_USB_CALLBACK_EVENT_HANDLER
+                  0x00b8d8                  _Initialise_I2C_Driver
+                  0x00b8e6                  _Generate_I2C_Start
+                  0x00b8f2                  _Generate_I2C_ReStart
+                  0x00b8fe                  _Generate_I2C_Stop
+                  0x00b90a                  _Give_I2C_ACK
+                  0x00b91a                  _Give_I2C_NAK
+                  0x00b92a                  _Read_I2C_ACK_Status
+                  0x00b956                  _Put_I2C_Byte
+                  0x00b980                  _Get_I2C_Byte
+                  0x00b9a8                  _Has_SSPIF_gone_high
+                  0x00b9d6                  _Crc16
+                  0x00bace                  _Initialise_LED_Driver
+                  0x00bad8                  _Update_Preparatory_LED_State
+                  0x00bb42                  _Decrement_LED_10msTmr
+                  0x00bb54                  _Set_Preparatory_LED_Off
+                  0x00bb5c                  _Set_Preparatory_LED_On
+                  0x00bb66                  _Set_Preparatory_LED_Flashing
+                  0x00bb70                  _crc32
+                  0x00bc0c                  _USBSleepOnSuspend
+                  0x00bc78                  _Initialise_Cnt_Driver
+                  0x00bc82                  _Update_Cnt_State
+                  0x00bcc2                  _Decrement_Cnt_10msTmr
+                  0x00bcd4                  _Increment_Reset_Counter
+                  0x00bce0                  _Initialise_Auto_Cnt_Driver
+                  0x00bcea                  _Update_Auto_Cnt_State
+                  0x00bd2a                  _Decrement_Auto_Cnt_10msTmr
+                  0x00bd3c                  _Increment_Auto_Reset_Counter
 
 External Symbols in Program Memory (by name):
 
@@ -833,162 +818,162 @@ External Symbols in Program Memory (by name):
                   0x008e0e                  _Build_Reply_To_Status_Command
                   0x0089f2                  _Build_Time_Record_Message
                   0x007fd0                  _Build_packet_GLCD
-                  0x00b2d2                  _CDCInitEP
-                  0x00b3b6                  _CDCTxService
+                  0x00b2d6                  _CDCInitEP
+                  0x00b3ba                  _CDCTxService
                   0x009540                  _Check_Error
                   0x0098d4                  _Check_Flash
                   0x00943c                  _Check_change_number
-                  0x00a7d0                  _Clear_COM2_Receive_Buffer
+                  0x00a7d4                  _Clear_COM2_Receive_Buffer
                   0x0096dc                  _Clear_COM3_Receive_Buffer
                   0x0096fe                  _Clear_COM3_Transmit_Buffer
                   0x0059bc                  _Clear_Com1_Error
-                  0x00a7f2                  _Clear_Com2_Error
+                  0x00a7f6                  _Clear_Com2_Error
                   0x009720                  _Clear_Com3_Error
                   0x0015e0                  _Clear_Events_Counter
                   0x003a5e                  _Compute_LRC
-                  0x00b9d2                  _Crc16
-                  0x00b1dc                  _Decrement_A2D_10msTmr
-                  0x00bd26                  _Decrement_Auto_Cnt_10msTmr
+                  0x00b9d6                  _Crc16
+                  0x00b1e0                  _Decrement_A2D_10msTmr
+                  0x00bd2a                  _Decrement_Auto_Cnt_10msTmr
                   0x009c46                  _Decrement_Auto_Reset_Seq_10msTmr
-                  0x00bcbe                  _Decrement_Cnt_10msTmr
-                  0x00aed2                  _Decrement_DI_10msTmr
-                  0x00b61e                  _Decrement_EEPROM_msTmr
+                  0x00bcc2                  _Decrement_Cnt_10msTmr
+                  0x00aed6                  _Decrement_DI_10msTmr
+                  0x00b622                  _Decrement_EEPROM_msTmr
                   0x001c18                  _Decrement_Events_Sch_10msTmr
                   0x007fbe                  _Decrement_GLCD_msTmr
                   0x00966a                  _Decrement_GSM_Sch_msTmr
-                  0x00a5e4                  _Decrement_Host_Sch_msTmr
-                  0x00bb3e                  _Decrement_LED_10msTmr
-                  0x00a8b6                  _Decrement_RTC_10msTmr
+                  0x00a5e8                  _Decrement_Host_Sch_msTmr
+                  0x00bb42                  _Decrement_LED_10msTmr
+                  0x00a8ba                  _Decrement_RTC_10msTmr
                   0x009c34                  _Decrement_Reset_Seq_10msTmr
                   0x00599e                  _Decrement_Smc_Sch_msTmr
                   0x003120                  _Detect_DAC_Events
-                  0x009d4c                  _Erase_Serial_EEProm_Block
+                  0x009d50                  _Erase_Serial_EEProm_Block
                   0x001460                  _Event_When_High
                   0x0014c0                  _Event_When_Low
-                  0x00b8ee                  _Generate_I2C_ReStart
-                  0x00b8e2                  _Generate_I2C_Start
-                  0x00b8fa                  _Generate_I2C_Stop
+                  0x00b8f2                  _Generate_I2C_ReStart
+                  0x00b8e6                  _Generate_I2C_Start
+                  0x00b8fe                  _Generate_I2C_Stop
                   0x0015ce                  _Get_Current_Event_Number
                   0x0015d6                  _Get_Events_Counter_Value
-                  0x00b97c                  _Get_I2C_Byte
-                  0x00b906                  _Give_I2C_ACK
-                  0x00b916                  _Give_I2C_NAK
-                  0x00b9a4                  _Has_SSPIF_gone_high
-                  0x00bd38                  _Increment_Auto_Reset_Counter
-                  0x00bcd0                  _Increment_Reset_Counter
-                  0x00af14                  _Initialise_A2D_Driver
-                  0x00bcdc                  _Initialise_Auto_Cnt_Driver
+                  0x00b980                  _Get_I2C_Byte
+                  0x00b90a                  _Give_I2C_ACK
+                  0x00b91a                  _Give_I2C_NAK
+                  0x00b9a8                  _Has_SSPIF_gone_high
+                  0x00bd3c                  _Increment_Auto_Reset_Counter
+                  0x00bcd4                  _Increment_Reset_Counter
+                  0x00af18                  _Initialise_A2D_Driver
+                  0x00bce0                  _Initialise_Auto_Cnt_Driver
                   0x009a20                  _Initialise_Auto_Reset_Seq
-                  0x00bc74                  _Initialise_Cnt_Driver
-                  0x00abc2                  _Initialise_DI_Driver
-                  0x00b474                  _Initialise_EEPROM_State
+                  0x00bc78                  _Initialise_Cnt_Driver
+                  0x00abc6                  _Initialise_DI_Driver
+                  0x00b478                  _Initialise_EEPROM_State
                   0x001732                  _Initialise_Events_Sch
                   0x007d30                  _Initialise_GLCD_Driver
                   0x008fee                  _Initialise_GSM_CommSch
-                  0x00a2c6                  _Initialise_Host_CommSch
-                  0x00b8d4                  _Initialise_I2C_Driver
-                  0x00baca                  _Initialise_LED_Driver
+                  0x00a2ca                  _Initialise_Host_CommSch
+                  0x00b8d8                  _Initialise_I2C_Driver
+                  0x00bace                  _Initialise_LED_Driver
                   0x0059e8                  _Initialise_Modem
                   0x00667c                  _Initialise_Printer
-                  0x00a818                  _Initialise_RTC_Sch
+                  0x00a81c                  _Initialise_RTC_Sch
                   0x009a0a                  _Initialise_Reset_Seq
                   0x0053d2                  _Initialise_Smc_CommSch
                   0x00974e                  _Initialise_System
-                  0x00b6dc                  _Is_CPU1_EEPROM_Record_Valid
-                  0x00b6e8                  _Is_CPU2_EEPROM_Record_Valid
-                  0x00a03c                  _Is_Serial_EEPROM_Write_Complete
+                  0x00b6e0                  _Is_CPU1_EEPROM_Record_Valid
+                  0x00b6ec                  _Is_CPU2_EEPROM_Record_Valid
+                  0x00a040                  _Is_Serial_EEPROM_Write_Complete
                   0x003852                  _Modify_Token_of_old_Events
                   0x008c44                  _Notify_End_of_Events_Reply
                   0x006e54                  _Post_Data_to_Print_Queue
                   0x006f3c                  _Print_Byte
-                  0x00b750                  _ProcessIO
+                  0x00b754                  _ProcessIO
                   0x00869c                  _Process_Host_Command
                   0x005a06                  _Process_SM_Message
                   0x008d1c                  _Process_Set_Date_And_Time_Command
-                  0x00b952                  _Put_I2C_Byte
-                  0x009ed6                  _Read_Event_from_Serial_EEProm
-                  0x00a230                  _Read_Event_ref
-                  0x00b926                  _Read_I2C_ACK_Status
-                  0x00a0fa                  _Read_Phone_Number
-                  0x00a8ce                  _Read_RTC_Registers
-                  0x00a60e                  _Receive_COM2_Message
+                  0x00b956                  _Put_I2C_Byte
+                  0x009eda                  _Read_Event_from_Serial_EEProm
+                  0x00a234                  _Read_Event_ref
+                  0x00b92a                  _Read_I2C_ACK_Status
+                  0x00a0fe                  _Read_Phone_Number
+                  0x00a8d2                  _Read_RTC_Registers
+                  0x00a612                  _Receive_COM2_Message
                   0x009688                  _Receive_COM3_Message
                   0x000bce                  _Report_Line
                   0x003676                  _Save_DAC_Event
-                  0x00a1b8                  _Save_Event_Ref
-                  0x00b636                  _Save_Event_Register_on_EEPROM
-                  0x00a06e                  _Save_Phone_Number
+                  0x00a1bc                  _Save_Event_Ref
+                  0x00b63a                  _Save_Event_Register_on_EEPROM
+                  0x00a072                  _Save_Phone_Number
                   0x0015c6                  _Serial_EEPROM_Addr_Map
                   0x0059f2                  _Set_Modem_RX_Mode
                   0x0059fc                  _Set_Modem_TX_Mode
-                  0x00bb62                  _Set_Preparatory_LED_Flashing
-                  0x00bb50                  _Set_Preparatory_LED_Off
-                  0x00bb58                  _Set_Preparatory_LED_On
-                  0x00aa0c                  _Set_RTC_Date
-                  0x00ab2c                  _Set_RTC_Time
+                  0x00bb66                  _Set_Preparatory_LED_Flashing
+                  0x00bb54                  _Set_Preparatory_LED_Off
+                  0x00bb5c                  _Set_Preparatory_LED_On
+                  0x00aa10                  _Set_RTC_Date
+                  0x00ab30                  _Set_RTC_Time
                   0x005990                  _Set_Smc_Sch_Idle
                   0x005408                  _SetupCOM1BaudRate
-                  0x00a2ea                  _SetupCOM2BaudRate
+                  0x00a2ee                  _SetupCOM2BaudRate
                   0x009040                  _SetupCOM3BaudRate
                   0x0015ec                  _Setup_Events_Erasure
                   0x0087da                  _Setup_Get_Logged_Events_Params
-                  0x00af72                  _Start_A2D_Driver
+                  0x00af76                  _Start_A2D_Driver
                   0x009a2a                  _Start_Auto_Reset_Seq
-                  0x00abd4                  _Start_DI_Scan
-                  0x00b500                  _Start_EEPROM_Sch
+                  0x00abd8                  _Start_DI_Scan
+                  0x00b504                  _Start_EEPROM_Sch
                   0x001760                  _Start_Events_Sch
                   0x0090de                  _Start_GSM_Communication
-                  0x00a37e                  _Start_Host_Communication
+                  0x00a382                  _Start_Host_Communication
                   0x0066a4                  _Start_Printer
-                  0x00a828                  _Start_RTC_Sch
+                  0x00a82c                  _Start_RTC_Sch
                   0x009a14                  _Start_Reset_Seq
                   0x0054e8                  _Start_Smc_Communication
                   0x00994a                  _Start_Sub_Systems
                   0x003aac                  _Synchronise_Events_Register
-                  0x00b83e                  _USBCBSendResume
-                  0x00b836                  _USBCB_SOF_Handler
+                  0x00b842                  _USBCBSendResume
+                  0x00b83a                  _USBCB_SOF_Handler
                   0x004184                  _USBCancelIO
-                  0x00b1f4                  _USBCheckCDCRequest
+                  0x00b1f8                  _USBCheckCDCRequest
                   0x0042d4                  _USBCtrlEPAllowDataStage
                   0x004236                  _USBCtrlEPAllowStatusStage
                   0x003bda                  _USBDeviceInit
                   0x003cca                  _USBDeviceTasks
                   0x003ea0                  _USBEnableEndpoint
-                  0x00bc08                  _USBSleepOnSuspend
+                  0x00bc0c                  _USBSleepOnSuspend
                   0x0040ca                  _USBStallEndpoint
                   0x003f7c                  _USBTransferOnePacket
-                  0x00b6f4                  _USB_Check
-                  0x00b7cc                  _USB_Process
-                  0x00b878                  _USER_USB_CALLBACK_EVENT_HANDLER
-                  0x00b086                  _Update_A2D_State
-                  0x00bce6                  _Update_Auto_Cnt_State
+                  0x00b6f8                  _USB_Check
+                  0x00b7d0                  _USB_Process
+                  0x00b87c                  _USER_USB_CALLBACK_EVENT_HANDLER
+                  0x00b08a                  _Update_A2D_State
+                  0x00bcea                  _Update_Auto_Cnt_State
                   0x009b70                  _Update_Auto_Reset_Seq_State
-                  0x00bc7e                  _Update_Cnt_State
+                  0x00bc82                  _Update_Cnt_State
                   0x005c48                  _Update_Comm_Err_Counter
-                  0x00ac48                  _Update_DI_State
-                  0x00b510                  _Update_EEPROM_State
+                  0x00ac4c                  _Update_DI_State
+                  0x00b514                  _Update_EEPROM_State
                   0x001778                  _Update_Events_Sch_State
                   0x007dbc                  _Update_GLCD_State
                   0x0090ea                  _Update_GSM_Sch_State
-                  0x00a38a                  _Update_Host_Sch_State
+                  0x00a38e                  _Update_Host_Sch_State
                   0x009c58                  _Update_Network_Configuration
-                  0x00ac58                  _Update_PB_State
-                  0x00ae52                  _Update_Prep_Relay2_State
-                  0x00add2                  _Update_Prep_Relay_State
-                  0x00bad4                  _Update_Preparatory_LED_State
+                  0x00ac5c                  _Update_PB_State
+                  0x00ae56                  _Update_Prep_Relay2_State
+                  0x00add6                  _Update_Prep_Relay_State
+                  0x00bad8                  _Update_Preparatory_LED_State
                   0x0066b4                  _Update_Printer_State
                   0x009a36                  _Update_Reset_Seq_State
-                  0x00a838                  _Update_RtcSch_State
+                  0x00a83c                  _Update_RtcSch_State
                   0x00832c                  _Update_SMPU_data
                   0x005d34                  _Update_Shadow_Register
                   0x0054f6                  _Update_Smc_Sch_State
-                  0x00a92c                  _Update_System_Clock
-                  0x00b720                  _Update_USB_Sch_State
-                  0x00af96                  _Update_Vdd_Mon_State
-                  0x00ad52                  _Update_Vital_Relay2_State
-                  0x00acd2                  _Update_Vital_Relay_State
+                  0x00a930                  _Update_System_Clock
+                  0x00b724                  _Update_USB_Sch_State
+                  0x00af9a                  _Update_Vdd_Mon_State
+                  0x00ad56                  _Update_Vital_Relay2_State
+                  0x00acd6                  _Update_Vital_Relay_State
                   0x009cc2                  _Update_switch_config
-                  0x009e42                  _Write_Event_on_Serial_EEProm
+                  0x009e46                  _Write_Event_on_Serial_EEProm
                   0x000b9e                  ___modsi3
                   0x000bc2                  ___mulp32eds3
                   0x000bc2                  ___mulp32peds3
@@ -1003,16 +988,16 @@ External Symbols in Program Memory (by name):
                   0x0003b6                  __sprintf_cdnopsuxX
                   0x0003f4                  __vfprintf_cdnopsuxX
                   0x0013b0                  _configDescriptor1
-                  0x00bb6c                  _crc32
+                  0x00bb70                  _crc32
                   0x0099f2                  _delay
                   0x00139e                  _device_dsc
                   0x0098c8                  _flash_read_c
-                  0x00b30e                  _getsUSBUSART
+                  0x00b312                  _getsUSBUSART
                   0x00995a                  _main
                   0x0009c6                  _memcpy
                   0x0009d4                  _memset
                   0x000a7e                  _mktime
-                  0x00b378                  _putUSBUSART
+                  0x00b37c                  _putUSBUSART
                   0x0013f3                  _sd000
                   0x0013f7                  _sd001
                   0x00142b                  _sd002
@@ -1066,45 +1051,10 @@ LOAD build/default/debug/_ext/1728301206/PRINT.o
 LOAD build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
 LOAD build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
 LOAD build/default/debug/_ext/1728301206/COMM_GSM.o
-
-reserve_data_0x800
-                    0x0800         0x1c
-                    0x081c                  . = 0x1c
- *fill*             0x0800         0x1c00
-
-reserve_data_0x81c
-                    0x081c          0x2
-                    0x081e                  . = 0x2
- *fill*             0x081c          0x200
-
-reserve_data_0x81e
-                    0x081e          0x2
-                    0x0820                  . = 0x2
- *fill*             0x081e          0x200
-
-reserve_data_0x820
-                    0x0820          0x2
-                    0x0822                  . = 0x2
- *fill*             0x0820          0x200
-
-reserve_data_0x822
-                    0x0822          0x2
-                    0x0824                  . = 0x2
- *fill*             0x0822          0x200
-
-reserve_data_0x824
-                    0x0824          0x4
-                    0x0828                  . = 0x4
- *fill*             0x0824          0x400
-
-reserve_data_0x82a
-                    0x082a         0x26
-                    0x0850                  . = 0x26
- *fill*             0x082a         0x2600
                     0x0001                  __MPLAB_BUILD = 0x1
                     0x0001                  __MPLAB_DEBUG = 0x1
                     0x0001                  __DEBUG = 0x1
-                    0x0001                  __MPLAB_DEBUGGER_ICD3 = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_SIMULATOR = 0x1
 LOAD c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib/PIC24F\libpPIC24Fxxx-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libfx-elf.a
                     0x2abf8                  __CONFIG4 = 0x2abf8
@@ -1268,7 +1218,7 @@ __CONFIG1
  .debug_abbrev    0x00234f         0xde build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
  .debug_abbrev    0x00242d        0x1d3 build/default/debug/_ext/1728301206/COMM_GSM.o
 
-.debug_line       0x000000       0x2f01
+.debug_line       0x000000       0x2f02
  *(.debug_line)
  .debug_line      0x000000         0x9f build/default/debug/_ext/1669077864/usb_descriptors.o
  .debug_line      0x00009f        0x4d4 build/default/debug/_ext/1669077864/usb_device.o
@@ -1276,24 +1226,24 @@ __CONFIG1
  .debug_line      0x00070d        0x150 build/default/debug/_ext/1669077864/usb_function_cdc.o
  .debug_line      0x00085d         0xec build/default/debug/_ext/1669077864/usb_hal_pic24.o
  .debug_line      0x000949        0x367 build/default/debug/_ext/1728301206/COMM_SMC.o
- .debug_line      0x000cb0        0x330 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
- .debug_line      0x000fe0         0xc2 build/default/debug/_ext/1728301206/CRC16.o
- .debug_line      0x0010a2         0xcc build/default/debug/_ext/1728301206/CRC32.o
- .debug_line      0x00116e        0x16b build/default/debug/_ext/1728301206/DRV_A2D.o
- .debug_line      0x0012d9        0x10d build/default/debug/_ext/1728301206/DRV_I2C.o
- .debug_line      0x0013e6        0x1f9 build/default/debug/_ext/1728301206/DRV_MEM.o
- .debug_line      0x0015df        0x1b1 build/default/debug/_ext/1728301206/DRV_RTC.o
- .debug_line      0x001790        0x100 build/default/debug/_ext/1728301206/EEPROM.o
- .debug_line      0x001890        0x5f2 build/default/debug/_ext/1728301206/EVENTS.o
- .debug_line      0x001e82        0x24e build/default/debug/_ext/1728301206/comm_host.o
- .debug_line      0x0020d0        0x260 build/default/debug/_ext/1728301206/command_proc.o
- .debug_line      0x002330         0xdd build/default/debug/_ext/1728301206/DRV_CNT.o
- .debug_line      0x00240d        0x194 build/default/debug/_ext/1728301206/DRV_DI.o
- .debug_line      0x0025a1         0xef build/default/debug/_ext/1728301206/DRV_LED.o
- .debug_line      0x002690        0x29a build/default/debug/_ext/1728301206/PRINT.o
- .debug_line      0x00292a        0x299 build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
- .debug_line      0x002bc3         0xe7 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
- .debug_line      0x002caa        0x257 build/default/debug/_ext/1728301206/COMM_GSM.o
+ .debug_line      0x000cb0        0x331 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
+ .debug_line      0x000fe1         0xc2 build/default/debug/_ext/1728301206/CRC16.o
+ .debug_line      0x0010a3         0xcc build/default/debug/_ext/1728301206/CRC32.o
+ .debug_line      0x00116f        0x16b build/default/debug/_ext/1728301206/DRV_A2D.o
+ .debug_line      0x0012da        0x10d build/default/debug/_ext/1728301206/DRV_I2C.o
+ .debug_line      0x0013e7        0x1f9 build/default/debug/_ext/1728301206/DRV_MEM.o
+ .debug_line      0x0015e0        0x1b1 build/default/debug/_ext/1728301206/DRV_RTC.o
+ .debug_line      0x001791        0x100 build/default/debug/_ext/1728301206/EEPROM.o
+ .debug_line      0x001891        0x5f2 build/default/debug/_ext/1728301206/EVENTS.o
+ .debug_line      0x001e83        0x24e build/default/debug/_ext/1728301206/comm_host.o
+ .debug_line      0x0020d1        0x260 build/default/debug/_ext/1728301206/command_proc.o
+ .debug_line      0x002331         0xdd build/default/debug/_ext/1728301206/DRV_CNT.o
+ .debug_line      0x00240e        0x194 build/default/debug/_ext/1728301206/DRV_DI.o
+ .debug_line      0x0025a2         0xef build/default/debug/_ext/1728301206/DRV_LED.o
+ .debug_line      0x002691        0x29a build/default/debug/_ext/1728301206/PRINT.o
+ .debug_line      0x00292b        0x299 build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
+ .debug_line      0x002bc4         0xe7 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
+ .debug_line      0x002cab        0x257 build/default/debug/_ext/1728301206/COMM_GSM.o
 
 .debug_frame      0x000000       0x175e
  *(.debug_frame)
@@ -3052,281 +3002,279 @@ __c30_signature
  __c30_signature
                   0x0021cf          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libm-elf.a(mulsi3.daeo)
 
-.nbss               0x0850         0xb8
- .nbss              0x0850         0x30 build/default/debug/_ext/1669077864/usb_device.o
-                    0x0850                  _USBDeviceState
-                    0x0852                  _USBActiveConfiguration
-                    0x0853                  _BDT_INDEX_EO_C_VALUE
-                    0x0854                  _BDT_INDEX_EO_N_VALUE
-                    0x0855                  _shortPacketStatus
-                    0x0856                  _controlTransferState
-                    0x0858                  _IN_ROM_src
-                    0x085a                  _IN_RAM_src
-                    0x085c                  _IN_ROM_src_offset
-                    0x085d                  _IN_RAM_src_offset
-                    0x085e                  _RemoteWakeup
-                    0x0860                  _USBBusIsSuspended
-                    0x0862                  _USTATcopy
-                    0x0863                  _endpoint_number
-                    0x0864                  _BothEP0OutUOWNsSet
-                    0x0866                  _USBStatusStageTimeoutCounter
-                    0x0868                  _USBDeferStatusStagePacket
-                    0x086a                  _USBStatusStageEnabledFlag1
-                    0x086c                  _USBStatusStageEnabledFlag2
-                    0x086e                  _USBDeferINDataStagePackets
-                    0x0870                  _USBDeferOUTDataStagePackets
-                    0x0872                  _USB_Status
-                    0x0874                  _i_count
-                    0x0875                  _i_count2
-                    0x0876                  _byteToSend_count
-                    0x0877                  _count2
-                    0x0878                  _Track_pipe
-                    0x0879                  _byteToRead
-                    0x087a                  _i_cnt
-                    0x087b                  _Track_OUT_pipe
-                    0x087c                  _i_cnt2
-                    0x087d                  _setup_cnt
-                    0x087e                  _lastDTS
-                    0x087f                  _current_ep_data
- .nbss              0x0880         0x2c build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
-                    0x0880                  _Status
-                    0x0882                  _RB_Status
-                    0x0884                  _SystemClock
-                    0x0888                  _SystemDate
-                    0x088c                  _YLED_FB_ERROR
-                    0x088d                  _RLED_FB_ERROR
-                    0x088e                  _SPK_FB_ERROR
-                    0x088f                  _THFT_FB_ERROR
-                    0x0890                  _DOOR_FB_ERROR
-                    0x0891                  _feedback_error
-                    0x0892                  _FB_error_ID
-                    0x0893                  _CPU1_Address
-                    0x0894                  _CPU2_Address
-                    0x0895                  _Network_config
-                    0x0896                  _HA_config
-                    0x0897                  _Pilot_mode_config
-                    0x0898                  _Reset_Seq
-                    0x089c                  _Auto_Reset_Seq
-                    0x08a0                  _inspect_event_done
-                    0x08a2                  _init_delay_count
-                    0x08a4                  _SMCPU_CRC_checksum
-                    0x08a8                  _inspect_CPU1_data_done
-                    0x08a9                  _inspect_CPU2_data_done
-                    0x08aa                  _inspect_DAC_info_done
- .nbss              0x08ac         0x14 build/default/debug/_ext/1728301206/DRV_DI.o
-                    0x08ac                  _Reset_PB
-                    0x08b0                  _Vital_Relay
-                    0x08b4                  _Vital_Relay2
-                    0x08b8                  _Prep_Relay
-                    0x08bc                  _Prep_Relay2
- .nbss              0x08c0         0x10 build/default/debug/_ext/1728301206/COMM_SMC.o
-                    0x08c0                  _No_smcpu
-                    0x08c2                  _temp_crc_SPI
-                    0x08c4                  _temp8
-                    0x08c5                  _temp18
-                    0x08c6                  _Network_ID
-                    0x08c7                  _var_count
-                    0x08c8                  _SF_Error
-                    0x08c9                  _EF_Error
-                    0x08ca                  _CPU1_System_error
-                    0x08cb                  _CPU2_System_error
-                    0x08cc                  _log_event
-                    0x08cd                  _System_error
-                    0x08ce                  _System_error_code
- .nbss              0x08d0          0xc build/default/debug/_ext/1728301206/EVENTS.o
-                    0x08d0                  _Erase_Start
-                    0x08d2                  _DE_R_count0
-                    0x08d4                  _DE_R_count1
-                    0x08d6                  _DE_R_count_track0
-                    0x08d8                  _DE_R_count_track1
-                    0x08da                  _E_status
- .nbss              0x08dc          0xa build/default/debug/_ext/1669077864/usb_function_cdc.o
-                    0x08dc                  _cdc_rx_len
-                    0x08dd                  _cdc_trf_state
-                    0x08de                  _Buf_len
-                    0x08df                  _cdc_tx_len
-                    0x08e0                  _cdc_mem_type
-                    0x08e1                  _CDCOutHandle
-                    0x08e2                  _CDCInHandle
-                    0x08e3                  _temp_len
-                    0x08e4                  _byte_to_send_cdc
-                    0x08e5                  _i_cnt_cdc
- .nbss              0x08e6          0xa build/default/debug/_ext/1728301206/DRV_MEM.o
-                    0x08e6                  _Previous_Write_Addr
-                    0x08e8                  _Page
-                    0x08ea                  _Erase_address
-                    0x08ec                  _Block_erase_status
-                    0x08ee                  _temp_E
- .nbss              0x08f0          0xa build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
-                    0x08f0                  _NID
-                    0x08f2                  _Glcd_csum
-                    0x08f4                  _temp
-                    0x08f5                  _count_rx
-                    0x08f6                  _Interested_Nw_Index
-                    0x08f7                  _u_count
-                    0x08f8                  _s_count
- .nbss              0x08fa          0x8 build/default/debug/_ext/1669077864/USB_DRV.o
-                    0x08fa                  _Debug_flag
-                    0x08fe                  _numBytesRead
- .nbss              0x0902          0x6 build/default/debug/_ext/1728301206/COMM_GSM.o
-                    0x0902                  _System_GSM_on
-                    0x0903                  _Check_msg
-                    0x0904                  _Delete_message
-                    0x0905                  _send_confirmation
-                    0x0906                  _P_status
+.nbss               0x0800         0xb8
+ .nbss              0x0800         0x30 build/default/debug/_ext/1669077864/usb_device.o
+                    0x0800                  _USBDeviceState
+                    0x0802                  _USBActiveConfiguration
+                    0x0803                  _BDT_INDEX_EO_C_VALUE
+                    0x0804                  _BDT_INDEX_EO_N_VALUE
+                    0x0805                  _shortPacketStatus
+                    0x0806                  _controlTransferState
+                    0x0808                  _IN_ROM_src
+                    0x080a                  _IN_RAM_src
+                    0x080c                  _IN_ROM_src_offset
+                    0x080d                  _IN_RAM_src_offset
+                    0x080e                  _RemoteWakeup
+                    0x0810                  _USBBusIsSuspended
+                    0x0812                  _USTATcopy
+                    0x0813                  _endpoint_number
+                    0x0814                  _BothEP0OutUOWNsSet
+                    0x0816                  _USBStatusStageTimeoutCounter
+                    0x0818                  _USBDeferStatusStagePacket
+                    0x081a                  _USBStatusStageEnabledFlag1
+                    0x081c                  _USBStatusStageEnabledFlag2
+                    0x081e                  _USBDeferINDataStagePackets
+                    0x0820                  _USBDeferOUTDataStagePackets
+                    0x0822                  _USB_Status
+                    0x0824                  _i_count
+                    0x0825                  _i_count2
+                    0x0826                  _byteToSend_count
+                    0x0827                  _count2
+                    0x0828                  _Track_pipe
+                    0x0829                  _byteToRead
+                    0x082a                  _i_cnt
+                    0x082b                  _Track_OUT_pipe
+                    0x082c                  _i_cnt2
+                    0x082d                  _setup_cnt
+                    0x082e                  _lastDTS
+                    0x082f                  _current_ep_data
+ .nbss              0x0830         0x2c build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
+                    0x0830                  _Status
+                    0x0832                  _RB_Status
+                    0x0834                  _SystemClock
+                    0x0838                  _SystemDate
+                    0x083c                  _YLED_FB_ERROR
+                    0x083d                  _RLED_FB_ERROR
+                    0x083e                  _SPK_FB_ERROR
+                    0x083f                  _THFT_FB_ERROR
+                    0x0840                  _DOOR_FB_ERROR
+                    0x0841                  _feedback_error
+                    0x0842                  _FB_error_ID
+                    0x0843                  _CPU1_Address
+                    0x0844                  _CPU2_Address
+                    0x0845                  _Network_config
+                    0x0846                  _HA_config
+                    0x0847                  _Pilot_mode_config
+                    0x0848                  _Reset_Seq
+                    0x084c                  _Auto_Reset_Seq
+                    0x0850                  _inspect_event_done
+                    0x0852                  _init_delay_count
+                    0x0854                  _SMCPU_CRC_checksum
+                    0x0858                  _inspect_CPU1_data_done
+                    0x0859                  _inspect_CPU2_data_done
+                    0x085a                  _inspect_DAC_info_done
+ .nbss              0x085c         0x14 build/default/debug/_ext/1728301206/DRV_DI.o
+                    0x085c                  _Reset_PB
+                    0x0860                  _Vital_Relay
+                    0x0864                  _Vital_Relay2
+                    0x0868                  _Prep_Relay
+                    0x086c                  _Prep_Relay2
+ .nbss              0x0870         0x10 build/default/debug/_ext/1728301206/COMM_SMC.o
+                    0x0870                  _No_smcpu
+                    0x0872                  _temp_crc_SPI
+                    0x0874                  _temp8
+                    0x0875                  _temp18
+                    0x0876                  _Network_ID
+                    0x0877                  _var_count
+                    0x0878                  _SF_Error
+                    0x0879                  _EF_Error
+                    0x087a                  _CPU1_System_error
+                    0x087b                  _CPU2_System_error
+                    0x087c                  _log_event
+                    0x087d                  _System_error
+                    0x087e                  _System_error_code
+ .nbss              0x0880          0xc build/default/debug/_ext/1728301206/EVENTS.o
+                    0x0880                  _Erase_Start
+                    0x0882                  _DE_R_count0
+                    0x0884                  _DE_R_count1
+                    0x0886                  _DE_R_count_track0
+                    0x0888                  _DE_R_count_track1
+                    0x088a                  _E_status
+ .nbss              0x088c          0xa build/default/debug/_ext/1669077864/usb_function_cdc.o
+                    0x088c                  _cdc_rx_len
+                    0x088d                  _cdc_trf_state
+                    0x088e                  _Buf_len
+                    0x088f                  _cdc_tx_len
+                    0x0890                  _cdc_mem_type
+                    0x0891                  _CDCOutHandle
+                    0x0892                  _CDCInHandle
+                    0x0893                  _temp_len
+                    0x0894                  _byte_to_send_cdc
+                    0x0895                  _i_cnt_cdc
+ .nbss              0x0896          0xa build/default/debug/_ext/1728301206/DRV_MEM.o
+                    0x0896                  _Previous_Write_Addr
+                    0x0898                  _Page
+                    0x089a                  _Erase_address
+                    0x089c                  _Block_erase_status
+                    0x089e                  _temp_E
+ .nbss              0x08a0          0xa build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
+                    0x08a0                  _NID
+                    0x08a2                  _Glcd_csum
+                    0x08a4                  _temp
+                    0x08a5                  _count_rx
+                    0x08a6                  _Interested_Nw_Index
+                    0x08a7                  _u_count
+                    0x08a8                  _s_count
+ .nbss              0x08aa          0x8 build/default/debug/_ext/1669077864/USB_DRV.o
+                    0x08aa                  _Debug_flag
+                    0x08ae                  _numBytesRead
+ .nbss              0x08b2          0x6 build/default/debug/_ext/1728301206/COMM_GSM.o
+                    0x08b2                  _System_GSM_on
+                    0x08b3                  _Check_msg
+                    0x08b4                  _Delete_message
+                    0x08b5                  _send_confirmation
+                    0x08b6                  _P_status
 
-.ndata              0x0908          0x4
- .ndata             0x0908          0x4 build/default/debug/_ext/1728301206/COMM_SMC.o
-                    0x0908                  _Selected_CPU_Addr
-                    0x090a                  _CD_check
+.ndata              0x08b8          0x4
+ .ndata             0x08b8          0x4 build/default/debug/_ext/1728301206/COMM_SMC.o
+                    0x08b8                  _Selected_CPU_Addr
+                    0x08ba                  _CD_check
 
-.nbss               0x090c         0x10
- .nbss              0x090c          0x4 build/default/debug/_ext/1728301206/comm_host.o
-                    0x090c                  _count
-                    0x090e                  _Bytes_read
- .nbss              0x0910          0x4 build/default/debug/_ext/1728301206/DRV_CNT.o
-                    0x0910                  _Reset_Counter
- .nbss              0x0914          0x4 build/default/debug/_ext/1728301206/DRV_LED.o
-                    0x0914                  _Preparatory_Reset_LED
- .nbss              0x0918          0x4 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
-                    0x0918                  _Auto_Reset_Counter
+.nbss               0x08bc         0x12
+ .nbss              0x08bc          0x4 build/default/debug/_ext/1728301206/comm_host.o
+                    0x08bc                  _count
+                    0x08be                  _Bytes_read
+ .nbss              0x08c0          0x4 build/default/debug/_ext/1728301206/DRV_CNT.o
+                    0x08c0                  _Reset_Counter
+ .nbss              0x08c4          0x4 build/default/debug/_ext/1728301206/DRV_LED.o
+                    0x08c4                  _Preparatory_Reset_LED
+ .nbss              0x08c8          0x4 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
+                    0x08c8                  _Auto_Reset_Counter
+ .nbss              0x08cc          0x2 build/default/debug/_ext/1728301206/DRV_A2D.o
+                    0x08cc                  _ADC_TOKEN
 
-.nbss               0x0828          0x2
- .nbss              0x0828          0x2 build/default/debug/_ext/1728301206/DRV_A2D.o
-                    0x0828                  _ADC_TOKEN
+.ndata              0x08ce          0x2
+ .ndata             0x08ce          0x2 build/default/debug/_ext/1728301206/COMM_GSM.o
+                    0x08ce                  _GSM_end_msg
 
-.ndata              0x091c          0x2
- .ndata             0x091c          0x2 build/default/debug/_ext/1728301206/COMM_GSM.o
-                    0x091c                  _GSM_end_msg
+.bss                0x08d0       0x2ed8
+ .bss               0x08d0       0x1a3e build/default/debug/_ext/1728301206/COMM_SMC.o
+                    0x08d0                  _cpu_crc
+                    0x08d4                  _Smc_Sch_Info
+                    0x08e8                  _Smc1XmitObject
+                    0x093a                  _QueryInfObject
+                    0x0942                  _Shadow
+                    0x0a02                  _Disp_Info
+                    0x0a0e                  _CPU1_data_GLCD
+                    0x0f0e                  _CPU2_data_GLCD
+                    0x140e                  _Latest_DAC_data
+                    0x190e                  _CPU1_data
+                    0x1e0e                  _CPU2_data
+ .bss               0x230e       0x149a build/default/debug/_ext/1728301206/EVENTS.o
+                    0x230e                  _Event_H
+                    0x231e                  _Event_T
+                    0x232e                  _Event_0
+                    0x233e                  _US_fail_notify
+                    0x2340                  _DS_fail_notify
+                    0x2342                  _AD_pulse_mismatch_notify
+                    0x2344                  _PD_error_report
+                    0x2346                  _DE_log_start_rev
+                    0x2348                  _Events_Sch_Info
+                    0x2356                  _Events_Queue
+                    0x36e2                  _Events_Ring_Buffer
+                    0x36e8                  _Events
 
-.bss                0x091e       0x2ed8
- .bss               0x091e       0x1a3e build/default/debug/_ext/1728301206/COMM_SMC.o
-                    0x091e                  _cpu_crc
-                    0x0922                  _Smc_Sch_Info
-                    0x0936                  _Smc1XmitObject
-                    0x0988                  _QueryInfObject
-                    0x0990                  _Shadow
-                    0x0a50                  _Disp_Info
-                    0x0a5c                  _CPU1_data_GLCD
-                    0x0f5c                  _CPU2_data_GLCD
-                    0x145c                  _Latest_DAC_data
-                    0x195c                  _CPU1_data
-                    0x1e5c                  _CPU2_data
- .bss               0x235c       0x149a build/default/debug/_ext/1728301206/EVENTS.o
-                    0x235c                  _Event_H
-                    0x236c                  _Event_T
-                    0x237c                  _Event_0
-                    0x238c                  _US_fail_notify
-                    0x238e                  _DS_fail_notify
-                    0x2390                  _AD_pulse_mismatch_notify
-                    0x2392                  _PD_error_report
-                    0x2394                  _DE_log_start_rev
-                    0x2396                  _Events_Sch_Info
-                    0x23a4                  _Events_Queue
-                    0x3730                  _Events_Ring_Buffer
-                    0x3736                  _Events
+.data               0x37a8        0xeaa
+ .data              0x37a8        0xeaa build/default/debug/_ext/1728301206/COMM_GSM.o
+                    0x37a8                  _Error_message
+                    0x413a                  _Feedback_message
+                    0x43f6                  _GSM_AT_Enter
+                    0x43f9                  _GSM_AT_Command
+                    0x45ed                  _String_Change_Number
+                    0x45f8                  _Phone_number
 
-.data               0x37f6        0xeaa
- .data              0x37f6        0xeaa build/default/debug/_ext/1728301206/COMM_GSM.o
-                    0x37f6                  _Error_message
-                    0x4188                  _Feedback_message
-                    0x4444                  _GSM_AT_Enter
-                    0x4447                  _GSM_AT_Command
-                    0x463b                  _String_Change_Number
-                    0x4646                  _Phone_number
+.bss                0x4652       0x1306
+ .bss               0x4652        0xa1e build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
+                    0x4652                  _Network_status
+                    0x4662                  _GLCD_Info
+ .bss               0x5070        0x546 build/default/debug/_ext/1728301206/PRINT.o
+                    0x5070                  _Printer
+                    0x5572                  _Print_Info
+ .bss               0x55b6        0x248 build/default/debug/_ext/1728301206/COMM_GSM.o
+                    0x55b6                  _GSM_Sch_Info
+                    0x55ee                  _Com3RecvObject
+                    0x56f6                  _Com3TransObject
+ .bss               0x57fe         0xda build/default/debug/_ext/1669077864/usb_function_cdc.o
+                    0x57fe                  _cdc_data_tx
+                    0x583e                  _cdc_data_rx
+                    0x587e                  _line_coding
+                    0x5886                  _cdc_notice
+                    0x5890                  _CDCSrc
+                    0x58d0                  _dummy_encapsulated_cmd_response
+ .bss               0x58d8         0x80 build/default/debug/_ext/1669077864/USB_DRV.o
+                    0x58d8                  _USB_In_Buffer
+                    0x5918                  _USB_Out_Buffer
 
-.bss                0x46a0       0x1306
- .bss               0x46a0        0xa1e build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
-                    0x46a0                  _Network_status
-                    0x46b0                  _GLCD_Info
- .bss               0x50be        0x546 build/default/debug/_ext/1728301206/PRINT.o
-                    0x50be                  _Printer
-                    0x55c0                  _Print_Info
- .bss               0x5604        0x248 build/default/debug/_ext/1728301206/COMM_GSM.o
-                    0x5604                  _GSM_Sch_Info
-                    0x563c                  _Com3RecvObject
-                    0x5744                  _Com3TransObject
- .bss               0x584c         0xda build/default/debug/_ext/1669077864/usb_function_cdc.o
-                    0x584c                  _cdc_data_tx
-                    0x588c                  _cdc_data_rx
-                    0x58cc                  _line_coding
-                    0x58d4                  _cdc_notice
-                    0x58de                  _CDCSrc
-                    0x591e                  _dummy_encapsulated_cmd_response
- .bss               0x5926         0x80 build/default/debug/_ext/1669077864/USB_DRV.o
-                    0x5926                  _USB_In_Buffer
-                    0x5966                  _USB_Out_Buffer
+.data               0x5958         0x52
+ .data              0x5958         0x52 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(doprnt_cdnopsuxX.DAeo)
 
-.data               0x59a6         0x52
- .data              0x59a6         0x52 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(doprnt_cdnopsuxX.DAeo)
+.bss                0x59aa         0x82
+ .bss               0x59aa         0x4a build/default/debug/_ext/1728301206/command_proc.o
+                    0x59aa                  _Query_Param
+                    0x59bc                  _Event_Record
+                    0x59cc                  _Xmit_Queue
+                    0x59e7                  _Command_Info
+ .bss               0x59f4         0x38 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
+                    0x59f4                  _DAC_sysinfo
+                    0x59fa                  _uchIDInfo
+                    0x5a09                  _uchCheckSum
+                    0x5a14                  _Dac_Comm_Err
 
-.bss                0x59f8         0x82
- .bss               0x59f8         0x4a build/default/debug/_ext/1728301206/command_proc.o
-                    0x59f8                  _Query_Param
-                    0x5a0a                  _Event_Record
-                    0x5a1a                  _Xmit_Queue
-                    0x5a35                  _Command_Info
- .bss               0x5a42         0x38 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
-                    0x5a42                  _DAC_sysinfo
-                    0x5a48                  _uchIDInfo
-                    0x5a57                  _uchCheckSum
-                    0x5a62                  _Dac_Comm_Err
-
-_04EB0F005ac85b1b
+_06DB9F005b052b3e
                     0x5c00         0x30
- _04EB0F005ac85b1b
+ _06DB9F005b052b3e
                     0x5c00         0x30 build/default/debug/_ext/1669077864/usb_device.o
                     0x5c00                  _BDT
 
-.bss                0x5a7a         0x4c
- .bss               0x5a7a         0x26 build/default/debug/_ext/1669077864/usb_device.o
-                    0x5a7a                  _USBAlternateInterface
-                    0x5a7c                  _Track_EP_IN
-                    0x5a7f                  _Track_EP_OUT
-                    0x5a82                  _inPipes
-                    0x5a86                  _outPipes
-                    0x5a89                  _ep_data_in
-                    0x5a8c                  _ep_data_out
-                    0x5a8f                  _SetupPkt
-                    0x5a97                  _CtrlTrfData
- .bss               0x5aa0         0x26 build/default/debug/_ext/1728301206/DRV_MEM.o
-                    0x5aa0                  _Mem_addr_ref
-                    0x5aa6                  _Event_Record_R
-                    0x5ab6                  _Event_Record_W
+.bss                0x5a2c         0x4c
+ .bss               0x5a2c         0x26 build/default/debug/_ext/1669077864/usb_device.o
+                    0x5a2c                  _USBAlternateInterface
+                    0x5a2e                  _Track_EP_IN
+                    0x5a31                  _Track_EP_OUT
+                    0x5a34                  _inPipes
+                    0x5a38                  _outPipes
+                    0x5a3b                  _ep_data_in
+                    0x5a3e                  _ep_data_out
+                    0x5a41                  _SetupPkt
+                    0x5a49                  _CtrlTrfData
+ .bss               0x5a52         0x26 build/default/debug/_ext/1728301206/DRV_MEM.o
+                    0x5a52                  _Mem_addr_ref
+                    0x5a58                  _Event_Record_R
+                    0x5a68                  _Event_Record_W
 
-.data               0x5ac6         0x26
- .data              0x5ac6         0x26 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(_iob.daeo)
-                    0x5ac6                  __iob
-                    0x5aea                  __Files
+.data               0x5a78         0x26
+ .data              0x5a78         0x26 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(_iob.daeo)
+                    0x5a78                  __iob
+                    0x5a9c                  __Files
 
-.bss                0x5aec         0x52
- .bss               0x5aec         0x22 build/default/debug/_ext/1728301206/comm_host.o
-                    0x5aec                  _Host_Sch_Info
-                    0x5afc                  _Com2RecvObject
- .bss               0x5b0e         0x18 build/default/debug/_ext/1728301206/DRV_A2D.o
-                    0x5b0e                  _A2D_Data
-                    0x5b1a                  _Vdd_Mon_Info
-                    0x5b20                  _Rtc_Mon_Info
- .bss               0x5b26         0x18 build/default/debug/_ext/1728301206/EEPROM.o
-                    0x5b26                  _EEPROM_Sch_Info
+.bss                0x5a9e         0x52
+ .bss               0x5a9e         0x22 build/default/debug/_ext/1728301206/comm_host.o
+                    0x5a9e                  _Host_Sch_Info
+                    0x5aae                  _Com2RecvObject
+ .bss               0x5ac0         0x18 build/default/debug/_ext/1728301206/DRV_A2D.o
+                    0x5ac0                  _A2D_Data
+                    0x5acc                  _Vdd_Mon_Info
+                    0x5ad2                  _Rtc_Mon_Info
+ .bss               0x5ad8         0x18 build/default/debug/_ext/1728301206/EEPROM.o
+                    0x5ad8                  _EEPROM_Sch_Info
 
-.data               0x5b3e         0x16
- .data              0x5b3e         0x16 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
-                    0x5b3e                  _uchDateTime
+.data               0x5af0         0x16
+ .data              0x5af0         0x16 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
+                    0x5af0                  _uchDateTime
 
-.bss                0x5b54         0x16
- .bss               0x5b54          0xc build/default/debug/_ext/1728301206/DRV_RTC.o
-                    0x5b54                  _RTC_Info
- .bss               0x5b60          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(_iob.daeo)
-                    0x5b60                  __outdone
-                    0x5b61                  __sibuf
-                    0x5b63                  __sobuf
- .bss               0x5b66          0x4 build/default/debug/_ext/1728301206/CRC32.o
-                    0x5b66                  _Prog_Val_Temp
+.bss                0x5b06         0x16
+ .bss               0x5b06          0xc build/default/debug/_ext/1728301206/DRV_RTC.o
+                    0x5b06                  _RTC_Info
+ .bss               0x5b12          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(_iob.daeo)
+                    0x5b12                  __outdone
+                    0x5b13                  __sibuf
+                    0x5b15                  __sobuf
+ .bss               0x5b18          0x4 build/default/debug/_ext/1728301206/CRC32.o
+                    0x5b18                  _Prog_Val_Temp
 
-.data               0x5b6a          0x2
- .data              0x5b6a          0x2 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libpic30-elf.a(c30_uartda.eo)
-                    0x5b6a                  ___C30_UART
+.data               0x5b1c          0x2
+ .data              0x5b1c          0x2 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libpic30-elf.a(c30_uartda.eo)
+                    0x5b1c                  ___C30_UART
 
 .config_JTAGEN    0x02abfe          0x2
  .config_JTAGEN
@@ -3421,7 +3369,7 @@ _04EB0F005ac85b1b
 .dinit            0x00720c        0xb24
  .dinit           0x00720c        0xb24 data_init
 
-.text             0x007d30       0x4014
+.text             0x007d30       0x4018
  .text            0x007d30        0x96c build/default/debug/_ext/1728301206/DRV_GLCD_SPI.o
                   0x007d30                  _Initialise_GLCD_Driver
                   0x007dbc                  _Update_GLCD_State
@@ -3452,7 +3400,7 @@ _04EB0F005ac85b1b
                   0x0096dc                  _Clear_COM3_Receive_Buffer
                   0x0096fe                  _Clear_COM3_Transmit_Buffer
                   0x009720                  _Clear_Com3_Error
- .text            0x00974e        0x5fe build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
+ .text            0x00974e        0x602 build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
                   0x00974e                  _Initialise_System
                   0x0098c8                  _flash_read_c
                   0x0098d4                  _Check_Flash
@@ -3469,115 +3417,114 @@ _04EB0F005ac85b1b
                   0x009c46                  _Decrement_Auto_Reset_Seq_10msTmr
                   0x009c58                  _Update_Network_Configuration
                   0x009cc2                  _Update_switch_config
- .text            0x009d4c        0x57a build/default/debug/_ext/1728301206/DRV_MEM.o
-                  0x009d4c                  _Erase_Serial_EEProm_Block
-                  0x009e42                  _Write_Event_on_Serial_EEProm
-                  0x009ed6                  _Read_Event_from_Serial_EEProm
-                  0x00a03c                  _Is_Serial_EEPROM_Write_Complete
-                  0x00a06e                  _Save_Phone_Number
-                  0x00a0fa                  _Read_Phone_Number
-                  0x00a1b8                  _Save_Event_Ref
-                  0x00a230                  _Read_Event_ref
- .text            0x00a2c6        0x552 build/default/debug/_ext/1728301206/comm_host.o
-                  0x00a2c6                  _Initialise_Host_CommSch
-                  0x00a2ea                  _SetupCOM2BaudRate
-                  0x00a37e                  _Start_Host_Communication
-                  0x00a38a                  _Update_Host_Sch_State
-                  0x00a5e4                  _Decrement_Host_Sch_msTmr
-                  0x00a60e                  _Receive_COM2_Message
-                  0x00a7d0                  _Clear_COM2_Receive_Buffer
-                  0x00a7f2                  _Clear_Com2_Error
- .text            0x00a818        0x3aa build/default/debug/_ext/1728301206/DRV_RTC.o
-                  0x00a818                  _Initialise_RTC_Sch
-                  0x00a828                  _Start_RTC_Sch
-                  0x00a838                  _Update_RtcSch_State
-                  0x00a8b6                  _Decrement_RTC_10msTmr
-                  0x00a8ce                  _Read_RTC_Registers
-                  0x00a92c                  _Update_System_Clock
-                  0x00aa0c                  _Set_RTC_Date
-                  0x00ab2c                  _Set_RTC_Time
- .text            0x00abc2        0x352 build/default/debug/_ext/1728301206/DRV_DI.o
-                  0x00abc2                  _Initialise_DI_Driver
-                  0x00abd4                  _Start_DI_Scan
-                  0x00ac48                  _Update_DI_State
-                  0x00ac58                  _Update_PB_State
-                  0x00acd2                  _Update_Vital_Relay_State
-                  0x00ad52                  _Update_Vital_Relay2_State
-                  0x00add2                  _Update_Prep_Relay_State
-                  0x00ae52                  _Update_Prep_Relay2_State
-                  0x00aed2                  _Decrement_DI_10msTmr
- .text            0x00af14        0x2e0 build/default/debug/_ext/1728301206/DRV_A2D.o
-                  0x00af14                  _Initialise_A2D_Driver
-                  0x00af72                  _Start_A2D_Driver
-                  0x00af96                  _Update_Vdd_Mon_State
-                  0x00b086                  _Update_A2D_State
-                  0x00b1dc                  _Decrement_A2D_10msTmr
- .text            0x00b1f4        0x280 build/default/debug/_ext/1669077864/usb_function_cdc.o
-                  0x00b1f4                  _USBCheckCDCRequest
-                  0x00b2d2                  _CDCInitEP
-                  0x00b30e                  _getsUSBUSART
-                  0x00b378                  _putUSBUSART
-                  0x00b3b6                  _CDCTxService
- .text            0x00b474        0x280 build/default/debug/_ext/1728301206/EEPROM.o
-                  0x00b474                  _Initialise_EEPROM_State
-                  0x00b500                  _Start_EEPROM_Sch
-                  0x00b510                  _Update_EEPROM_State
-                  0x00b61e                  _Decrement_EEPROM_msTmr
-                  0x00b636                  _Save_Event_Register_on_EEPROM
-                  0x00b6dc                  _Is_CPU1_EEPROM_Record_Valid
-                  0x00b6e8                  _Is_CPU2_EEPROM_Record_Valid
- .text            0x00b6f4        0x1e0 build/default/debug/_ext/1669077864/USB_DRV.o
-                  0x00b6f4                  _USB_Check
-                  0x00b720                  _Update_USB_Sch_State
-                  0x00b750                  _ProcessIO
-                  0x00b7cc                  _USB_Process
-                  0x00b836                  _USBCB_SOF_Handler
-                  0x00b83e                  _USBCBSendResume
-                  0x00b878                  _USER_USB_CALLBACK_EVENT_HANDLER
- .text            0x00b8d4         0xfe build/default/debug/_ext/1728301206/DRV_I2C.o
-                  0x00b8d4                  _Initialise_I2C_Driver
-                  0x00b8e2                  _Generate_I2C_Start
-                  0x00b8ee                  _Generate_I2C_ReStart
-                  0x00b8fa                  _Generate_I2C_Stop
-                  0x00b906                  _Give_I2C_ACK
-                  0x00b916                  _Give_I2C_NAK
-                  0x00b926                  _Read_I2C_ACK_Status
-                  0x00b952                  _Put_I2C_Byte
-                  0x00b97c                  _Get_I2C_Byte
-                  0x00b9a4                  _Has_SSPIF_gone_high
- .text            0x00b9d2         0xf8 build/default/debug/_ext/1728301206/CRC16.o
-                  0x00b9d2                  _Crc16
- .text            0x00baca         0xa2 build/default/debug/_ext/1728301206/DRV_LED.o
-                  0x00baca                  _Initialise_LED_Driver
-                  0x00bad4                  _Update_Preparatory_LED_State
-                  0x00bb3e                  _Decrement_LED_10msTmr
-                  0x00bb50                  _Set_Preparatory_LED_Off
-                  0x00bb58                  _Set_Preparatory_LED_On
-                  0x00bb62                  _Set_Preparatory_LED_Flashing
- .text            0x00bb6c         0x9c build/default/debug/_ext/1728301206/CRC32.o
-                  0x00bb6c                  _crc32
- .text            0x00bc08         0x6c build/default/debug/_ext/1669077864/usb_hal_pic24.o
-                  0x00bc08                  _USBSleepOnSuspend
- .text            0x00bc74         0x68 build/default/debug/_ext/1728301206/DRV_CNT.o
-                  0x00bc74                  _Initialise_Cnt_Driver
-                  0x00bc7e                  _Update_Cnt_State
-                  0x00bcbe                  _Decrement_Cnt_10msTmr
-                  0x00bcd0                  _Increment_Reset_Counter
- .text            0x00bcdc         0x68 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
-                  0x00bcdc                  _Initialise_Auto_Cnt_Driver
-                  0x00bce6                  _Update_Auto_Cnt_State
-                  0x00bd26                  _Decrement_Auto_Cnt_10msTmr
-                  0x00bd38                  _Increment_Auto_Reset_Counter
+ .text            0x009d50        0x57a build/default/debug/_ext/1728301206/DRV_MEM.o
+                  0x009d50                  _Erase_Serial_EEProm_Block
+                  0x009e46                  _Write_Event_on_Serial_EEProm
+                  0x009eda                  _Read_Event_from_Serial_EEProm
+                  0x00a040                  _Is_Serial_EEPROM_Write_Complete
+                  0x00a072                  _Save_Phone_Number
+                  0x00a0fe                  _Read_Phone_Number
+                  0x00a1bc                  _Save_Event_Ref
+                  0x00a234                  _Read_Event_ref
+ .text            0x00a2ca        0x552 build/default/debug/_ext/1728301206/comm_host.o
+                  0x00a2ca                  _Initialise_Host_CommSch
+                  0x00a2ee                  _SetupCOM2BaudRate
+                  0x00a382                  _Start_Host_Communication
+                  0x00a38e                  _Update_Host_Sch_State
+                  0x00a5e8                  _Decrement_Host_Sch_msTmr
+                  0x00a612                  _Receive_COM2_Message
+                  0x00a7d4                  _Clear_COM2_Receive_Buffer
+                  0x00a7f6                  _Clear_Com2_Error
+ .text            0x00a81c        0x3aa build/default/debug/_ext/1728301206/DRV_RTC.o
+                  0x00a81c                  _Initialise_RTC_Sch
+                  0x00a82c                  _Start_RTC_Sch
+                  0x00a83c                  _Update_RtcSch_State
+                  0x00a8ba                  _Decrement_RTC_10msTmr
+                  0x00a8d2                  _Read_RTC_Registers
+                  0x00a930                  _Update_System_Clock
+                  0x00aa10                  _Set_RTC_Date
+                  0x00ab30                  _Set_RTC_Time
+ .text            0x00abc6        0x352 build/default/debug/_ext/1728301206/DRV_DI.o
+                  0x00abc6                  _Initialise_DI_Driver
+                  0x00abd8                  _Start_DI_Scan
+                  0x00ac4c                  _Update_DI_State
+                  0x00ac5c                  _Update_PB_State
+                  0x00acd6                  _Update_Vital_Relay_State
+                  0x00ad56                  _Update_Vital_Relay2_State
+                  0x00add6                  _Update_Prep_Relay_State
+                  0x00ae56                  _Update_Prep_Relay2_State
+                  0x00aed6                  _Decrement_DI_10msTmr
+ .text            0x00af18        0x2e0 build/default/debug/_ext/1728301206/DRV_A2D.o
+                  0x00af18                  _Initialise_A2D_Driver
+                  0x00af76                  _Start_A2D_Driver
+                  0x00af9a                  _Update_Vdd_Mon_State
+                  0x00b08a                  _Update_A2D_State
+                  0x00b1e0                  _Decrement_A2D_10msTmr
+ .text            0x00b1f8        0x280 build/default/debug/_ext/1669077864/usb_function_cdc.o
+                  0x00b1f8                  _USBCheckCDCRequest
+                  0x00b2d6                  _CDCInitEP
+                  0x00b312                  _getsUSBUSART
+                  0x00b37c                  _putUSBUSART
+                  0x00b3ba                  _CDCTxService
+ .text            0x00b478        0x280 build/default/debug/_ext/1728301206/EEPROM.o
+                  0x00b478                  _Initialise_EEPROM_State
+                  0x00b504                  _Start_EEPROM_Sch
+                  0x00b514                  _Update_EEPROM_State
+                  0x00b622                  _Decrement_EEPROM_msTmr
+                  0x00b63a                  _Save_Event_Register_on_EEPROM
+                  0x00b6e0                  _Is_CPU1_EEPROM_Record_Valid
+                  0x00b6ec                  _Is_CPU2_EEPROM_Record_Valid
+ .text            0x00b6f8        0x1e0 build/default/debug/_ext/1669077864/USB_DRV.o
+                  0x00b6f8                  _USB_Check
+                  0x00b724                  _Update_USB_Sch_State
+                  0x00b754                  _ProcessIO
+                  0x00b7d0                  _USB_Process
+                  0x00b83a                  _USBCB_SOF_Handler
+                  0x00b842                  _USBCBSendResume
+                  0x00b87c                  _USER_USB_CALLBACK_EVENT_HANDLER
+ .text            0x00b8d8         0xfe build/default/debug/_ext/1728301206/DRV_I2C.o
+                  0x00b8d8                  _Initialise_I2C_Driver
+                  0x00b8e6                  _Generate_I2C_Start
+                  0x00b8f2                  _Generate_I2C_ReStart
+                  0x00b8fe                  _Generate_I2C_Stop
+                  0x00b90a                  _Give_I2C_ACK
+                  0x00b91a                  _Give_I2C_NAK
+                  0x00b92a                  _Read_I2C_ACK_Status
+                  0x00b956                  _Put_I2C_Byte
+                  0x00b980                  _Get_I2C_Byte
+                  0x00b9a8                  _Has_SSPIF_gone_high
+ .text            0x00b9d6         0xf8 build/default/debug/_ext/1728301206/CRC16.o
+                  0x00b9d6                  _Crc16
+ .text            0x00bace         0xa2 build/default/debug/_ext/1728301206/DRV_LED.o
+                  0x00bace                  _Initialise_LED_Driver
+                  0x00bad8                  _Update_Preparatory_LED_State
+                  0x00bb42                  _Decrement_LED_10msTmr
+                  0x00bb54                  _Set_Preparatory_LED_Off
+                  0x00bb5c                  _Set_Preparatory_LED_On
+                  0x00bb66                  _Set_Preparatory_LED_Flashing
+ .text            0x00bb70         0x9c build/default/debug/_ext/1728301206/CRC32.o
+                  0x00bb70                  _crc32
+ .text            0x00bc0c         0x6c build/default/debug/_ext/1669077864/usb_hal_pic24.o
+                  0x00bc0c                  _USBSleepOnSuspend
+ .text            0x00bc78         0x68 build/default/debug/_ext/1728301206/DRV_CNT.o
+                  0x00bc78                  _Initialise_Cnt_Driver
+                  0x00bc82                  _Update_Cnt_State
+                  0x00bcc2                  _Decrement_Cnt_10msTmr
+                  0x00bcd4                  _Increment_Reset_Counter
+ .text            0x00bce0         0x68 build/default/debug/_ext/1728301206/AUTO_DRV_CNT.o
+                  0x00bce0                  _Initialise_Auto_Cnt_Driver
+                  0x00bcea                  _Update_Auto_Cnt_State
+                  0x00bd2a                  _Decrement_Auto_Cnt_10msTmr
+                  0x00bd3c                  _Increment_Auto_Reset_Counter
 LOAD fill0
 
-fill$.0           0x00bd44      0x1eeb4
- fill$.0          0x00bd44      0x1eeb4 fill0
+fill$.0           0x00bd48      0x1eeb0
+ fill$.0          0x00bd48      0x1eeb0 fill0
 
 Cross Reference Table
 
 Symbol                                            File
 CORCON                                            c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libpic30-elf.a(crt0_extended24.o)
-EB0F::__linked(ac85b, b)                          dist/default/debug/RESET_UNIT_FW.X.debug.elf
 _A2D_Data                                         build/default/debug/_ext/1728301206/DRV_A2D.o
 _AD1CHS                                           build/default/debug/_ext/1728301206/DRV_A2D.o
                                                   build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
@@ -4466,15 +4413,9 @@ __linked_.ndata                                   dist/default/debug/RESET_UNIT_
 __linked_.reset                                   dist/default/debug/RESET_UNIT_FW.X.debug.elf
 __linked_.resv                                    dist/default/debug/RESET_UNIT_FW.X.debug.elf
 __linked_.text                                    dist/default/debug/RESET_UNIT_FW.X.debug.elf
+__linked__06DB9F005b052b3e                        dist/default/debug/RESET_UNIT_FW.X.debug.elf
 __linked___c30_signature                          dist/default/debug/RESET_UNIT_FW.X.debug.elf
 __linked_fill$.0                                  dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x800                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x81c                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x81e                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x820                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x822                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x824                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
-__linked_reserve_data_0x82a                       dist/default/debug/RESET_UNIT_FW.X.debug.elf
 __memcpy_helper                                   c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libpic30-elf.a(memcpy_helperda.eo)
                                                   build/default/debug/_ext/1728301206/CRC32.o
                                                   build/default/debug/_ext/1728301206/CPU_SM_MAIN.o
@@ -4609,10 +4550,3 @@ _var_count                                        build/default/debug/_ext/17283
 _write                                            c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libpic30-elf.a(writeda.eo)
                                                   c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(flsbuf.daeo)
                                                   c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libc-elf.a(fputc.daeo)
-reserve_data_0x800%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x81c%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x81e%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x820%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x822%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x824%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
-reserve_data_0x82a%GAPS                           dist/default/debug/RESET_UNIT_FW.X.debug.elf
