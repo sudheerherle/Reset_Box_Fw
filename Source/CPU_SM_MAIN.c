@@ -728,8 +728,10 @@ void Update_Auto_Reset_Seq_State(void)
 			if(HA_config == 0){
                 break;
             }
-            if (RB_Status.Flags.VR1_Contact_Status !=
-				RB_Status.Flags.VR2_Contact_Status)
+            if ((RB_Status.Flags.VR1_Contact_Status !=
+				RB_Status.Flags.VR2_Contact_Status) &&
+                RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
 				{
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
@@ -743,8 +745,10 @@ void Update_Auto_Reset_Seq_State(void)
 //				}
 			break;
 		case AUTO_RELAY_STATES_DIFFERENT:			
-            if (RB_Status.Flags.VR1_Contact_Status ==
+            if ((RB_Status.Flags.VR1_Contact_Status ==
 				RB_Status.Flags.VR2_Contact_Status)
+                && (RB_Status.Flags.PR1_Contact_Status ==
+				RB_Status.Flags.PR2_Contact_Status))
 				{
 //                if (RB_Status.Flags.VR1_Contact_Status == SET_LOW
 //                    && RB_Status.Flags.VR2_Contact_Status == SET_LOW)
@@ -766,7 +770,8 @@ void Update_Auto_Reset_Seq_State(void)
             if(LATDbits.LATD11 == SET_HIGH){                
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_HOLD_TIME;
             }
-            
+            Auto_Reset_Seq.State = AUTO_RESET_HOLD;
+            break;
         case AUTO_RESET_HOLD:
             if(Auto_Reset_Seq.Timeout_10ms == TIMEOUT_EVENT){
                 LATDbits.LATD9 = 0; 
@@ -782,6 +787,14 @@ void Update_Auto_Reset_Seq_State(void)
             Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
             Auto_Reset_Seq.Timeout_10ms = 0;
             }
+            
+             if ((RB_Status.Flags.VR1_Contact_Status !=
+				RB_Status.Flags.VR2_Contact_Status) &&
+                RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
+             {
+                 Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
+             }
             break;
 		}
 }

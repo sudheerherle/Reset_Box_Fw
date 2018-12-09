@@ -4,6 +4,7 @@
 #include "DRV_LED.H"
 
 Preparatory_Reset_LED_t Preparatory_Reset_LED;
+extern BYTE HA_config;
 
 void Initialise_LED_Driver(void)
 {
@@ -16,13 +17,22 @@ void Update_Preparatory_LED_State(void)
 	switch (Preparatory_Reset_LED.State)
 		{
 		case LED_STEADY_OFF:
-			PR_LED_PORT = SET_LOW;
+			PR1_LED_PORT = SET_LOW;
+            if(HA_config){
+                PR2_LED_PORT = SET_LOW;
+            }
 			break;
 		case LED_STEADY_ON:
-			PR_LED_PORT = SET_HIGH;
+			PR1_LED_PORT = SET_HIGH;
+            if(HA_config){
+                PR2_LED_PORT = SET_HIGH;
+            }
 			break;
 		case LED_FLASHING_OFF:
-			PR_LED_PORT = SET_LOW;
+			PR1_LED_PORT = SET_LOW;
+            if(HA_config){
+                PR2_LED_PORT = SET_LOW;
+            }
 			Preparatory_Reset_LED.State = LED_FLASHING_OFF_WAIT;
 			Preparatory_Reset_LED.Timeout_10ms = LED_FLASHING_OFF_TIMEOUT;
 			break;
@@ -34,7 +44,10 @@ void Update_Preparatory_LED_State(void)
 				}
 			break;
 		case LED_FLASHING_ON:
-			PR_LED_PORT = SET_HIGH;
+			PR1_LED_PORT = SET_HIGH;
+            if(HA_config){
+                PR2_LED_PORT = SET_HIGH;
+            }
 			Preparatory_Reset_LED.State = LED_FLASHING_ON_WAIT;
 			Preparatory_Reset_LED.Timeout_10ms = LED_FLASHING_ON_TIMEOUT;
 			break;
