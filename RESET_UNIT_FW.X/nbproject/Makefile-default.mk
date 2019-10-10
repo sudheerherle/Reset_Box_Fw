@@ -70,6 +70,7 @@ OBJECTFILES=${OBJECTDIR}/_ext/1669077864/usb_descriptors.o ${OBJECTDIR}/_ext/166
 SOURCEFILES=../Source/USB_STACK/usb_descriptors.c ../Source/USB_STACK/usb_device.c ../Source/USB_STACK/USB_DRV.c ../Source/USB_STACK/usb_function_cdc.c ../Source/USB_STACK/usb_hal_pic24.c ../Source/COMM_SMC.c ../Source/CPU_SM_MAIN.c ../Source/CRC16.c ../Source/CRC32.c ../Source/DRV_A2D.c ../Source/DRV_I2C.c ../Source/DRV_MEM.c ../Source/DRV_RTC.c ../Source/EEPROM.c ../Source/EVENTS.c ../Source/comm_host.c ../Source/command_proc.c ../Source/DRV_CNT.c ../Source/DRV_DI.c ../Source/DRV_LED.c ../Source/PRINT.c ../Source/DRV_GLCD_SPI.c ../Source/AUTO_DRV_CNT.c ../Source/COMM_GSM.c
 
 
+
 CFLAGS=
 ASFLAGS=
 LDLIBSOPTIONS=

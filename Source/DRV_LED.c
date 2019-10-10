@@ -22,12 +22,18 @@ void Update_Preparatory_LED_State(void)
                 PR2_LED_PORT = SET_LOW;
             }
 			break;
+            
+        case LED2_STEADY_OFF:
+            PR2_LED_PORT = SET_LOW;
+            break;
 		case LED_STEADY_ON:
 			PR1_LED_PORT = SET_HIGH;
-            if(HA_config){
-                PR2_LED_PORT = SET_HIGH;
-            }
 			break;
+            
+        case LED2_STEADY_ON:
+            PR2_LED_PORT = SET_HIGH;
+        break;
+            
 		case LED_FLASHING_OFF:
 			PR1_LED_PORT = SET_LOW;
             if(HA_config){
@@ -75,12 +81,24 @@ void Set_Preparatory_LED_Off(void)
 	Preparatory_Reset_LED.State = LED_STEADY_OFF;
 }
 
+void Set_Preparatory_LED2_Off(void)
+{
+	Preparatory_Reset_LED.State = LED2_STEADY_OFF;
+}
+
 void Set_Preparatory_LED_On(void)
 {
 	Preparatory_Reset_LED.State = LED_STEADY_ON;
+    PR1_LED_PORT = SET_HIGH;
+    PR2_LED_PORT = SET_HIGH;
+}
+
+void Set_Preparatory_LED2_On(void)
+{
+	Preparatory_Reset_LED.State = LED2_STEADY_ON;
 }
 
 void Set_Preparatory_LED_Flashing(void)
 {
-	Preparatory_Reset_LED.State = LED_FLASHING_OFF;
+	Preparatory_Reset_LED.State = LED_FLASHING_ON;
 }

@@ -278,7 +278,7 @@ void Decrement_DI_10msTmr(void)
 		}
 	if (Prep_Relay2.Timeout_10ms > 0)
 		{
-		Prep_Relay2.Timeout_10ms = Prep_Relay.Timeout_10ms - 1;
+		Prep_Relay2.Timeout_10ms = Prep_Relay2.Timeout_10ms - 1;
 		}
 }
 

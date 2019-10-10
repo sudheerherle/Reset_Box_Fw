@@ -3,7 +3,9 @@
 
 typedef enum {
 			LED_STEADY_OFF = 0,
+            LED2_STEADY_OFF,
 			LED_STEADY_ON,
+            LED2_STEADY_ON,
 			LED_FLASHING_OFF,
 			LED_FLASHING_OFF_WAIT,
 			LED_FLASHING_ON,

@@ -57,6 +57,7 @@
 #define TIMEOUT_EVENT				(0)
 #define DELAY_250MS					(250)
 #define DELAY_100MS					(100)
+#define DELAY_650MS                 (650)
 #define DELAY_1_SEC                 (1000)
 #define DELAY_20MS					(20)
 #define DELAY_5MS					(5)

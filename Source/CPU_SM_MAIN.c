@@ -93,6 +93,7 @@ void Update_switch_config(void);
 #include "DRV_CNT.H"
 #include "AUTO_DRV_CNT.h"
 #include <libpic30.h>
+#include <stdbool.h>
 
 sm_status_t Status;					/* sm status information */
 rb_status_t RB_Status;
@@ -109,6 +110,8 @@ BYTE uchCheckSum[10];						/* Calculated CheckSum value of FLASH Memory */
 BYTE CPU1_Address;						/* holds cpu1 address */
 BYTE CPU2_Address;						/* holds cpu2 address */
 BYTE Network_config;
+bool Multiple_smcpu = false;
+bool auto_reset = false;
 BYTE HA_config;
 BYTE Pilot_mode_config;
 reset_seq_t Reset_Seq;						/* Reset Sequence information */
@@ -327,7 +330,7 @@ void Initialise_System(void)
 	Dac_Comm_Err.CPU2_CommB_Error_Count = 0;
 	Dac_Comm_Err.CPU2_CommA_Error_Count = 0;	
     Smc_Sch_Info.CD_timeout_ms = CD_LINK_FAILURE_TIMEOUT;
-//    Set_Modem_RX_Mode();
+    Set_Modem_RX_Mode();
 	//DisplaySM_InfoLine();                        /* Display System Id and CheckSum */
 }
 
@@ -506,7 +509,9 @@ int main(void)
         Update_Preparatory_LED_State();		/* from drv_led.c */
 		Update_Cnt_State();					/* from drv_cnt.c */
         Update_Auto_Cnt_State();
+        if(!Multiple_smcpu)
 		Update_Smc_Sch_State();				/* from comm_sm.c */
+        else Update_Smc_Multiple_Sch_State();
 		Update_DI_State();					/* from drv_di.c */
 		Update_Reset_Seq_State();
         Update_Auto_Reset_Seq_State();
@@ -614,19 +619,37 @@ void Update_Reset_Seq_State(void)
 		case RESET_SYS_NOT_ON:
 			break;
 		case RESET_CHK_INITIAL_CONDITION:
-			if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH &&
-				RB_Status.Flags.PR1_Contact_Status == SET_HIGH)
-				{
-				/* Both VR and PR are down, Hence reset permitted */
-				Reset_Seq.State = WAIT_FOR_RESET_INPUT;
-				Reset_Seq.Timeout_10ms = 0;
-				}
+			
             if(RB_Status.Flags.PR1_Contact_Status == SET_LOW && 
                RB_Status.Flags.VR1_Contact_Status == SET_HIGH)
                 {
                 Set_Preparatory_LED_On();
 				Reset_Seq.State = CHK_POST_RESET_CONDITION;
                 }
+            
+            if(RB_Status.Flags.PR2_Contact_Status == SET_LOW && 
+               RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+                {
+                Set_Preparatory_LED2_On();
+				Reset_Seq.State = CHK_POST_RESET_CONDITION;
+                }
+            
+            if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH &&
+				RB_Status.Flags.PR1_Contact_Status == SET_HIGH)
+				{
+				/* Both VR and PR are down, Hence reset permitted */
+				Reset_Seq.State = WAIT_FOR_RESET_INPUT;
+				Reset_Seq.Timeout_10ms = 0;
+				}
+            
+            if (RB_Status.Flags.VR2_Contact_Status == SET_HIGH &&
+				RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
+				{
+				/* Both VR and PR are down, Hence reset permitted */
+				Reset_Seq.State = WAIT_FOR_RESET_INPUT;
+				Reset_Seq.Timeout_10ms = 0;
+				}
+            
 			break;
 		case WAIT_FOR_RESET_INPUT:
 			if (RB_Status.Flags.Reset_PB_Status == SET_LOW &&
@@ -665,6 +688,7 @@ void Update_Reset_Seq_State(void)
                 break;
 		case RESET_WAIT_FOR_PR_PICKUP:
 			if (RB_Status.Flags.PR1_Contact_Status == SET_LOW)
+                if(HA_config && RB_Status.Flags.PR2_Contact_Status == SET_LOW)
 				{
 				Set_Preparatory_LED_On();
 				Increment_Reset_Counter();
@@ -702,6 +726,14 @@ void Update_Reset_Seq_State(void)
 				Reset_Seq.State = RESET_WAIT_FOR_INPUT_TO_CLEAR;
 				Reset_Seq.Timeout_10ms = 0;
 				}
+            
+            if (RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
+				{
+				Set_Preparatory_LED2_Off();
+				Reset_Seq.State = RESET_WAIT_FOR_INPUT_TO_CLEAR;
+				Reset_Seq.Timeout_10ms = 0;
+				}
+            
 			break;
 		case RESET_WAIT_FOR_INPUT_TO_CLEAR:
 			if (RB_Status.Flags.Reset_PB_Status == SET_HIGH)
@@ -725,24 +757,42 @@ void Update_Auto_Reset_Seq_State(void)
 		case AUTO_RESET_SYS_NOT_ON:
 			break;
 		case AUTO_RESET_CHK_CONDITION:
+            if(auto_reset
+                    && (RB_Status.Flags.PR1_Contact_Status == SET_LOW 
+                    &&  RB_Status.Flags.PR2_Contact_Status == SET_LOW))
+            {
+                Increment_Auto_Reset_Counter();
+                Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
+                Auto_Reset_Seq.Timeout_10ms = 0;
+                auto_reset = false;
+            }
 			if(HA_config == 0){
                 break;
             }
             if ((RB_Status.Flags.VR1_Contact_Status !=
 				RB_Status.Flags.VR2_Contact_Status) &&
-                RB_Status.Flags.PR1_Contact_Status == SET_HIGH
-				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
+                (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH))
 				{
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
 				}
-//            else if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
-//				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
-//				{
-//				/* Both VR and PR are down, Hence auto reset is required */
-//				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
-//                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
-//				}
+            else if ((RB_Status.Flags.PR1_Contact_Status !=
+				RB_Status.Flags.PR2_Contact_Status) &&
+                (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH))
+				{
+				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
+                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
+				}
+            else if (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH 
+                && RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+				{
+				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
+                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
+				}
 			break;
 		case AUTO_RELAY_STATES_DIFFERENT:			
             if ((RB_Status.Flags.VR1_Contact_Status ==
@@ -779,13 +829,15 @@ void Update_Auto_Reset_Seq_State(void)
                 Auto_Reset_Seq.Timeout_10ms = 0;
             }
             break;
-        case CHECK_POST_AUTO_RESET:
+        case CHECK_POST_AUTO_RESET:            
             if (RB_Status.Flags.VR1_Contact_Status == SET_LOW 
                     &&  RB_Status.Flags.VR2_Contact_Status == SET_LOW)
             {
             Increment_Auto_Reset_Counter();
             Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
             Auto_Reset_Seq.Timeout_10ms = 0;
+            }else{
+                auto_reset = true;
             }
             
              if ((RB_Status.Flags.VR1_Contact_Status !=
@@ -795,6 +847,22 @@ void Update_Auto_Reset_Seq_State(void)
              {
                  Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
              }
+            
+            else if ((RB_Status.Flags.PR1_Contact_Status !=
+				RB_Status.Flags.PR2_Contact_Status) &&
+                (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH))
+				{
+				Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
+				}
+            else if (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH 
+                && RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+				{
+				Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
+				}
+            
             break;
 		}
 }
@@ -843,7 +911,8 @@ void Update_Network_Configuration(void)
 //    for(uchTemp=0;uchTemp<100;uchTemp++);
 //       DIP_val = (~(((BYTE)PORTDbits.RD6) | (BYTE)((((BYTE)PORTDbits.RD7))<<1u) | 
 //            (BYTE)((((BYTE)PORTFbits.RF0))<<2u) | (BYTE)((((BYTE)PORTFbits.RF1))<<3u))) & 0x0F; 
-    Network_config = DIP_val;                                                                                                                                                                                                                                                                                                                                                                                                               
+    Network_config = DIP_val; 
+
 }
 
 void Update_switch_config(void)
@@ -877,4 +946,6 @@ void Update_switch_config(void)
     }else{
         Pilot_mode_config = 0;
     }
+        
+    Multiple_smcpu = !PORTFbits.RF0;    
 }
