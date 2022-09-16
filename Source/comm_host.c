@@ -24,11 +24,11 @@
 #include <time.h>
 #include <limits.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "command_proc.h"
-#include "DRV_MEM.H"
-#include "EVENTS.H"
-#include "CRC16.H"
+#include "DRV_MEM.h"
+#include "EVENTS.h"
+#include "CRC16.h"
 #include "comm_host.h"
 
 extern char USB_Out_Buffer[64];

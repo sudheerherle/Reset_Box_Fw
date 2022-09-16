@@ -1,6 +1,6 @@
 #include <xc.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "DRV_LED.H"
 
 Preparatory_Reset_LED_t Preparatory_Reset_LED;

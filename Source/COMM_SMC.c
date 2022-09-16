@@ -24,12 +24,12 @@
 #include <time.h>
 #include <limits.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "command_proc.h"
-#include "COMM_SMC.H"
-#include "DRV_MEM.H"
-#include "EVENTS.H"
-#include "CRC16.H"
+#include "COMM_SMC.h"
+#include "DRV_MEM.h"
+#include "EVENTS.h"
+#include "CRC16.h"
 #include "DRV_LED.H"
 #include "DRV_GLCD_SPI.h"
 

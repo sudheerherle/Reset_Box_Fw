@@ -1,6 +1,6 @@
 #include <xc.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "DRV_CNT.H"
 
 Reset_Counter_t Reset_Counter;

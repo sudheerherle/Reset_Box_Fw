@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "PRINT.H"
 
 //const unsigned char Report_Line[22][PRINT_RECORD_SIZE] =

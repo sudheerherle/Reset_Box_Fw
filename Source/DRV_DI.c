@@ -1,6 +1,6 @@
 #include <xc.h>
 
-#include "COMMON.H"
+#include "COMMON.h"
 #include "DRV_DI.H"
 #include "DRV_LED.H"
 

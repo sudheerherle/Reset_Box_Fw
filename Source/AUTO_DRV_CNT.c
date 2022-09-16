@@ -1,7 +1,7 @@
 #include <xc.h>
 
-#include "COMMON.H"
-#include "AUTO_DRV_CNT.H"
+#include "COMMON.h"
+#include "AUTO_DRV_CNT.h"
 
 Auto_Reset_Counter_t Auto_Reset_Counter;
 

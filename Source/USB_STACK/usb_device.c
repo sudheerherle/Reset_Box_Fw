@@ -206,7 +206,7 @@ void USBDeviceTasks(void)
     if(Debug_flag==0 &&  USBDeviceState == CONFIGURED_STATE)
     {
         Debug_flag++;
-        Nop();
+        __builtin_nop();
     }
 
     if(USBDeviceState == DETACHED_STATE)

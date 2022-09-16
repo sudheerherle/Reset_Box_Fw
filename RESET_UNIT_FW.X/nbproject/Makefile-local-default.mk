@@ -14,24 +14,23 @@
 # You can invoke make with the values of the macros:
 # $ makeMP_CC="/opt/microchip/mplabc30/v3.30c/bin/pic30-gcc" ...  
 #
-SHELL=cmd.exe
-PATH_TO_IDE_BIN=D:/Installations/MPLABX/v5.25/mplab_platform/platform/../mplab_ide/modules/../../bin/
+PATH_TO_IDE_BIN=/home/installations/microchip/mplabx/v6.00.10.6238/mplab_platform/platform/../mplab_ide/modules/../../bin/
 # Adding MPLAB X bin directory to path.
-PATH:=D:/Installations/MPLABX/v5.25/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
+PATH:=/home/installations/microchip/mplabx/v6.00.10.6238/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
 # Path to java used to run MPLAB X when this makefile was created
-MP_JAVA_PATH="D:\Installations\MPLABX\v5.25\sys\java\jre1.8.0_181/bin/"
+MP_JAVA_PATH="/home/installations/microchip/mplabx/v6.00.10.6238/sys/java/zulu8.60.0.21-ca-fx-jre8.0.322-linux_x64/bin/"
 OS_CURRENT="$(shell uname -s)"
-MP_CC="D:\Installations\xc16\v1.40\bin\xc16-gcc.exe"
+MP_CC="/home/installations/microchip/xc16/v2.00/bin/xc16-gcc"
 # MP_CPPC is not defined
 # MP_BC is not defined
-MP_AS="D:\Installations\xc16\v1.40\bin\xc16-as.exe"
-MP_LD="D:\Installations\xc16\v1.40\bin\xc16-ld.exe"
-MP_AR="D:\Installations\xc16\v1.40\bin\xc16-ar.exe"
-DEP_GEN=${MP_JAVA_PATH}java -jar "D:/Installations/MPLABX/v5.25/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
-MP_CC_DIR="D:\Installations\xc16\v1.40\bin"
+MP_AS="/home/installations/microchip/xc16/v2.00/bin/xc16-as"
+MP_LD="/home/installations/microchip/xc16/v2.00/bin/xc16-ld"
+MP_AR="/home/installations/microchip/xc16/v2.00/bin/xc16-ar"
+DEP_GEN=${MP_JAVA_PATH}java -jar "/home/installations/microchip/mplabx/v6.00.10.6238/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
+MP_CC_DIR="/home/installations/microchip/xc16/v2.00/bin"
 # MP_CPPC_DIR is not defined
 # MP_BC_DIR is not defined
-MP_AS_DIR="D:\Installations\xc16\v1.40\bin"
-MP_LD_DIR="D:\Installations\xc16\v1.40\bin"
-MP_AR_DIR="D:\Installations\xc16\v1.40\bin"
-# MP_BC_DIR is not defined
+MP_AS_DIR="/home/installations/microchip/xc16/v2.00/bin"
+MP_LD_DIR="/home/installations/microchip/xc16/v2.00/bin"
+MP_AR_DIR="/home/installations/microchip/xc16/v2.00/bin"
+DFP_DIR=/home/installations/microchip/mplabx/v6.00.10.6238/packs/Microchip/PIC24F-DA-GB_DFP/1.4.121

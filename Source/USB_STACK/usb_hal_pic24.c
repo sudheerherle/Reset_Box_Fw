@@ -1,4 +1,5 @@
 #include "usb.h"
+#include "xc.h"
 
 
 BOOL USBSleepOnSuspend(void)

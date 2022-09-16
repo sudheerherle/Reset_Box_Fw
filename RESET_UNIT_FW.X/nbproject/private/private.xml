@@ -4,25 +4,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/USB_STACK/usb_descriptors.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_RTC.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_LED.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/COMM_SMC.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/comm_host.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Header/COMMON.h</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/DRV_CNT.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Header/DRV_GLCD_SPI.h</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/command_proc.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Header/COMM_SMC.h</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/USB_STACK/usb_device.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/CRC16.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/EEPROM.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/CPU_SM_MAIN.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/EVENTS.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/USB_STACK/USB_DRV.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Header/DRV_DI.H</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/AUTO_DRV_CNT.c</file>
-            <file>file:/D:/GitHub/Reset_Box_Fw/Source/USB_STACK/usb_function_cdc.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/DRV_DI.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Header/COMMON.h</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/CPU_SM_MAIN.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/DRV_LED.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/USB_STACK/usb_device.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/comm_host.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/DRV_CNT.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/COMM_SMC.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Source/PRINT.c</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Header/DRV_CNT.H</file>
+            <file>file:/media/sudheer/New%20Volume/Others/Reset_Box_Fw/Header/DRV_LED.H</file>
         </group>
     </open-files>
 </project-private>
