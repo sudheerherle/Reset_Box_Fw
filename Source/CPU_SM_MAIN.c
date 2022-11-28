@@ -768,7 +768,7 @@ void Update_Auto_Reset_Seq_State(void)
             }
 			if(HA_config == 0){
                 break;
-            }
+            }            
             if ((RB_Status.Flags.VR1_Contact_Status !=
 				RB_Status.Flags.VR2_Contact_Status) &&
                 (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
@@ -777,22 +777,22 @@ void Update_Auto_Reset_Seq_State(void)
 				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
                 Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
 				}
-            else if ((RB_Status.Flags.PR1_Contact_Status !=
-				RB_Status.Flags.PR2_Contact_Status) &&
-                (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
-				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH))
-				{
-				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
-                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
-				}
-            else if (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
-				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH 
-                && RB_Status.Flags.VR1_Contact_Status == SET_HIGH
-				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
-				{
-				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
-                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
-				}
+//            else if ((RB_Status.Flags.PR1_Contact_Status !=
+//				RB_Status.Flags.PR2_Contact_Status) &&
+//                (RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+//				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH))
+//				{
+//				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
+//                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
+//				}
+//            else if (RB_Status.Flags.PR1_Contact_Status == SET_HIGH
+//				&& RB_Status.Flags.PR2_Contact_Status == SET_HIGH 
+//                && RB_Status.Flags.VR1_Contact_Status == SET_HIGH
+//				&& RB_Status.Flags.VR2_Contact_Status == SET_HIGH)
+//				{
+//				Auto_Reset_Seq.State = AUTO_RELAY_STATES_DIFFERENT;
+//                Auto_Reset_Seq.Timeout_10ms = AUTO_RESET_WAIT_TIMEOUT;
+//				}
 			break;
 		case AUTO_RELAY_STATES_DIFFERENT:			
             if ((RB_Status.Flags.VR1_Contact_Status ==
