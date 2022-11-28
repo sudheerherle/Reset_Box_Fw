@@ -351,7 +351,7 @@ void Update_Smc_Sch_State(void)
 			}
 			
 			break;
-		case SMC_SCHEDULER_NOT_STARTED:
+		case SMC_SCHEDULER_NOT_STARTED:          
             LATGbits.LATG14 = 1;
             if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT){
                 return;
@@ -400,6 +400,7 @@ void Update_Smc_Sch_State(void)
                 return;
             if(Smc_Sch_Info.Query.Network_Index > Network_config){
                 Smc_Sch_Info.Query.Network_Index = 1;
+                Smc_Sch_Info.QUERY_WAIT_FOR_OTHER_PARTY = 1;
             }
             if(Smc_Sch_Info.Query.CPU_Index == 1){
                 Smc_Sch_Info.Query.CPU_Index = 2;
@@ -409,14 +410,25 @@ void Update_Smc_Sch_State(void)
                 Smc_Sch_Info.Query.Network_Index++;
                     if(Smc_Sch_Info.Query.Network_Index > Network_config){
                     Smc_Sch_Info.Query.Network_Index = 1;
+                    Smc_Sch_Info.QUERY_WAIT_FOR_OTHER_PARTY = 1;
                     }
             }else{
                 
             }
             Set_Modem_RX_Mode();
             Smc_Sch_Info.Timeout_ms = DELAY_20MS;
-            Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
-            
+//            if(Smc_Sch_Info.QUERY_WAIT_FOR_OTHER_PARTY == 1){
+//                Smc_Sch_Info.State = WAIT_FOR_OTHER_PARTY;
+//                Smc_Sch_Info.Timeout_ms = DELAY_10_SEC;
+//            }
+//            else 
+                Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
+            break;
+//        case  WAIT_FOR_OTHER_PARTY:
+//            if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
+//                return;
+//            else Smc_Sch_Info.State = CHECK_FOR_CD_WAIT;
+//            break;
         case CHECK_FOR_CD_WAIT:
             if(Smc_Sch_Info.Timeout_ms != TIMEOUT_EVENT)
                 return;
@@ -533,7 +545,7 @@ void Update_Smc_Sch_State(void)
                                         uchSelectedCPU = 1;											/* Select Cpu 1 */
                                 }
                                 Smc_Sch_Info.State = SMC_SCHEDULER_NOT_STARTED;
-                                Smc_Sch_Info.Timeout_ms = DELAY_100MS;
+                                Smc_Sch_Info.Timeout_ms = DELAY_10_SEC;
                                 Smc1XmitObject.Index =0;
 				Nop();
 				}
@@ -822,7 +834,7 @@ Output Element		:void
 void Set_Smc_Sch_Idle(void)
 {
 	Smc_Sch_Info.State =  SMC_SCHEDULER_NOT_STARTED;
-	Smc_Sch_Info.Timeout_ms = 700;
+	Smc_Sch_Info.Timeout_ms = DELAY_10_SEC;
 }
 
 /*********************************************************************************

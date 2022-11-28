@@ -57,6 +57,7 @@ typedef enum {
 			SMC_CLEAR_FRAME_ERROR,
 			SMC_CLEAR_OVERRUN_ERROR,
             SMCPU_DEAD,
+            WAIT_FOR_OTHER_PARTY,
             CHECK_FOR_CD_WAIT,
             CHECK_FOR_CD_STATUS,
             WAIT_TO_SEND_NEXT_QUERY,
@@ -66,9 +67,9 @@ typedef enum {
             SET_MODEM_RX,
             SET_MODEM_TX,
             SMC_SCHEDULE_DECIDE,
-                    SMC_LISTEN_SCHEDULER,
-                    SMC_LISTEN_DATA,
-                    SM_LISTEN_DATA_RECEPTION_COMPLETE,
+            SMC_LISTEN_SCHEDULER,
+            SMC_LISTEN_DATA,
+            SM_LISTEN_DATA_RECEPTION_COMPLETE,
                     
                     
                     
@@ -95,6 +96,7 @@ typedef struct {
 			BYTE			BytePeriod;		/* Transmission Time of One Byte deponds on Baud Rate */
 			UINT16          Setup_Timeout_ms;
             BYTE            CPU_Counts;
+            BOOL            QUERY_WAIT_FOR_OTHER_PARTY;
             query_t         Query;           
 
 } smc_sch_info_t;

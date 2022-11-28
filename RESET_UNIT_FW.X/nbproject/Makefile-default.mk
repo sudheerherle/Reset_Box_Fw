@@ -19,7 +19,7 @@ endif
 endif
 
 # Environment
-MKDIR=mkdir -p
+MKDIR=gnumkdir -p
 RM=rm -f 
 MV=mv 
 CP=cp 
@@ -42,12 +42,6 @@ ifeq ($(COMPARE_BUILD), true)
 COMPARISON_BUILD=-mafrlcsj
 else
 COMPARISON_BUILD=
-endif
-
-ifdef SUB_IMAGE_ADDRESS
-SUB_IMAGE_ADDRESS_COMMAND=--image-address $(SUB_IMAGE_ADDRESS)
-else
-SUB_IMAGE_ADDRESS_COMMAND=
 endif
 
 # Object Directory
@@ -91,298 +85,298 @@ endif
 	${MAKE}  -f nbproject/Makefile-default.mk ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
 MP_PROCESSOR_OPTION=24FJ256GB210
-MP_LINKER_FILE_OPTION=,--script="../Source/linker_script.gld"
+MP_LINKER_FILE_OPTION=,--script="..\Source\linker_script.gld"
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/_ext/1669077864/usb_descriptors.o: ../Source/USB_STACK/usb_descriptors.c  .generated_files/flags/default/2cf6143d7ed5c023741cd4fd8fa040fd05087b89 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_descriptors.o: ../Source/USB_STACK/usb_descriptors.c  .generated_files/flags/default/47b0cee7269ee922f35c0517703e61ee2f99d64c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_descriptors.c  -o ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_descriptors.c  -o ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_device.o: ../Source/USB_STACK/usb_device.c  .generated_files/flags/default/27b31a5ae1db13b9bb07374c9d1719ff86826e8d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_device.o: ../Source/USB_STACK/usb_device.c  .generated_files/flags/default/3b5708e4ed8060d40c8ff35f9a92042c7188ed11 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_device.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_device.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_device.c  -o ${OBJECTDIR}/_ext/1669077864/usb_device.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_device.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_device.c  -o ${OBJECTDIR}/_ext/1669077864/usb_device.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_device.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/USB_DRV.o: ../Source/USB_STACK/USB_DRV.c  .generated_files/flags/default/506292c6e999926915fa9045507915700e9d053d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/USB_DRV.o: ../Source/USB_STACK/USB_DRV.c  .generated_files/flags/default/af3c8f4414a39353595626ceca3f1bad31f7459c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/USB_DRV.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/USB_DRV.c  -o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/USB_DRV.c  -o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o: ../Source/USB_STACK/usb_function_cdc.c  .generated_files/flags/default/c0b0d800af0386b54fbb4ead400f6da5e723143f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o: ../Source/USB_STACK/usb_function_cdc.c  .generated_files/flags/default/5ca18b978cfd2060cff5cc8d545df66558e7ad6d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_function_cdc.c  -o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_function_cdc.c  -o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o: ../Source/USB_STACK/usb_hal_pic24.c  .generated_files/flags/default/d10297a533473e7934320a58f05f164a3b6e041 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o: ../Source/USB_STACK/usb_hal_pic24.c  .generated_files/flags/default/6d09dd7b611dccaba6d914c9875ea5fab01c2e48 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_hal_pic24.c  -o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_hal_pic24.c  -o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/COMM_SMC.o: ../Source/COMM_SMC.c  .generated_files/flags/default/c1256a0a7ff994c49e1c8e1531cbd002da56beb3 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/COMM_SMC.o: ../Source/COMM_SMC.c  .generated_files/flags/default/fec8707d018a6d3d2ba6faa52c9c8212670e4c9a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_SMC.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_SMC.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o: ../Source/CPU_SM_MAIN.c  .generated_files/flags/default/f9ffdd026b093b5844443bc2b967386ffac3d6bc .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o: ../Source/CPU_SM_MAIN.c  .generated_files/flags/default/1430fbdb55dc080e4b908672d3fba732c5d96543 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CPU_SM_MAIN.c  -o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CPU_SM_MAIN.c  -o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CRC16.o: ../Source/CRC16.c  .generated_files/flags/default/67866e78acb95d35241abf6d0be93f56331866e8 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CRC16.o: ../Source/CRC16.c  .generated_files/flags/default/5afa5600895fcfbc4a62b3178e07542f506f659e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC16.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC16.c  -o ${OBJECTDIR}/_ext/1728301206/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC16.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC16.c  -o ${OBJECTDIR}/_ext/1728301206/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC16.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CRC32.o: ../Source/CRC32.c  .generated_files/flags/default/c6d82f33be0b4fcb158d09d65dd95c2e0cdcd4e9 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CRC32.o: ../Source/CRC32.c  .generated_files/flags/default/9192681c6e631b791280a054e25e42d598fe9fe3 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC32.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC32.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC32.c  -o ${OBJECTDIR}/_ext/1728301206/CRC32.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC32.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC32.c  -o ${OBJECTDIR}/_ext/1728301206/CRC32.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC32.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_A2D.o: ../Source/DRV_A2D.c  .generated_files/flags/default/57b6909699aefc85026644783ac859be55bbfa1e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_A2D.o: ../Source/DRV_A2D.c  .generated_files/flags/default/af266cbf0e4dfbaaa7de56c1e7ddcd11d7e49322 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_A2D.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_A2D.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_I2C.o: ../Source/DRV_I2C.c  .generated_files/flags/default/575920c383cb761b631c2e29d591ad9fe47d887c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_I2C.o: ../Source/DRV_I2C.c  .generated_files/flags/default/e8bd06c3f5c7c3943c492362201ade6b326dde0b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_I2C.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_I2C.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_MEM.o: ../Source/DRV_MEM.c  .generated_files/flags/default/1af7eb65a2739339b9b5bf22084b40084c34a1ee .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_MEM.o: ../Source/DRV_MEM.c  .generated_files/flags/default/b9d11d560a40e00a7eab9fd8d7c1aa1407c59950 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_MEM.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_MEM.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_RTC.o: ../Source/DRV_RTC.c  .generated_files/flags/default/aa3e5043e6a2d41d69ce966bf6875628e759b088 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_RTC.o: ../Source/DRV_RTC.c  .generated_files/flags/default/c946e4043b40012994463bc79e747bb5ba5d22ab .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_RTC.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_RTC.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/EEPROM.o: ../Source/EEPROM.c  .generated_files/flags/default/707f745992f835744c04d9d5e9b50276985d74ed .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/EEPROM.o: ../Source/EEPROM.c  .generated_files/flags/default/419cd3833b97863003fc17fac5599a65bfd2437c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EEPROM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EEPROM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EEPROM.c  -o ${OBJECTDIR}/_ext/1728301206/EEPROM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EEPROM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EEPROM.c  -o ${OBJECTDIR}/_ext/1728301206/EEPROM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EEPROM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/EVENTS.o: ../Source/EVENTS.c  .generated_files/flags/default/9c4b378bac29dd491b7660e83660fbbd53abdd2d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/EVENTS.o: ../Source/EVENTS.c  .generated_files/flags/default/a763ae2bcd624655dc2da89fa5d2388722a9e2 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EVENTS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EVENTS.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EVENTS.c  -o ${OBJECTDIR}/_ext/1728301206/EVENTS.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EVENTS.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EVENTS.c  -o ${OBJECTDIR}/_ext/1728301206/EVENTS.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EVENTS.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/comm_host.o: ../Source/comm_host.c  .generated_files/flags/default/866a6c52c24c55ce9e6c99676dd9bee11beac6f7 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/comm_host.o: ../Source/comm_host.c  .generated_files/flags/default/a568ed01acdf01eace9fb790097aba7795e2b5e5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/comm_host.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/comm_host.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/comm_host.c  -o ${OBJECTDIR}/_ext/1728301206/comm_host.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/comm_host.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/comm_host.c  -o ${OBJECTDIR}/_ext/1728301206/comm_host.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/comm_host.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/command_proc.o: ../Source/command_proc.c  .generated_files/flags/default/757a8219f262e9a82899e5383cedd0fcae5bb11e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/command_proc.o: ../Source/command_proc.c  .generated_files/flags/default/448dc7b61772f2bbf2e974be25917f53506df6cb .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/command_proc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/command_proc.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/command_proc.c  -o ${OBJECTDIR}/_ext/1728301206/command_proc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/command_proc.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/command_proc.c  -o ${OBJECTDIR}/_ext/1728301206/command_proc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/command_proc.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_CNT.o: ../Source/DRV_CNT.c  .generated_files/flags/default/7dc0dcbfaf618e6c0a97332b9fb253f3bebe767f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_CNT.o: ../Source/DRV_CNT.c  .generated_files/flags/default/f8b5f4b74a4e29efb7800664c639eff3bee84fdd .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_DI.o: ../Source/DRV_DI.c  .generated_files/flags/default/a73cfe6fd29b06e6db4e2b0546c3b185c247fd02 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_DI.o: ../Source/DRV_DI.c  .generated_files/flags/default/2a47a09e9cbf08f0e081adcabbf34322a386a79a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_DI.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_DI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_DI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_LED.o: ../Source/DRV_LED.c  .generated_files/flags/default/aa0dd22a0dc00d1097e126b848cca0187d032da2 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_LED.o: ../Source/DRV_LED.c  .generated_files/flags/default/ce5d7f61c48ed80e5835c68191c5c3afb3cbec28 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_LED.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_LED.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_LED.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  .generated_files/flags/default/24fbd47309d3779f0db3e77d27913e57ead57406 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  .generated_files/flags/default/dd5d1ca51899ee025a39d1790df9577c4c46aca .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/PRINT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/PRINT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  .generated_files/flags/default/fc103916d336f7b4b62a0d1abee4f5e52e560e5a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  .generated_files/flags/default/82bd91c23f320f42bbe59789a4c0c587192730ba .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_GLCD_SPI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_GLCD_SPI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  .generated_files/flags/default/1ddc1ae3e3ed547b9adfc2de3ea711aba891a78b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  .generated_files/flags/default/b68ec867ac26438bbd029dabb07153eecc3435ca .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/COMM_GSM.o: ../Source/COMM_GSM.c  .generated_files/flags/default/f0f9c56dc1959c6727153c6ca2e38ca7ebf75781 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/COMM_GSM.o: ../Source/COMM_GSM.c  .generated_files/flags/default/5ddfddd4e0e1991272c98ea293a7ee7497db2360 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_GSM.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_GSM.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
 else
-${OBJECTDIR}/_ext/1669077864/usb_descriptors.o: ../Source/USB_STACK/usb_descriptors.c  .generated_files/flags/default/dde41eb13d35ecc41fd1729f1f16298556fef3d5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_descriptors.o: ../Source/USB_STACK/usb_descriptors.c  .generated_files/flags/default/ca2b40547b8f08dc0e18d8d37477db12205c1b98 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_descriptors.c  -o ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_descriptors.c  -o ${OBJECTDIR}/_ext/1669077864/usb_descriptors.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_descriptors.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_device.o: ../Source/USB_STACK/usb_device.c  .generated_files/flags/default/f1811452aefa66237dd240351e7dd6fe8845b1e1 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_device.o: ../Source/USB_STACK/usb_device.c  .generated_files/flags/default/3e971dfec8296fdfc2ee513c6dc0c90966015bbe .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_device.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_device.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_device.c  -o ${OBJECTDIR}/_ext/1669077864/usb_device.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_device.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_device.c  -o ${OBJECTDIR}/_ext/1669077864/usb_device.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_device.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/USB_DRV.o: ../Source/USB_STACK/USB_DRV.c  .generated_files/flags/default/229baadb18f9626c4f77ba8f5af4ba5a8ede369 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/USB_DRV.o: ../Source/USB_STACK/USB_DRV.c  .generated_files/flags/default/f0f37ed34a2a3b1bb2ec4f796c96a510aa0d0bf1 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/USB_DRV.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/USB_DRV.c  -o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/USB_DRV.c  -o ${OBJECTDIR}/_ext/1669077864/USB_DRV.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/USB_DRV.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o: ../Source/USB_STACK/usb_function_cdc.c  .generated_files/flags/default/a653cb768e6bec7f0e2bb275f7813c93f2218b1f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o: ../Source/USB_STACK/usb_function_cdc.c  .generated_files/flags/default/d945e7e522ca598d53c82947981e1bc42ad18072 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_function_cdc.c  -o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_function_cdc.c  -o ${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_function_cdc.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o: ../Source/USB_STACK/usb_hal_pic24.c  .generated_files/flags/default/fd9778643a61437d20fd6f2bebfbfbaaa1e0551c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o: ../Source/USB_STACK/usb_hal_pic24.c  .generated_files/flags/default/4ac37df4781ee2f373dfba1f58d8732922d55e94 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1669077864" 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_hal_pic24.c  -o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/USB_STACK/usb_hal_pic24.c  -o ${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1669077864/usb_hal_pic24.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/COMM_SMC.o: ../Source/COMM_SMC.c  .generated_files/flags/default/d8731d5337539401fcc4f4bae166b801ba7b68f1 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/COMM_SMC.o: ../Source/COMM_SMC.c  .generated_files/flags/default/eb8404796db1d9bfa836176211aaf285f90716a3 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_SMC.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_SMC.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_SMC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_SMC.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o: ../Source/CPU_SM_MAIN.c  .generated_files/flags/default/9ab4e98bb3874bad7a7628221056e2edbe2818e7 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o: ../Source/CPU_SM_MAIN.c  .generated_files/flags/default/9335feb002271f6cf5a3e4311e3bdccfc3cdc4f5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CPU_SM_MAIN.c  -o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CPU_SM_MAIN.c  -o ${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CPU_SM_MAIN.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CRC16.o: ../Source/CRC16.c  .generated_files/flags/default/85606bc47c255885b9508a13589bbfb4dd4f230 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CRC16.o: ../Source/CRC16.c  .generated_files/flags/default/31ff7396246da2d7e6b8a44fe571bcd6997d4ad5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC16.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC16.c  -o ${OBJECTDIR}/_ext/1728301206/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC16.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC16.c  -o ${OBJECTDIR}/_ext/1728301206/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC16.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/CRC32.o: ../Source/CRC32.c  .generated_files/flags/default/1e27bb0c0604c4de7adbe7a2a4a47467470de00f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/CRC32.o: ../Source/CRC32.c  .generated_files/flags/default/9895188aa0ae5f10dd09921514e108ff39179773 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC32.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/CRC32.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC32.c  -o ${OBJECTDIR}/_ext/1728301206/CRC32.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC32.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/CRC32.c  -o ${OBJECTDIR}/_ext/1728301206/CRC32.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/CRC32.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_A2D.o: ../Source/DRV_A2D.c  .generated_files/flags/default/ac58fccadc695d66f3b0a2f3833944705ab5f160 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_A2D.o: ../Source/DRV_A2D.c  .generated_files/flags/default/95bdff55862fa06683e06415027be09ca98273f1 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_A2D.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_A2D.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_A2D.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_A2D.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_I2C.o: ../Source/DRV_I2C.c  .generated_files/flags/default/895f937a3f39e7be35f9201dcd049df6d7c2c54a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_I2C.o: ../Source/DRV_I2C.c  .generated_files/flags/default/ae1072169481f764e0fc52d665f37660f6a04b0e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_I2C.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_I2C.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_I2C.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_MEM.o: ../Source/DRV_MEM.c  .generated_files/flags/default/f764dbba1946a6c9720fb852f3c70f718653287e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_MEM.o: ../Source/DRV_MEM.c  .generated_files/flags/default/8c17ff93a5f6f62b7404096ce62354358af5055c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_MEM.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_MEM.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_MEM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_MEM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_RTC.o: ../Source/DRV_RTC.c  .generated_files/flags/default/6d3b44e6180f83b7ec78477a09a8ee71127dee0f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_RTC.o: ../Source/DRV_RTC.c  .generated_files/flags/default/ce3e14f90c28285d9cf1a3c8f871fd9d2d938771 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_RTC.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_RTC.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_RTC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_RTC.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/EEPROM.o: ../Source/EEPROM.c  .generated_files/flags/default/7166ed58b06b0c3ce385e7eb6bd173bd38f1b9f5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/EEPROM.o: ../Source/EEPROM.c  .generated_files/flags/default/5ffaebc5c8f7465fddfffaa9ea0c357927690f14 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EEPROM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EEPROM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EEPROM.c  -o ${OBJECTDIR}/_ext/1728301206/EEPROM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EEPROM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EEPROM.c  -o ${OBJECTDIR}/_ext/1728301206/EEPROM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EEPROM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/EVENTS.o: ../Source/EVENTS.c  .generated_files/flags/default/d39ab5fa44890a875086701a7b9221c4a5c4c68d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/EVENTS.o: ../Source/EVENTS.c  .generated_files/flags/default/5402454aa8d8e02d81e5994b5e8bc06c3aeaf084 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EVENTS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/EVENTS.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EVENTS.c  -o ${OBJECTDIR}/_ext/1728301206/EVENTS.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EVENTS.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/EVENTS.c  -o ${OBJECTDIR}/_ext/1728301206/EVENTS.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/EVENTS.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/comm_host.o: ../Source/comm_host.c  .generated_files/flags/default/81be968b90eb25674d774bb6e0e529a13f20ad6a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/comm_host.o: ../Source/comm_host.c  .generated_files/flags/default/e8f80e4a3c03588c4202e768f3af66cbeade9134 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/comm_host.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/comm_host.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/comm_host.c  -o ${OBJECTDIR}/_ext/1728301206/comm_host.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/comm_host.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/comm_host.c  -o ${OBJECTDIR}/_ext/1728301206/comm_host.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/comm_host.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/command_proc.o: ../Source/command_proc.c  .generated_files/flags/default/1476bfe4c26c833f7bb2d26ee3afb49796997d38 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/command_proc.o: ../Source/command_proc.c  .generated_files/flags/default/3c25a3f30a56ffba62a0471e501e07e467b3b517 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/command_proc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/command_proc.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/command_proc.c  -o ${OBJECTDIR}/_ext/1728301206/command_proc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/command_proc.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/command_proc.c  -o ${OBJECTDIR}/_ext/1728301206/command_proc.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/command_proc.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_CNT.o: ../Source/DRV_CNT.c  .generated_files/flags/default/accbdf9a3b42df3e76b718de2409856da60d9c1e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_CNT.o: ../Source/DRV_CNT.c  .generated_files/flags/default/241281115a4e0762a5542a15099fce0389037b88 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_CNT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_DI.o: ../Source/DRV_DI.c  .generated_files/flags/default/dfda75e4efd282a65cfc93c8e2cc9af302855344 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_DI.o: ../Source/DRV_DI.c  .generated_files/flags/default/eb285fa512bf063439225d10e2407cf5ed12f7e7 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_DI.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_DI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_DI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_DI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_DI.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_LED.o: ../Source/DRV_LED.c  .generated_files/flags/default/36f3ba495e2c09adf0c572cf3c237bd832f0d425 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_LED.o: ../Source/DRV_LED.c  .generated_files/flags/default/296511479539abd1c4bf556ff8164bd0df1d6389 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_LED.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_LED.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_LED.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_LED.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_LED.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  .generated_files/flags/default/a2c4ce77275d2f5f5b9d228dce75f317a525faff .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/PRINT.o: ../Source/PRINT.c  .generated_files/flags/default/97b01053258ac802d9c00dddc295642038b8767a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/PRINT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/PRINT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/PRINT.c  -o ${OBJECTDIR}/_ext/1728301206/PRINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/PRINT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  .generated_files/flags/default/e45e17d816c1ba8b62f2a3d3a7217273dbac1859 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o: ../Source/DRV_GLCD_SPI.c  .generated_files/flags/default/109d79d5b79c84f2553195fd0057d3870a065e32 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_GLCD_SPI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/DRV_GLCD_SPI.c  -o ${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/DRV_GLCD_SPI.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  .generated_files/flags/default/3eb9d79edc2a947f42158dac743392e2aaaf6234 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o: ../Source/AUTO_DRV_CNT.c  .generated_files/flags/default/9a8d0fae612cc4b89e3d6592504da82307659a9c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/AUTO_DRV_CNT.c  -o ${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/AUTO_DRV_CNT.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
-${OBJECTDIR}/_ext/1728301206/COMM_GSM.o: ../Source/COMM_GSM.c  .generated_files/flags/default/c7740317f22c6913c7ede353500651a96cd2d4da .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/_ext/1728301206/COMM_GSM.o: ../Source/COMM_GSM.c  .generated_files/flags/default/ad7fa765c8528ddc5c61edeb4972ed4800a006b4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/_ext/1728301206" 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_GSM.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../Source/COMM_GSM.c  -o ${OBJECTDIR}/_ext/1728301206/COMM_GSM.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1728301206/COMM_GSM.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"../Header" -I"../Header/USB_STACK" -msmart-io=1 -Wall -msfr-warn=off   
 	
 endif
 
@@ -403,13 +397,13 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    ../Source/linker_script.gld
 	@${MKDIR} ${DISTDIR} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG=__DEBUG   -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  --fill=0xFFDEAD     -Wl,--local-stack,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D__DEBUG=__DEBUG,,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--no-handles,--no-isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--cref,--memorysummary,${DISTDIR}/memoryfile.xml,--no-ivt$(MP_EXTRA_LD_POST)  -mdfp="${DFP_DIR}/xc16" 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG=__DEBUG   -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  --fill=0xFFDEAD  -mreserve=data@0x800:0x81B -mreserve=data@0x81C:0x81D -mreserve=data@0x81E:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x827 -mreserve=data@0x82A:0x84F   -Wl,--local-stack,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D__DEBUG=__DEBUG,,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--no-handles,--no-isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--cref,--memorysummary,${DISTDIR}/memoryfile.xml,--no-ivt$(MP_EXTRA_LD_POST)  
 	
 else
 ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   ../Source/linker_script.gld
 	@${MKDIR} ${DISTDIR} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  --fill=0xFFDEAD -Wl,--local-stack,,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--no-handles,--no-isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--cref,--memorysummary,${DISTDIR}/memoryfile.xml,--no-ivt$(MP_EXTRA_LD_POST)  -mdfp="${DFP_DIR}/xc16" 
-	${MP_CC_DIR}/xc16-bin2hex ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf   -mdfp="${DFP_DIR}/xc16" 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  --fill=0xFFDEAD -Wl,--local-stack,,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--no-handles,--no-isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem,--cref,--memorysummary,${DISTDIR}/memoryfile.xml,--no-ivt$(MP_EXTRA_LD_POST)  
+	${MP_CC_DIR}\\xc16-bin2hex ${DISTDIR}/RESET_UNIT_FW.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf   
 	
 endif
 
@@ -429,7 +423,7 @@ endif
 # Enable dependency checking
 .dep.inc: .depcheck-impl
 
-DEPFILES=$(shell "${PATH_TO_IDE_BIN}"mplabwildcard ${POSSIBLE_DEPFILES})
+DEPFILES=$(shell mplabwildcard ${POSSIBLE_DEPFILES})
 ifneq (${DEPFILES},)
 include ${DEPFILES}
 endif
