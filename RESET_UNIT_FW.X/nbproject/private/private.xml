@@ -6,6 +6,7 @@
         <group>
             <file>file:/D:/Others/Reset_Box_Fw/Source/DRV_LED.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/DRV_RTC.c</file>
+            <file>file:/D:/Others/Reset_Box_Fw/Header/AUTO_DRV_CNT.h</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/DRV_CNT.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/USB_STACK/USB_DRV.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Header/CPU_SM.h</file>
@@ -13,8 +14,10 @@
             <file>file:/D:/Others/Reset_Box_Fw/Source/DRV_DI.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/CPU_SM_MAIN.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/command_proc.c</file>
+            <file>file:/D:/Others/Reset_Box_Fw/Source/EEPROM.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/AUTO_DRV_CNT.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/PRINT.c</file>
+            <file>file:/D:/Others/Reset_Box_Fw/Header/COMM_SMC.h</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/EVENTS.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/DRV_GLCD_SPI.c</file>
             <file>file:/D:/Others/Reset_Box_Fw/Source/comm_host.c</file>

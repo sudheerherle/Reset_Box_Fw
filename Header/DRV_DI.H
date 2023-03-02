@@ -9,8 +9,8 @@
 
 /* Process Time-outs in multiples of 10ms */
 #define PUSH_BUTTON_DEBOUNCE_TIMEOUT	(40)
-#define VITAL_RELAY_DEBOUNCE_TIMEOUT	(10)
-#define PREP_RELAY_DEBOUNCE_TIMEOUT		(10)
+#define VITAL_RELAY_DEBOUNCE_TIMEOUT	(500)
+#define PREP_RELAY_DEBOUNCE_TIMEOUT		(500)
 
 typedef enum {
 			PB_SCH_NOT_STARTED = 0,
