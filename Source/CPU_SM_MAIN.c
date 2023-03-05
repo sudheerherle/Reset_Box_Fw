@@ -658,12 +658,11 @@ void Update_Reset_Seq_State(void)
 		case WAIT_FOR_RESET_INPUT:
 			if (RB_Status.Flags.Reset_PB_Status == SET_LOW &&
                    RB_Status.Flags.VR1_Contact_Status != SET_LOW ) {
-                    if(PORTDbits.RD11 == 0 && HA_config == 1){
-                        Reset_Seq.State = RESET_CHK_INITIAL_CONDITION;
-                        break;
-                    }
-                    if(PORTDbits.RD11 == 1){
-                        
+//                    if(PORTDbits.RD11 == 0 && HA_config == 1){
+//                        Reset_Seq.State = RESET_CHK_INITIAL_CONDITION;
+//                        break;
+//                    }
+                    if(auto_reset){
                         break;
                     }
 				/*
@@ -688,7 +687,7 @@ void Update_Reset_Seq_State(void)
 					Reset_Seq.State = CHECK_VR1_PICKUP;
 					}
 				}
-            if (RB_Status.Flags.VR1_Contact_Status == SET_HIGH &&
+            if (/*RB_Status.Flags.VR1_Contact_Status == SET_HIGH &&*/
 				PORTBbits.RB14 == SET_HIGH)
 				{
 				/* Both VR and PR are down, Hence reset permitted */
@@ -697,7 +696,7 @@ void Update_Reset_Seq_State(void)
 				Reset_Seq.Timeout_10ms = 0;
 				}
             
-            if (RB_Status.Flags.VR2_Contact_Status == SET_HIGH &&
+            if (/*RB_Status.Flags.VR2_Contact_Status == SET_HIGH &&*/
 				RB_Status.Flags.PR2_Contact_Status == SET_HIGH)
 				{
 				/* Both VR and PR are down, Hence reset permitted */
@@ -855,6 +854,9 @@ void Update_Auto_Reset_Seq_State(void)
 			break;
             
         case PERFORM_AUTO_RESET:
+            auto_reset = true;
+            LATDbits.LATD2 = SET_HIGH;
+//            AUTO_RESET_LED_PORT = SET_HIGH;
             LATDbits.LATD9 = 1; //AUTO_RESET_SIGNAL_EN
             Auto_Reset_Seq.State = CHECK_AUTO_RESET_FEEDBACK;
             break;
@@ -883,18 +885,23 @@ void Update_Auto_Reset_Seq_State(void)
             Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
             Auto_Reset_Seq.Timeout_10ms = 50;
             }else{
-                auto_reset = true;
+//                auto_reset = true;
             }
             
             if(RB_Status.Flags.PR1_Contact_Status == SET_LOW){
                 Set_Preparatory_LED_On();
                 Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
                 Increment_Auto_Reset_Counter();
+                auto_reset = false;
+                LATDbits.LATD2 = SET_LOW;
                 Auto_Reset_Seq.Timeout_10ms = 100;
             }
             if(RB_Status.Flags.PR2_Contact_Status == SET_LOW){
                 Set_Preparatory_LED2_On();
                 Increment_Auto_Reset_Counter();
+                auto_reset = false;
+//                AUTO_RESET_LED_PORT = SET_LOW;
+                LATDbits.LATD2 = SET_LOW;
                 Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
                 Auto_Reset_Seq.Timeout_10ms = 100;
             }
@@ -953,7 +960,7 @@ void Update_Network_Configuration(void)
     TRISDbits.TRISD7 = 1;    
     TRISFbits.TRISF0 = 1;
     TRISFbits.TRISF1 = 1;
-    
+    TRISDbits.TRISD2 = 0; //AUTO_RESET_LED_PORT    
     TRISAbits.TRISA6 = 0;
     TRISGbits.TRISG0 = 0;
     TRISGbits.TRISG1 = 0;
