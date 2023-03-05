@@ -13,6 +13,7 @@ typedef enum {
 #define PR1_LED_PORT	LATBbits.LATB15
 #define PR2_LED_PORT	LATBbits.LATB12
 #define GS_LED_PORT LATFbits.LATF4
+#define AUTO_RESET_LED_PORT LATDbits.LATD2;
 #define BI_COLOR_RED_LED_PORT LATEbits.LATE9
 #define BI_COLOR_GREEN_LED_PORT LATEbits.LATE8
 
