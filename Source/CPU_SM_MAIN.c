@@ -887,13 +887,14 @@ void Update_Auto_Reset_Seq_State(void)
             if(Auto_Reset_Seq.Timeout_10ms == TIMEOUT_EVENT){
                 LATDbits.LATD9 = 0; 
                 Auto_Reset_Seq.State = CHECK_POST_AUTO_RESET;                          
-                Auto_Reset_Seq.Timeout_10ms = 50;
+                Auto_Reset_Seq.Timeout_10ms = 500;
             }
             break;
         case CHECK_POST_AUTO_RESET:     
             if(Auto_Reset_Seq.Timeout_10ms != TIMEOUT_EVENT){
                 break;
             }
+            /*
             if (RB_Status.Flags.VR1_Contact_Status !=  
                     RB_Status.Flags.VR2_Contact_Status)
             {
@@ -903,8 +904,8 @@ void Update_Auto_Reset_Seq_State(void)
             }else{
 //                auto_reset = true;
             }
-            
-            if(RB_Status.Flags.PR1_Contact_Status == SET_LOW){
+            */ 
+            if(PORTBbits.RB14 == SET_LOW){
                 Set_Preparatory_LED_On();
                 Auto_Reset_Seq.State = AUTO_RESET_CHK_CONDITION;
                 Increment_Auto_Reset_Counter();
@@ -912,7 +913,7 @@ void Update_Auto_Reset_Seq_State(void)
                 Set_Preparatory_Auto_Reset_LED_On();
                 Auto_Reset_Seq.Timeout_10ms = 100;
             }
-            if(RB_Status.Flags.PR2_Contact_Status == SET_LOW){
+            if(PORTBbits.RB11 == SET_LOW){
                 Set_Preparatory_LED2_On();
                 Increment_Auto_Reset_Counter();
                 auto_reset = false;

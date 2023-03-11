@@ -182,7 +182,7 @@ void Update_Vital_Relay2_State(void)
 
 void Update_Prep_Relay_State(void)
 {
-//    RB_Status.Flags.PR1_Contact_Status = PORTBbits.RB14;
+    RB_Status.Flags.PR1_Contact_Status = PORTBbits.RB14;
     	switch (Prep_Relay.State)
 		{
 		case RELAY_SCH_NOT_STARTED:
@@ -223,7 +223,7 @@ void Update_Prep_Relay_State(void)
 
 void Update_Prep_Relay2_State(void)
 {
-//    RB_Status.Flags.PR2_Contact_Status = PORTBbits.RB11;
+    RB_Status.Flags.PR2_Contact_Status = PORTBbits.RB11;
     	switch (Prep_Relay2.State)
 		{
 		case RELAY_SCH_NOT_STARTED:
