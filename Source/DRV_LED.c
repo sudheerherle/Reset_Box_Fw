@@ -5,6 +5,7 @@
 
 Preparatory_Reset_LED_t Preparatory_Reset_LED;
 Preparatory_Reset_LED_t Preparatory_Reset_LED2;
+Preparatory_Reset_LED_t Preparatory_AutoReset_LED;
 
 extern BYTE HA_config;
 
@@ -97,6 +98,45 @@ void Update_Preparatory_LED2_State(void)
 		}
 }
 
+void Update_AutoReset_LED_State(void)
+{
+	switch (Preparatory_AutoReset_LED.State)
+		{
+		case LED_STEADY_OFF:
+			AUTO_RESET_LED_PORT = SET_LOW;
+			break;
+           
+		case LED_STEADY_ON:
+			AUTO_RESET_LED_PORT = SET_HIGH;
+			break;
+            
+		case LED_FLASHING_OFF:
+            AUTO_RESET_LED_PORT = SET_LOW;
+			Preparatory_AutoReset_LED.State = LED_FLASHING_OFF_WAIT;
+			Preparatory_AutoReset_LED.Timeout_10ms = LED_FLASHING_OFF_TIMEOUT;
+			break;
+		case LED_FLASHING_OFF_WAIT:
+			if (Preparatory_AutoReset_LED.Timeout_10ms == TIMEOUT_EVENT)
+				{
+				Preparatory_AutoReset_LED.State = LED_FLASHING_ON;
+				Preparatory_AutoReset_LED.Timeout_10ms = 0;
+				}
+			break;
+		case LED_FLASHING_ON:
+			AUTO_RESET_LED_PORT = SET_HIGH;
+			Preparatory_AutoReset_LED.State = LED_FLASHING_ON_WAIT;
+			Preparatory_AutoReset_LED.Timeout_10ms = LED_FLASHING_ON_TIMEOUT;
+			break;
+		case LED_FLASHING_ON_WAIT:
+			if (Preparatory_AutoReset_LED.Timeout_10ms == TIMEOUT_EVENT)
+				{
+				Preparatory_AutoReset_LED.State = LED_FLASHING_OFF;
+				Preparatory_AutoReset_LED.Timeout_10ms = 0;
+				}
+			break;
+		}
+}
+
 
 void Decrement_LED_10msTmr(void)
 {
@@ -108,6 +148,10 @@ void Decrement_LED_10msTmr(void)
     if (Preparatory_Reset_LED2.Timeout_10ms > 0)
 		{
 		Preparatory_Reset_LED2.Timeout_10ms--;
+		}
+    if (Preparatory_AutoReset_LED.Timeout_10ms > 0)
+		{
+		Preparatory_AutoReset_LED.Timeout_10ms--;
 		}
 }
 
@@ -141,4 +185,19 @@ void Set_Preparatory_LED_Flashing(void)
 void Set_Preparatory_LED2_Flashing(void)
 {
 	Preparatory_Reset_LED2.State = LED_FLASHING_ON;
+}
+
+void Set_Preparatory_Auto_Reset_LED_Flashing(void)
+{
+	Preparatory_AutoReset_LED.State = LED_FLASHING_ON;
+}
+
+void Set_Preparatory_Auto_Reset_LED_Off(void)
+{
+	Preparatory_AutoReset_LED.State = LED_STEADY_OFF;
+}
+
+void Set_Preparatory_Auto_Reset_LED_On(void)
+{
+	Preparatory_AutoReset_LED.State = LED_STEADY_ON;
 }
