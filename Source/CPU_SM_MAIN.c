@@ -684,8 +684,9 @@ void Update_Reset_Seq_State(void)
 				else
                     {
 					Set_Preparatory_LED_Off();
-					//Increment_Reset_Counter();
+//					Increment_Reset_Counter();
 					Reset_Seq.State = CHECK_VR1_PICKUP;
+                    break;
 					}
 				}
             if (/*RB_Status.Flags.VR1_Contact_Status == SET_HIGH &&*/

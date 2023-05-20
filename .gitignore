@@ -1,17 +1,7 @@
 
 *.o
 *.d
-*.o
-*.o
-*.d
-*.o
-*.d
-*.o
-*.o
-*.o
-*.o
-*.o
-*.o
-*.o
-*.o
-*.o
+RESET_UNIT_FW.X/.generated_files/*
+RESET_UNIT_FW.X/build/default/production/_ext/*
+RESET_UNIT_FW.X/build/default/production/_ext/*
+
